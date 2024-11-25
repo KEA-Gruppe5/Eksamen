@@ -1,6 +1,7 @@
 CREATE
 DATABASE IF NOT EXISTS PMTool;
-USE PMTool;
+USE
+PMTool;
 
 CREATE TABLE project
 (
@@ -15,8 +16,8 @@ CREATE TABLE subproject
 (
     parent_project_id int,
     subproject_id     int,
-    FOREIGN KEY (parent_project_id) REFERENCES project(id),
-    FOREIGN KEY (subproject_id) REFERENCES project(id),
+    FOREIGN KEY (parent_project_id) REFERENCES project (id),
+    FOREIGN KEY (subproject_id) REFERENCES project (id),
     PRIMARY KEY (parent_project_id, subproject_id)
 );
 
@@ -52,10 +53,10 @@ CREATE TABLE task
 
 CREATE table user_project
 (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    parent_project_id INT,
-    subproject_id     INT,
-    UNIQUE (parent_project_id, subproject_id),
-    FOREIGN KEY (parent_project_id) REFERENCES project (id),
-    FOREIGN KEY (subproject_id) REFERENCES project (id)
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    user_id    INT NOT NULL,
+    project_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (project_id) REFERENCES project (id),
+    primary key (user_id, project_id),
 );
