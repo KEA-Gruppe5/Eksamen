@@ -3,7 +3,10 @@ package kea.eksamen.repository;
 import kea.eksamen.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
@@ -20,20 +23,22 @@ public class UserRepository implements UserRepositoryInterface{
 
     @Override
     public User addUser(User user) {
-        int generatedId = jdbcClient.sql("INSERT INTO PMTool.users (firstname, lastname, email," +
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int affectedRows = jdbcClient.sql("INSERT INTO PMTool.users (firstname, lastname, email," +
                         "password, role_id) VALUES (?, ?, ?, ?, ?)")
                 .param(user.getFirstName())
                 .param(user.getLastName())
                 .param(user.getEmail())
                 .param(user.getPassword())
                 .param(user.getRole().getId())
-                .update();
+                .update(keyHolder, "id");
 
-        if(generatedId!=0){
-            user.setId(generatedId);
+        if(affectedRows!=0 && keyHolder.getKey()!=null){
+            user.setId(keyHolder.getKey().intValue());
             logger.info("add new user: " + user);
             return user;
         }
+        logger.warn("adding new user failed");
         return null;
     }
 
@@ -48,7 +53,12 @@ public class UserRepository implements UserRepositoryInterface{
     }
 
     @Override
-    public User findUserByEmail(String email) throws SQLException {
-        return null;
+    public User findUserByEmail(String email) {
+       User foundUser = jdbcClient.sql("SELECT * FROM PMTool.users WHERE email = ?")
+               .param(email)
+               .query(User.class)
+               .optional()
+               .orElse(null);
+       return foundUser;
     }
 }

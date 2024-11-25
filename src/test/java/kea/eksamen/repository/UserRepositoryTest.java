@@ -44,4 +44,11 @@ class UserRepositoryTest {
 
         logger.info("Test add user: " + savedUser);
     }
+
+    @Test
+    void findUserByEmail() {
+        userRepository.addUser(user);
+        User foundUser = userRepository.findUserByEmail("email");
+        assertNotNull(foundUser);
+    }
 }
