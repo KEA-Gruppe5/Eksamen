@@ -3,7 +3,7 @@ DATABASE IF NOT EXISTS PMTool;
 USE
 PMTool;
 
-CREATE TABLE project
+CREATE TABLE projects
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     title      varchar(255),
@@ -12,24 +12,24 @@ CREATE TABLE project
     duration   int
 );
 
-CREATE TABLE subproject
+CREATE TABLE subprojects
 (
     parent_project_id int,
     subproject_id     int,
-    FOREIGN KEY (parent_project_id) REFERENCES project (id),
-    FOREIGN KEY (subproject_id) REFERENCES project (id),
+    FOREIGN KEY (parent_project_id) REFERENCES projects (id),
+    FOREIGN KEY (subproject_id) REFERENCES projects (id),
     PRIMARY KEY (parent_project_id, subproject_id)
 );
 
 
-CREATE TABLE role
+CREATE TABLE roles
 (
     id   INT AUTO_INCREMENT PRIMARY KEY,
     role VARCHAR(255)
 );
 
 
-CREATE TABLE user
+CREATE TABLE users
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255),
@@ -37,10 +37,10 @@ CREATE TABLE user
     email     VARCHAR(255) UNIQUE,
     password  VARCHAR(255),
     role_id   int,
-    FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE
+    FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
 
-CREATE TABLE task
+CREATE TABLE tasks
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
     title      VARCHAR(255),
@@ -48,15 +48,14 @@ CREATE TABLE task
     end_date   DATE,
     duration   INT,
     user_id    INT,
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE table user_project
+CREATE table users_projects
 (
-    id         INT AUTO_INCREMENT PRIMARY KEY,
     user_id    INT NOT NULL,
     project_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (project_id) REFERENCES project (id),
-    primary key (user_id, project_id),
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (project_id) REFERENCES projects (id),
+    primary key (user_id, project_id)
 );
