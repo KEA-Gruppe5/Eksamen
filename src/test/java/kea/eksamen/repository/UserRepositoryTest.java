@@ -40,15 +40,19 @@ class UserRepositoryTest {
         User savedUser = userRepository.addUser(user);
         assertNotNull(savedUser);
         assertEquals("first name", savedUser.getFirstName());
-        assertEquals(1, savedUser.getId()); // 6 because there are inserted 5 users at initialization
+        assertEquals(4, savedUser.getId()); // 4 because there are inserted 3 users at initialization
 
         logger.info("Test add user: " + savedUser);
     }
 
     @Test
+    @DisplayName("Integration test finding user by email in repository")
     void findUserByEmail() {
+        User user =  new User("first name", "last name", "some email", "password");
+        user.setRole(Role.EMPLOYEE);
         userRepository.addUser(user);
-        User foundUser = userRepository.findUserByEmail("email");
+        User foundUser = userRepository.findUserByEmail("some email");
         assertNotNull(foundUser);
+        assertEquals("first name", foundUser.getFirstName());
     }
 }
