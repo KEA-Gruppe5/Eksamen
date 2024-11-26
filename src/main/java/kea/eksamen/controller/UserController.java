@@ -13,10 +13,8 @@ import java.sql.SQLException;
 
 @Controller
 public class UserController {
-
     private final UserService userService;
     private final PasswordValidator passwordValidator;
-
     public UserController(UserService userService, PasswordValidator passwordValidator) {
         this.userService = userService;
         this.passwordValidator = passwordValidator;

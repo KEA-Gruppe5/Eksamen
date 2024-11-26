@@ -16,7 +16,7 @@ CREATE TABLE subprojects
 (
     parent_project_id int,
     subproject_id     int,
-    FOREIGN KEY (parent_project_id) REFERENCES projects (id),
+    FOREIGN KEY (parent_project_id) REFERENCES projects (id) ON DELETE CASCADE,
     FOREIGN KEY (subproject_id) REFERENCES projects (id),
     PRIMARY KEY (parent_project_id, subproject_id)
 );
@@ -48,14 +48,14 @@ CREATE TABLE tasks
     end_date   DATE,
     duration   INT,
     user_id    INT,
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE table users_projects
 (
     user_id    INT NOT NULL,
     project_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (project_id) REFERENCES projects (id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
     primary key (user_id, project_id)
 );
