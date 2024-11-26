@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/user-styles.css" rel="stylesheet">
+    <div th:replace="~{fragments/nav :: nav}"></div>
+</head>
+<body>
+<div th:if="${session.userId != null}">
+    <h1>You are already logged in.</h1>
+</div>
+<div th:if="${session.userId == null}">
+<div class="form-container">
+    <h1>Login</h1>
+    <form th:action="@{/login}" th:object="${user}" method="post">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" th:field="*{email}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}" class="form-control"/>
+        </div>
+        <div class="button-group">
+            <button type="submit" class="btn btn-success">Login</button>
+        </div>
+    </form>
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+    </div>
+</div>
+</div>
+</body>
+</html>
