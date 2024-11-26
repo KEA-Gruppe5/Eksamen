@@ -1,5 +1,7 @@
 package kea.eksamen.service;
 
+import kea.eksamen.dto.UserDTO;
+import kea.eksamen.exceptions.BadCredentialsException;
 import kea.eksamen.exceptions.EmailAlreadyExistsException;
 import kea.eksamen.model.User;
 import kea.eksamen.repository.UserRepository;
@@ -38,5 +40,25 @@ public class UserService {
         if(foundByEmailUser != null){
             throw new EmailAlreadyExistsException();
         }
+    }
+
+    public User authenticate(UserDTO userDTO) throws SQLException {
+        User user = userRepository.findUserByEmail(userDTO.getEmail());
+        if(user != null){
+                boolean isPasswordCorrect = passwordEncoder.matches(userDTO.getPassword(),
+                        user.getPassword());
+                if(isPasswordCorrect){  //in case password is encrypted
+                    logger.info("User authenticated: " + user);
+                    return user;
+                }
+                if(user.getPassword().equals(userDTO.getPassword())){ //if it is not encrypted
+                    logger.info("User authenticated: " + user);
+                    return user;
+                }
+                logger.info("User is not authenticated.\nPassword:"
+                        + userDTO.getPassword()+"\nPassword in db: " + user.getPassword());
+
+        }
+        throw new BadCredentialsException();
     }
 }
