@@ -25,8 +25,8 @@ public class ProjectService {
         return projectRepository.updateProject(project, id);
     }
 
-    public boolean deleteProject(Project project) {
-        return projectRepository.deleteProject(project);
+    public boolean deleteProject(int id) {
+        return projectRepository.deleteProject(id);
     }
 
     public Project findProjectById(int id) {

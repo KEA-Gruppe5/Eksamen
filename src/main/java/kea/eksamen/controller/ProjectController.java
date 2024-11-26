@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
@@ -35,6 +36,13 @@ public class ProjectController {
         model.addAttribute("projects", projectService.findAllProjects());
         return "project/projects";
     }
+
+    @PostMapping("/projects/{id}/delete")
+    public String deleteProject(@PathVariable int id) {
+        projectService.deleteProject(id);
+        return "redirect:/projects"; // Redirect to the projects list
+    }
+
 
 
 

@@ -3,7 +3,6 @@ import kea.eksamen.model.Project;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,21 +58,18 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     }
 
     @Override
-    public Boolean deleteProject(Project project) {
-        int rows = jdbcClient.sql("DELETE FROM PMTool.projects " +
-                        "WHERE id = ?")
-
-                .param(project.getId())
+    public Boolean deleteProject(int id) {
+        int rows = jdbcClient.sql("DELETE FROM PMTool.projects WHERE id = ?")
+                .param(id)
                 .update();
         if (rows > 0) {
-            logger.info("Deleted project with ID: " + project.getId());
+            logger.info("Successfully deleted project with ID: " + id);
             return true;
         } else {
-            logger.warn("No project found with ID: " + project.getId() + ". Deletion failed.");
+            logger.warn("No project found with ID: " + id + ". Deletion failed.");
             return false;
         }
     }
-
     @Override
     public Project findProjectById(int id) {
         return null;
