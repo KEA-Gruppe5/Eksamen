@@ -43,6 +43,20 @@ public class ProjectController {
         return "redirect:/projects"; // Redirect to the projects list
     }
 
+    @GetMapping("/projects/{id}/update")
+    public String editProject(@PathVariable int id, Model model) {
+        Project project = projectService.findProjectById(id);
+        model.addAttribute("project", project);
+        return "project/updateProject";
+    }
+
+    @PostMapping("/projects/{id}/update")
+    public String updateProject(@PathVariable int id, @ModelAttribute Project project) {
+        projectService.updateProject(project, id);
+        return "redirect:/projects";
+    }
+
+
 
 
 

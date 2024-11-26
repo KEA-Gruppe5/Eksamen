@@ -70,10 +70,6 @@ public class ProjectRepository implements ProjectRepositoryInterface {
             return false;
         }
     }
-    @Override
-    public Project findProjectById(int id) {
-        return null;
-    }
 
     @Override
     public List<Project> findAllProjects() {
@@ -92,4 +88,25 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                     return projects;
                 });
     }
+
+    @Override
+    public Project findProjectById(int id) {
+        String sql = "SELECT * FROM PMTool.projects WHERE id = ?";
+
+        return jdbcClient.sql(sql)
+                .param(id)
+                .query(resultSet -> {
+                    if (resultSet.next()) {
+                        Project project = new Project();
+                        project.setId(resultSet.getInt("id"));
+                        project.setTitle(resultSet.getString("title"));
+                        project.setStartDate(resultSet.getDate("start_date").toLocalDate());
+                        project.setEndDate(resultSet.getDate("end_date").toLocalDate());
+                        project.setDuration(resultSet.getInt("duration"));
+                        return project;
+                    }
+                    return null; // No project found
+                });
+    }
+
 }
