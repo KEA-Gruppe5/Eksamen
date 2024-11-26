@@ -1,0 +1,41 @@
+package kea.eksamen.service;
+
+
+import kea.eksamen.model.Project;
+import kea.eksamen.repository.ProjectRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Service
+public class ProjectService {
+    private final ProjectRepository projectRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProjectRepository.class);
+    public ProjectService(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
+
+    public Project addProject(Project project) {
+        return projectRepository.addProject(project);
+    }
+
+    public Project updateProject(Project project, int id) {
+        return projectRepository.updateProject(project, id);
+    }
+
+    public boolean deleteProject(Project project) {
+        return projectRepository.deleteProject(project);
+    }
+
+    public Project findProjectById(int id) {
+        return projectRepository.findProjectById(id);
+    }
+
+    public List<Project> findAllProjects() {
+        return projectRepository.findAllProjects();
+    }
+
+
+}
