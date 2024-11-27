@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Project team</title>
+    <link href="/projects-styles.css" rel="stylesheet">
+    <div th:replace="~{fragments/nav :: nav}"></div>
+</head>
+<body>
+<h1>Project team</h1>
+<li th:each="user : ${team}">
+    <div>
+        <strong th:text="${user.firstName} + ' ' + ${user.lastName}"></strong>
+        <p th:text="'Email: ' + ${user.email}"></p>
+    </div>
+
+</li>
+</body>
+</html>

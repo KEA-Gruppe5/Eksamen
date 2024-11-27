@@ -10,6 +10,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class UserRepository implements UserRepositoryInterface{
@@ -54,11 +56,19 @@ public class UserRepository implements UserRepositoryInterface{
 
     @Override
     public User findUserByEmail(String email) {
-       User foundUser = jdbcClient.sql("SELECT * FROM PMTool.users WHERE email = ?")
-               .param(email)
-               .query(User.class)
-               .optional()
-               .orElse(null);
-       return foundUser;
+        String sql = "SELECT * FROM PMTool.users WHERE email = ?";
+        return jdbcClient.sql(sql)
+                .param(email)
+                .query(User.class)
+                .optional()
+                .orElse(null);
+    }
+
+    public List<User> findTeamMembers(int projectId){
+        String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.users_projects up on u.id = up.user_id WHERE up.project_id = ?";
+        return jdbcClient.sql(sql)
+                .param(projectId)
+                .query(User.class)
+                .list();
     }
 }

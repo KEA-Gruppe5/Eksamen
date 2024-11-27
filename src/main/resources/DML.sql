@@ -19,6 +19,7 @@ VALUES (1, 2);
 INSERT INTO users_projects (user_id, project_id)
 VALUES (1, 1),
        (2, 2),
+       (3, 1),
        (3, 3);
 
 INSERT INTO tasks (title, start_date, end_date, duration, user_id)

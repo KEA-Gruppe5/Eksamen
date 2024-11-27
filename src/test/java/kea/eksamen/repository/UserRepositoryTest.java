@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
@@ -54,5 +55,15 @@ class UserRepositoryTest {
         User foundUser = userRepository.findUserByEmail("some email");
         assertNotNull(foundUser);
         assertEquals("first name", foundUser.getFirstName());
+    }
+
+    @Test
+    @DisplayName("Integration test finding users assigned to a project")
+    void testFindTeamMembersByProjectId() {
+        List<User> team = userRepository.findTeamMembers(1);
+        assertEquals(2, team.size());
+        for(User user : team){
+            System.out.println(user);
+        }
     }
 }
