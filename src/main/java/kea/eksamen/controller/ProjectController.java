@@ -33,7 +33,7 @@ public class ProjectController {
 
     @GetMapping("/projects")
     public String listProjects(Model model) {
-        model.addAttribute("projects", projectService.findAllProjects());
+        model.addAttribute("projects", projectService.getAllProjects());
         return "project/projects";
     }
 
@@ -45,7 +45,7 @@ public class ProjectController {
 
     @GetMapping("/projects/{id}/update")
     public String editProject(@PathVariable int id, Model model) {
-        Project project = projectService.findProjectById(id);
+        Project project = projectService.getProjectById(id);
         model.addAttribute("project", project);
         return "project/updateProject";
     }
