@@ -45,16 +45,16 @@ CREATE TABLE users
 
 CREATE TABLE tasks
 (
-    id             INT PRIMARY KEY AUTO_INCREMENT,
-    project_id     INT,
+    id         INT PRIMARY KEY AUTO_INCREMENT,
+    project_id INT,
     sub_project_id INT,
-    title          VARCHAR(255),
-    description    VARCHAR(255),
-    priority       ENUM('Low', 'Medium', 'High'),
-    start_date     DATE,
-    end_date       DATE,
-    duration       INT,
-    user_id        INT,
+    title      VARCHAR(255),
+    description VARCHAR(255),
+    priority   VARCHAR(20),
+    start_date DATE,
+    end_date   DATE,
+    duration   INT,
+    user_id    INT,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
     FOREIGN KEY (sub_project_id) REFERENCES projects (id) ON DELETE CASCADE
