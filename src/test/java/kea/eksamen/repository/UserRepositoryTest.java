@@ -35,7 +35,7 @@ class UserRepositoryTest {
 
 
     @Test
-    @DisplayName("Integration test adding new user in repository")
+    @DisplayName("UserRepository Integration test: adding new user in repository")
     void addUser()  {
         User savedUser = userRepository.addUser(user);
         assertNotNull(savedUser);
@@ -46,7 +46,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Integration test finding user by email in repository")
+    @DisplayName("UserRepository Integration test: finding user by email in repository")
     void findUserByEmail() {
         User user =  new User("first name", "last name", "some email", "password");
         user.setRole(Role.EMPLOYEE);
