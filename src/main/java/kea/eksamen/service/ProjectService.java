@@ -30,11 +30,11 @@ public class ProjectService {
     }
 
     public Project findProjectById(int id) {
-        return projectRepository.findProjectById(id);
+        return projectRepository.getProjectById(id);
     }
 
     public List<Project> findAllProjects() {
-        return projectRepository.findAllProjects();
+        return projectRepository.getAllProjects();
     }
 
 

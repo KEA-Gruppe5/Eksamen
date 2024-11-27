@@ -1,7 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS PMTool;
 SET SCHEMA PMTool;
+DROP TABLE IF EXISTS users_projects;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS subprojects;
+DROP TABLE IF EXISTS projects;
 
-CREATE TABLE projects
+    CREATE TABLE projects
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     title      varchar(255),
