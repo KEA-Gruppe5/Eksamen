@@ -1,5 +1,8 @@
 package kea.eksamen.controller;
 
+import jakarta.servlet.http.HttpSession;
+import kea.eksamen.dto.UserDTO;
+import kea.eksamen.exceptions.BadCredentialsException;
 import kea.eksamen.model.User;
 import kea.eksamen.service.UserService;
 import kea.eksamen.util.PasswordValidator;
@@ -33,6 +36,38 @@ public class UserController {
             userService.saveUser(user);
         }
         return "redirect:/login";
+    }
+
+    @GetMapping("/login")
+    public String loginPage(Model model) {
+        UserDTO userDTO = new UserDTO();
+        model.addAttribute("user", userDTO);
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String authenticate(@ModelAttribute("user") UserDTO userDTO, HttpSession httpSession,
+                               Model model) throws SQLException {
+        try {
+            User authenticatedUser = userService.authenticate(userDTO);
+            if (authenticatedUser != null) {
+                int userId = authenticatedUser.getId();
+                httpSession.setAttribute("userId", userId);
+                model.addAttribute("userId", userId);
+                return "redirect:/projects";
+            }
+        }catch(BadCredentialsException e){
+            model.addAttribute("error", e.getMessage());
+        }
+        return "user/login";
+    }
+
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.removeAttribute("userId");
+        httpSession.invalidate();
+        return "redirect:/";
     }
 
 }

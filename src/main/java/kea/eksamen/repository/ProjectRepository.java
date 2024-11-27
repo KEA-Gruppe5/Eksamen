@@ -72,7 +72,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     }
 
     @Override
-    public List<Project> findAllProjects() {
+    public List<Project> getAllProjects() {
         return jdbcClient.sql("SELECT * FROM PMTool.projects")
                 .query(resultSet -> {
                     List<Project> projects = new ArrayList<>();
@@ -90,7 +90,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     }
 
     @Override
-    public Project findProjectById(int id) {
+    public Project getProjectById(int id) {
         String sql = "SELECT * FROM PMTool.projects WHERE id = ?";
 
         return jdbcClient.sql(sql)

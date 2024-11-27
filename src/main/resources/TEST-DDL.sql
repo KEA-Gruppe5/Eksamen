@@ -1,7 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS PMTool;
 SET SCHEMA PMTool;
+DROP TABLE IF EXISTS users_projects;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS subprojects;
+DROP TABLE IF EXISTS projects;
 
-CREATE TABLE projects
+    CREATE TABLE projects
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     title      varchar(255),
@@ -42,12 +48,18 @@ CREATE TABLE users
 CREATE TABLE tasks
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
+    project_id INT,
+    sub_project_id INT,
     title      VARCHAR(255),
+    description VARCHAR(255),
+    priority   VARCHAR(20),
     start_date DATE,
     end_date   DATE,
     duration   INT,
     user_id    INT,
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
+    FOREIGN KEY (sub_project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
 CREATE table users_projects
