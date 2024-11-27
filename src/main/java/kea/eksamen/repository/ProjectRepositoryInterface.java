@@ -18,8 +18,8 @@ public interface ProjectRepositoryInterface {
     Project addProject (Project project);
     Project updateProject(Project project, int id);
     Boolean deleteProject(int id);
-    Project findProjectById(int id);
-    List<Project> findAllProjects();
+    Project getProjectById(int id);
+    List<Project> getAllProjects();
 
 
 
