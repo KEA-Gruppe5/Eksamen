@@ -1,5 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS PMTool;
 SET SCHEMA PMTool;
+
 DROP TABLE IF EXISTS users_projects;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS users;
@@ -7,31 +8,29 @@ DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS subprojects;
 DROP TABLE IF EXISTS projects;
 
-    CREATE TABLE projects
+CREATE TABLE projects
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
-    title      varchar(255),
+    title      VARCHAR(255),
     start_date DATE,
-    end_date   date,
-    duration   int
+    end_date   DATE,
+    duration   INT
 );
 
 CREATE TABLE subprojects
 (
-    parent_project_id int,
-    subproject_id     int,
-    FOREIGN KEY (parent_project_id) REFERENCES projects(id),
-    FOREIGN KEY (subproject_id) REFERENCES projects(id),
+    parent_project_id INT,
+    subproject_id     INT,
+    FOREIGN KEY (parent_project_id) REFERENCES projects (id) ON DELETE CASCADE,
+    FOREIGN KEY (subproject_id) REFERENCES projects (id) ON DELETE CASCADE,
     PRIMARY KEY (parent_project_id, subproject_id)
 );
-
 
 CREATE TABLE roles
 (
     id   INT AUTO_INCREMENT PRIMARY KEY,
     role VARCHAR(255)
 );
-
 
 CREATE TABLE users
 (
@@ -40,8 +39,7 @@ CREATE TABLE users
     lastname  VARCHAR(255),
     email     VARCHAR(255) UNIQUE,
     password  VARCHAR(255),
-    role_id   int,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    role_id   INT,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
 
@@ -62,11 +60,11 @@ CREATE TABLE tasks
     FOREIGN KEY (sub_project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
-CREATE table users_projects
+CREATE TABLE users_projects
 (
-    user_id INT,
-    project_id INT,
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (project_id) REFERENCES projects (id),
+    user_id    INT NOT NULL,
+    project_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, project_id)
 );

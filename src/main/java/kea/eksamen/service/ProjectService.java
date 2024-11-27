@@ -29,11 +29,11 @@ public class ProjectService {
         return projectRepository.deleteProject(id);
     }
 
-    public Project findProjectById(int id) {
+    public Project getProjectById(int id) {
         return projectRepository.getProjectById(id);
     }
 
-    public List<Project> findAllProjects() {
+    public List<Project> getAllProjects() {
         return projectRepository.getAllProjects();
     }
 
