@@ -33,7 +33,6 @@ class UserRepositoryTest {
         user.setRole(Role.EMPLOYEE);
     }
 
-
     @Test
     @DisplayName("Integration test adding new user in repository")
     void addUser()  {
