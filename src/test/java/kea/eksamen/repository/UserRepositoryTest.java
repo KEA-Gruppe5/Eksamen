@@ -40,7 +40,7 @@ class UserRepositoryTest {
         User savedUser = userRepository.addUser(user);
         assertNotNull(savedUser);
         assertEquals("first name", savedUser.getFirstName());
-        assertEquals(4, savedUser.getId()); // 4 because there are inserted 3 users at initialization
+        assertEquals(5, savedUser.getId()); // 5 because there are inserted 4 users at initialization
 
         logger.info("Test add user: " + savedUser);
     }

@@ -2,6 +2,7 @@ package kea.eksamen.repository;
 
 import kea.eksamen.model.Role;
 import kea.eksamen.model.User;
+import kea.eksamen.util.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -57,10 +58,10 @@ public class UserRepository implements UserRepositoryInterface{
 
     @Override
     public User findUserByEmail(String email) {
-        String sql = "SELECT * FROM PMTool.users WHERE email = ?";
+        String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id WHERE email = ?";
         return jdbcClient.sql(sql)
                 .param(email)
-                .query(User.class)
+                .query(new UserMapper())
                 .optional()
                 .orElse(null);
     }
@@ -75,18 +76,9 @@ public class UserRepository implements UserRepositoryInterface{
 
     public List<User> findAllUsers() {
         String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id";
-        List<User> users = jdbcClient.sql(sql).query(new RowMapper<User>() { //anonymous class
-            @Override
-            public User mapRow(ResultSet rs, int rowNum) throws SQLException {   //it is a functional interface so can be replaced with lambda
-                User user = new User(rs.getInt("id"),
-                        rs.getString("firstname"),
-                        rs.getString("lastname"),
-                        rs.getString("email"),
-                        rs.getString("password"),
-                        Role.getEnumFromId(rs.getInt("role_id")));
-                return user;
-            }
-        }).list();
+        List<User> users = jdbcClient.sql(sql)
+                .query(new UserMapper())
+                .list();
         return users;
     }
 
