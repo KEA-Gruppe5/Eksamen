@@ -13,7 +13,8 @@ public class TaskService {
     }
 
 
-    public void addTask(Task task, int projectId){
+    public Task addTask(Task task, int projectId){
         taskRepository.addTask(task,projectId);
+        return task;
     }
 }
