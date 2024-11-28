@@ -40,8 +40,6 @@ class UserControllerTest {
                 .andExpect(view().name("user/registerForm"));
     }
 
-
-
     @Test
     @DisplayName("UserController test: registration successful")
     void testUserRegistration_RedirectsToLogin() throws Exception {
@@ -63,7 +61,6 @@ class UserControllerTest {
         // Verify that saveUser was called
         verify(userService, times(1)).saveUser(any(User.class));
     }
-
     @Test
     @DisplayName("UserController test: get login form")
     void testGettingLoginPage() throws Exception {
@@ -72,7 +69,6 @@ class UserControllerTest {
                 .andExpect(model().attributeExists("user"))
                 .andExpect(view().name("user/login"));
     }
-
     @Test
     @DisplayName("UserController test: login successful")
     void testAuthenticationSuccessful_setUserIdInSession() throws Exception {
@@ -90,7 +86,6 @@ class UserControllerTest {
         // Verify that saveUser was called
         verify(userService, times(1)).authenticate(any(UserDTO.class));
     }
-
     @Test
     @DisplayName("UserController test: logout successful")
     void logout() throws Exception {
