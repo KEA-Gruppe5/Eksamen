@@ -17,7 +17,7 @@ CREATE TABLE subprojects
     parent_project_id int,
     subproject_id     int,
     FOREIGN KEY (parent_project_id) REFERENCES projects (id) ON DELETE CASCADE,
-    FOREIGN KEY (subproject_id) REFERENCES projects (id),
+    FOREIGN KEY (subproject_id) REFERENCES projects (id) ON DELETE CASCADE,
     PRIMARY KEY (parent_project_id, subproject_id)
 );
 
