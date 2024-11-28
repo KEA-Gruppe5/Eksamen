@@ -1,4 +1,5 @@
 package kea.eksamen.repository;
+
 import kea.eksamen.model.Project;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,7 +33,7 @@ class ProjectRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     @Test
-    @DisplayName("Integration test get project via ID")
+    @DisplayName("Integration test: get project via ID")
     void getProjectById_retrieveCorrectProject() {
         //act
         Project retrievedProject = projectRepository.getProjectById(1);
@@ -43,8 +45,9 @@ class ProjectRepositoryTest {
         assertEquals(LocalDate.of(2024, 3, 1), retrievedProject.getEndDate());
         assertEquals(60, retrievedProject.getDuration());
     }
+
     @Test
-    @DisplayName("Integration test get all projects")
+    @DisplayName("Integration test: get all projects")
     void getAllProjects_retrieveAllProjects() {
         // Act
         List<Project> projects = projectRepository.getAllProjects();
@@ -54,7 +57,7 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    @DisplayName("Integration test adding new project")
+    @DisplayName("Integration test: adding new project")
     void addProject_addNewProject() {
         //arrange
         Project project = new Project();
@@ -74,7 +77,7 @@ class ProjectRepositoryTest {
         logger.info("Test addProject: " + addedProject);
     }
 
-    @DisplayName("integration test update a project")
+    @DisplayName("integration test: update a project")
     @Test
     void updateProject_updateExistingProject() {
         //arrange
@@ -94,7 +97,7 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    @DisplayName("delete a project")
+    @DisplayName("integration test: delete a project")
     void deleteProject_deleteExistingProject() {
         // Arrange
         Project project = new Project();
@@ -105,14 +108,10 @@ class ProjectRepositoryTest {
         Project addedProject = projectRepository.addProject(project);
         assertNotNull(addedProject, "The project should be added before deletion");
         int projectId = addedProject.getId();
-
         // Act
         boolean isDeleted = projectRepository.deleteProject(projectId);
-
-        // Assert
+        //Assert
         assertTrue(isDeleted, "The project should be deleted successfully");
-
-        // Confirm project no longer exists
         try {
             projectRepository.getProjectById(projectId);
             fail("Expected an exception since the project should no longer exist");

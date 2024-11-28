@@ -26,13 +26,13 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public String addProject(@ModelAttribute Project project) throws SQLException {
+    public String addProject(@ModelAttribute Project project){
         projectService.addProject(project);
         return "redirect:/projects";
     }
 
     @GetMapping("/projects")
-    public String listProjects(Model model) {
+    public String listProjects(Model model){
         model.addAttribute("projects", projectService.getAllProjects());
         return "project/projects";
     }
@@ -40,7 +40,7 @@ public class ProjectController {
     @PostMapping("/projects/{id}/delete")
     public String deleteProject(@PathVariable int id) {
         projectService.deleteProject(id);
-        return "redirect:/projects"; // Redirect to the projects list
+        return "redirect:/projects";
     }
 
     @GetMapping("/projects/{id}/update")
@@ -55,12 +55,4 @@ public class ProjectController {
         projectService.updateProject(project, id);
         return "redirect:/projects";
     }
-
-
-
-
-
-
-
-
 }
