@@ -8,23 +8,30 @@
 </head>
 <body>
 <h1>Project team</h1>
-<li th:each="user : ${team}">
-    <div>
-        <strong th:text="${user.firstName} + ' ' + ${user.lastName}"></strong>
-        <p th:text="'Email: ' + ${user.email}"></p>
+<div th:if="${session.userId != null}">
+    <li th:each="user : ${team}">
+        <div>
+            <strong th:text="${user.firstName} + ' ' + ${user.lastName}"></strong>
+            <p th:text="'Email: ' + ${user.email}"></p>
+        </div>
+    </li>
+    <br>
+    <div th:if="${session.role eq 'PM'}">
+        <form th:action="@{/projects/{projectId}/team(projectId = ${projectId})}" th:method="post">
+            <div class="form-group">
+                <select name="newTeamMembers" multiple>
+                    <option th:each="user : ${allUsers}"
+                            th:value="${user.id}"
+                            th:text="${user.firstName + ' ' + user.lastName}">
+                    </option>
+                </select>
+            </div>
+            <button type="submit">Add Users</button>
+        </form>
     </div>
-</li>
-<br>
-<form th:action="@{/projects/{projectId}/team(projectId = ${projectId})}" th:method="post">
-    <div class="form-group">
-        <select name="newTeamMembers" multiple>
-            <option th:each="user : ${allUsers}"
-                    th:value="${user.id}"
-                    th:text="${user.firstName + ' ' + user.lastName}">
-            </option>
-        </select>
-    </div>
-    <button type="submit">Add Users</button>
-</form>
+</div>
+<div th:if="${session.userId == null}">
+    <h1>You are not authenticated</h1>
+</div>
 </body>
 </html>

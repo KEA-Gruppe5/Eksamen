@@ -70,7 +70,7 @@ public class UserRepository implements UserRepositoryInterface{
         String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.users_projects up on u.id = up.user_id WHERE up.project_id = ?";
         return jdbcClient.sql(sql)
                 .param(projectId)
-                .query(User.class)
+                .query(new UserMapper())
                 .list();
     }
 
