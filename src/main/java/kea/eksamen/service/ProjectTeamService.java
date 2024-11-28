@@ -18,14 +18,18 @@ public class ProjectTeamService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getTeamMembers(int projectId) {
+    public List<User> findTeamMembers(int projectId) {
         return userRepository.findTeamMembers(projectId);
     }
 
-    public void addTeamMember(int projectId, List<Integer> newTeamMembersIds) {
+    public void assignUserToProject(int projectId, List<Integer> newTeamMembersIds) {
         logger.info("addTeamMember in service is invoked");
         for(Integer i : newTeamMembersIds){
-            userRepository.addNewTeamMember(i, projectId);
+            userRepository.assignUserToProject(i, projectId);
         }
+    }
+
+    public List<User> findUnassignedUsers(int projectId){
+        return userRepository.findUnassignedUsers(projectId);
     }
 }

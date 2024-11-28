@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
@@ -62,6 +62,16 @@ class UserRepositoryTest {
         List<User> team = userRepository.findTeamMembers(1);
         assertEquals(2, team.size());
         for(User user : team){
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    @DisplayName("Integration test finding users NOT assigned to the project")
+    void testFindUnassignedUsersByProjectId() {
+        List<User> unassignedUsers = userRepository.findUnassignedUsers(2);
+        assertEquals(3, unassignedUsers.size());
+        for(User user : unassignedUsers){
             System.out.println(user);
         }
     }

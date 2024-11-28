@@ -1,12 +1,14 @@
 package kea.eksamen.controller;
 
 import kea.eksamen.service.ProjectTeamService;
-import kea.eksamen.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -14,27 +16,25 @@ import java.util.ArrayList;
 public class ProjectTeamController {
 
     private final ProjectTeamService projectTeamService;
-    private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(ProjectTeamController.class);
 
-    public ProjectTeamController(ProjectTeamService projectTeamService, UserService userService) {
+    public ProjectTeamController(ProjectTeamService projectTeamService) {
         this.projectTeamService = projectTeamService;
-        this.userService = userService;
     }
 
     @GetMapping("/projects/{projectId}/team")
     public String getTeamMembers(@PathVariable int projectId, Model model){
         model.addAttribute("projectId", projectId);
         model.addAttribute("newTeamMembers", new ArrayList<>());
-        model.addAttribute("team", projectTeamService.getTeamMembers(projectId));
-        model.addAttribute("allUsers", userService.findAllUsers());
+        model.addAttribute("team", projectTeamService.findTeamMembers(projectId));
+        model.addAttribute("allUsers", projectTeamService.findUnassignedUsers(projectId));
         return "project/projectTeam";
     }
 
     @PostMapping("/projects/{projectId}/team")
-    public String addTeamMember(@PathVariable int projectId, @RequestParam("newTeamMembers") ArrayList<Integer> newTeamMembersIds){
+    public String assignUserToProject(@PathVariable int projectId, @RequestParam("newTeamMembers") ArrayList<Integer> newTeamMembersIds){
         logger.info("newTeamMembersIds size is " + newTeamMembersIds.size());
-        projectTeamService.addTeamMember(projectId, newTeamMembersIds);
+        projectTeamService.assignUserToProject(projectId, newTeamMembersIds);
         return "redirect:/projects/" + projectId + "/team";
     }
 }

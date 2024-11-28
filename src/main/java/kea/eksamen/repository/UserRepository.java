@@ -4,7 +4,6 @@ import kea.eksamen.model.Role;
 import kea.eksamen.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -91,7 +90,7 @@ public class UserRepository implements UserRepositoryInterface{
         return users;
     }
 
-    public void addNewTeamMember(int userId, int projectId) {
+    public void assignUserToProject(int userId, int projectId) {
         String sql = "INSERT INTO PMTool.users_projects(user_id, project_id) VALUES (?, ?)";
         int affectedRows =jdbcClient.sql(sql)
                 .param(userId)
@@ -100,5 +99,16 @@ public class UserRepository implements UserRepositoryInterface{
         if(affectedRows>0){
             logger.info("adding user with id " + userId + " to the project with id " + projectId);
         }
+    }
+
+    public List<User> findUnassignedUsers(int projectId) {
+        String sql = "SELECT id, firstname, lastname, email, password, role_id, GROUP_CONCAT(up.project_id) " + //concat to remove duplicates among users with multiple projects
+                "FROM PMTool.users u LEFT JOIN PMTool.users_projects up ON u.id = up.user_id " +
+                "WHERE u.id NOT IN (SELECT user_id FROM PMTool.users_projects up2 WHERE up2.project_id = ?) " + //exclude users assigned in this project
+                "GROUP BY u.id";
+        return jdbcClient.sql(sql)
+                .param(projectId)
+                .query(User.class)
+                .list();
     }
 }
