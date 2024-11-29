@@ -4,12 +4,10 @@ import kea.eksamen.model.Project;
 import kea.eksamen.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class ProjectController {
@@ -54,5 +52,26 @@ public class ProjectController {
     public String updateProject(@PathVariable int id, @ModelAttribute Project project) {
         projectService.updateProject(project, id);
         return "redirect:/projects";
+    }
+
+    // Add subproject
+    @PostMapping("/projects/{parentId}/subprojects/add")
+    public String addSubProject(@PathVariable int parentId, @RequestParam int subProjectId) {
+        projectService.addSubProject(parentId, subProjectId);
+        return "redirect:/projects/" + parentId + "/subprojects"; // Correct URL path
+    }
+    // List subprojects
+    @GetMapping("/projects/{id}/subprojects")
+    public String listSubProjects(@PathVariable int id, Model model) {
+        List<Project> subProjects = projectService.getSubProjectsByParentId(id);
+        model.addAttribute("subProjects", subProjects); // Ensure model name matches Thymeleaf
+        model.addAttribute("parentId", id);
+        return "project/subProjects"; // Template for listing subprojects
+    }
+    // Remove subproject
+    @PostMapping("/projects/{parentId}/subprojects/{subProjectId}/remove")
+    public String removeSubProject(@PathVariable int parentId, @PathVariable int subProjectId) {
+        projectService.removeSubProject(parentId, subProjectId);
+        return "redirect:/projects/" + parentId + "/subprojects"; // Correct URL path
     }
 }

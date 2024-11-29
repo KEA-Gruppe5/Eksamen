@@ -37,5 +37,17 @@ public class ProjectService {
         return projectRepository.getAllProjects();
     }
 
+    public void addSubProject(int parentProjectId, int subProjectId) {
+        projectRepository.addSubProject(parentProjectId, subProjectId);
+    }
+
+    public void removeSubProject(int parentProjectId, int subProjectId) {
+        projectRepository.removeSubProject(parentProjectId, subProjectId);
+    }
+
+    public List<Project> getSubProjectsByParentId(int parentProjectId) {
+        return projectRepository.getSubProjectsByParentId(parentProjectId);
+    }
+
 
 }
