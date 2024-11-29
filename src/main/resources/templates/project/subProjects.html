@@ -1,49 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subprojects</title>
-    <link href="/projects-styles.css" rel="stylesheet">
+    <title>Subprojects for Parent Project</title>
 </head>
 <body>
 <div th:replace="~{fragments/nav :: nav}"></div>
 
-<h1>Subprojects for Parent Project</h1>
+<h1 th:text="'Subprojects for ' + ${parentTitle}"></h1>
 
-<!-- Parent Project ID -->
-<h2 th:text="'Parent Project ID: ' + ${parentId}"></h2>
+<div th:if="${#lists.isEmpty(subProjects)}">
+    <p>No subprojects are associated with this parent project.</p>
+</div>
 
-<!-- Subprojects List -->
-<ul>
+<ul th:if="${!#lists.isEmpty(subProjects)}">
+
     <li th:each="subProject : ${subProjects}">
-        <!-- Subproject Details -->
         <div>
             <strong th:text="${subProject.title}"></strong>
             <p th:text="'Start: ' + ${subProject.startDate}"></p>
             <p th:text="'End: ' + ${subProject.endDate}"></p>
             <p th:text="'Duration: ' + ${subProject.duration} + ' days'"></p>
         </div>
-
-        <!-- Remove Subproject Button -->
-        <form th:action="@{/projects/{parentId}/subprojects/{subProjectId}/remove(parentId=${parentId}, subProjectId=${subProject.id})}" method="post" style="display: inline-block;">
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this subproject?')">Remove</button>
-        </form>
     </li>
 </ul>
 
-<!-- Add New Subproject -->
-<div>
-    <h3>Add a New Subproject</h3>
-    <form th:action="@{/projects/{parentId}/subprojects/add(parentId=${parentId})}" method="post">
-        <label for="subProjectId">Subproject ID:</label>
-        <input type="number" id="subProjectId" name="subProjectId" required>
-        <button type="submit" class="btn btn-success">Add Subproject</button>
-    </form>
-</div>
+<
+<a th:href="@{/projects/{parentId}/subprojects/add(parentId=${parentId})}" class="btn btn-success">
+    Add Subproject
+</a>
 
-<!-- Back to Projects -->
 <a th:href="@{/projects}" class="btn btn-secondary">Back to Projects</a>
-
 </body>
 </html>
+
