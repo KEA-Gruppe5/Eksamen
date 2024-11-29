@@ -6,6 +6,7 @@ VALUES ('PM'),
 INSERT INTO users (firstname, lastname, email, password, role_id)
 VALUES ('Alice', 'Smith', 'alice.smith@example.com', 'password123', 1),
        ('Bob', 'Johnson', 'bob.johnson@example.com', 'password123', 2),
+       ('Alex', 'Peterson', 'alex.peterson@example.com', 'password123', null),
        ('Charlie', 'Brown', 'charlie.brown@example.com', 'password123', 3);
 
 INSERT INTO projects (title, start_date, end_date, duration)
@@ -19,6 +20,7 @@ VALUES (1, 2);
 INSERT INTO users_projects (user_id, project_id)
 VALUES (1, 1),
        (2, 2),
+       (3, 1),
        (3, 3);
 
 INSERT INTO tasks (project_id, sub_project_id, title, description, priority, start_date, end_date, duration, user_id)

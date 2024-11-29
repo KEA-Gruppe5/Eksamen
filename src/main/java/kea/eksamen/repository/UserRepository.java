@@ -1,15 +1,19 @@
 package kea.eksamen.repository;
 
+import kea.eksamen.model.Role;
 import kea.eksamen.model.User;
+import kea.eksamen.util.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class UserRepository implements UserRepositoryInterface{
@@ -54,11 +58,49 @@ public class UserRepository implements UserRepositoryInterface{
 
     @Override
     public User findUserByEmail(String email) {
-       User foundUser = jdbcClient.sql("SELECT * FROM PMTool.users WHERE email = ?")
-               .param(email)
-               .query(User.class)
-               .optional()
-               .orElse(null);
-       return foundUser;
+        String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id WHERE email = ?";
+        return jdbcClient.sql(sql)
+                .param(email)
+                .query(new UserMapper())
+                .optional()
+                .orElse(null);
+    }
+
+    public List<User> findTeamMembers(int projectId){
+        String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.users_projects up on u.id = up.user_id WHERE up.project_id = ?";
+        return jdbcClient.sql(sql)
+                .param(projectId)
+                .query(new UserMapper())
+                .list();
+    }
+
+    public List<User> findAllUsers() {
+        String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id";
+        List<User> users = jdbcClient.sql(sql)
+                .query(new UserMapper())
+                .list();
+        return users;
+    }
+
+    public void assignUserToProject(int userId, int projectId) {
+        String sql = "INSERT INTO PMTool.users_projects(user_id, project_id) VALUES (?, ?)";
+        int affectedRows =jdbcClient.sql(sql)
+                .param(userId)
+                .param(projectId)
+                .update();
+        if(affectedRows>0){
+            logger.info("adding user with id " + userId + " to the project with id " + projectId);
+        }
+    }
+
+    public List<User> findUnassignedUsers(int projectId) {
+        String sql = "SELECT id, firstname, lastname, email, password, role_id, GROUP_CONCAT(up.project_id) " + //concat to remove duplicates among users with multiple projects
+                "FROM PMTool.users u LEFT JOIN PMTool.users_projects up ON u.id = up.user_id " +
+                "WHERE u.id NOT IN (SELECT user_id FROM PMTool.users_projects up2 WHERE up2.project_id = ?) " + //exclude users assigned in this project
+                "GROUP BY u.id";
+        return jdbcClient.sql(sql)
+                .param(projectId)
+                .query(User.class)
+                .list();
     }
 }

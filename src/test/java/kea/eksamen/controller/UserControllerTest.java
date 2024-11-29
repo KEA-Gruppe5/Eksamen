@@ -75,13 +75,15 @@ class UserControllerTest {
         UserDTO userDTO = new UserDTO("email@test", "kea123");
         User user = new User("FirstName", "LastName", "email@test", "kea123");
         user.setId(1);
+        user.setRole(Role.EMPLOYEE);
         when(userService.authenticate(userDTO)).thenReturn(user);
 
         mockMvc.perform(post("/login")
                         .flashAttr("user", userDTO))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/projects"))
-                .andExpect(request().sessionAttribute("userId", user.getId())); // redirection to /login
+                .andExpect(request().sessionAttribute("userId", user.getId()))
+                .andExpect(request().sessionAttribute("role", user.getRole().getDisplayName())); // redirection to /login
 
         // Verify that saveUser was called
         verify(userService, times(1)).authenticate(any(UserDTO.class));

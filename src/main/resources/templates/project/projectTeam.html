@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Project team</title>
+    <link href="/projects-styles.css" rel="stylesheet">
+    <div th:replace="~{fragments/nav :: nav}"></div>
+</head>
+<body>
+<h1>Project team</h1>
+<div th:if="${session.userId != null}">
+    <li th:each="user : ${team}">
+        <div>
+            <strong th:text="${user.firstName} + ' ' + ${user.lastName}"></strong>
+            <p th:text="'Email: ' + ${user.email}"></p>
+        </div>
+    </li>
+    <br>
+    <div th:if="${session.role eq 'PM'}">
+        <form th:action="@{/projects/{projectId}/team(projectId = ${projectId})}" th:method="post">
+            <div class="form-group">
+                <select name="newTeamMembers" multiple>
+                    <option th:each="user : ${allUsers}"
+                            th:value="${user.id}"
+                            th:text="${user.firstName + ' ' + user.lastName}">
+                    </option>
+                </select>
+            </div>
+            <button type="submit">Add Users</button>
+        </form>
+    </div>
+</div>
+<div th:if="${session.userId == null}">
+    <h1>You are not authenticated</h1>
+</div>
+</body>
+</html>

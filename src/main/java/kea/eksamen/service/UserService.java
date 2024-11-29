@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -60,5 +61,9 @@ public class UserService {
 
         }
         throw new BadCredentialsException();
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAllUsers();
     }
 }

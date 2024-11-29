@@ -13,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.sql.SQLException;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
@@ -39,7 +40,7 @@ class UserRepositoryTest {
         User savedUser = userRepository.addUser(user);
         assertNotNull(savedUser);
         assertEquals("first name", savedUser.getFirstName());
-        assertEquals(4, savedUser.getId()); // 4 because there are inserted 3 users at initialization
+        assertEquals(5, savedUser.getId()); // 5 because there are inserted 4 users at initialization
 
         logger.info("Test add user: " + savedUser);
     }
@@ -53,5 +54,35 @@ class UserRepositoryTest {
         User foundUser = userRepository.findUserByEmail("some email");
         assertNotNull(foundUser);
         assertEquals("first name", foundUser.getFirstName());
+    }
+
+    @Test
+    @DisplayName("Integration test finding users assigned to a project")
+    void testFindTeamMembersByProjectId() {
+        List<User> team = userRepository.findTeamMembers(1);
+        assertEquals(2, team.size());
+        for(User user : team){
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    @DisplayName("Integration test finding users NOT assigned to the project")
+    void testFindUnassignedUsersByProjectId() {
+        List<User> unassignedUsers = userRepository.findUnassignedUsers(2);
+        assertEquals(3, unassignedUsers.size());
+        for(User user : unassignedUsers){
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    @DisplayName("Integration test finding all users")
+    void testFindAllUsers() {
+        List<User> users = userRepository.findAllUsers();
+        assertEquals(4, users.size());
+        for(User user : users){
+            System.out.println(user);
+        }
     }
 }
