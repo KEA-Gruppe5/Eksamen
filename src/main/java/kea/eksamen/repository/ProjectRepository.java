@@ -48,7 +48,6 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .param(project.getDuration())
                 .param(id)
                 .update();
-
         if (rows > 0) {
             logger.info("Updated project with ID: " + id + " - " + project);
             project.setId(id);
@@ -75,40 +74,18 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     @Override
     public List<Project> getAllProjects() {
         return jdbcClient.sql("SELECT * FROM PMTool.projects")
-                .query(resultSet -> {
-                    List<Project> projects = new ArrayList<>();
-                    while (resultSet.next()) {
-                        Project project = new Project();
-                        project.setId(resultSet.getInt("id"));
-                        project.setTitle(resultSet.getString("title"));
-                        project.setStartDate(resultSet.getDate("start_date").toLocalDate());
-                        project.setEndDate(resultSet.getDate("end_date").toLocalDate());
-                        project.setDuration(resultSet.getInt("duration"));
-                        projects.add(project);
-                    }
-                    return projects;
-                });
+                .query(Project.class)
+                .list();
     }
 
     @Override
     public Project getProjectById(int id) {
         String sql = "SELECT * FROM PMTool.projects WHERE id = ?";
-
-        return jdbcClient.sql(sql)
-                .param(id)
-                .query(resultSet -> {
-                    if (resultSet.next()) {
-                        Project project = new Project();
-                        project.setId(resultSet.getInt("id"));
-                        project.setTitle(resultSet.getString("title"));
-                        project.setStartDate(resultSet.getDate("start_date").toLocalDate());
-                        project.setEndDate(resultSet.getDate("end_date").toLocalDate());
-                        project.setDuration(resultSet.getInt("duration"));
-                        return project;
-                    }
-                    return null; // No project found
-                });
+        return jdbcClient.sql(sql).param(id).query(Project.class).optional().orElse(null);
     }
+
+
+
     public void addSubProject(int parentProjectId, int subProjectId) {
         jdbcClient.sql("INSERT INTO subprojects (parent_project_id, subproject_id) VALUES (:parentProjectId, :subProjectId)")
                 .param("parentProjectId", parentProjectId)
@@ -125,11 +102,11 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
     public List<Project> getSubProjectsByParentId(int parentProjectId) {
         return jdbcClient.sql("""
-            SELECT p.* 
-            FROM projects p
-            INNER JOIN subprojects s ON p.id = s.subproject_id
-            WHERE s.parent_project_id = :parentProjectId
-        """)
+                                 SELECT p.* 
+                        FROM projects p
+                                 INNER JOIN subprojects s ON p.id = s.subproject_id
+                                 WHERE s.parent_project_id = :parentProjectId
+                             """)
                 .param("parentProjectId", parentProjectId)
                 .query(resultSet -> {
                     List<Project> subProjects = new ArrayList<>();

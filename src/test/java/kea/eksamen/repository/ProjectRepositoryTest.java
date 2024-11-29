@@ -113,8 +113,7 @@ class ProjectRepositoryTest {
         //Assert
         assertTrue(isDeleted, "The project should be deleted successfully");
         try {
-            projectRepository.getProjectById(projectId);
-            fail("Expected an exception since the project should no longer exist");
+            assertNull(projectRepository.getProjectById(projectId));
         } catch (IllegalStateException e) {
             assertEquals("No result from ResultSetExtractor", e.getMessage(), "Expected exception due to missing project");
         }
