@@ -7,12 +7,13 @@
     <div th:replace="~{fragments/nav :: nav}"></div>
 </head>
 <body>
-<h1>Project team</h1>
+
 <div th:if="${session.userId != null}">
-    <li th:each="user : ${team}">
+    <h1>Project team</h1>
+    <li th:each="teamMember : ${team}">
         <div>
-            <strong th:text="${user.firstName} + ' ' + ${user.lastName}"></strong>
-            <p th:text="'Email: ' + ${user.email}"></p>
+            <strong th:text="${teamMember.fullName}"></strong>
+            <p th:text="'Email: ' + ${teamMember.email}"></p>
         </div>
     </li>
     <br>

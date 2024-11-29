@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
 </head>
 <body>
 <div th:replace="~{fragments/nav :: nav}"></div>
-
+<div th:if="${session.userId != null}">
 <h1>All Projects</h1>
 <a th:href="@{/add}" class="btn btn-success">Add New Project</a>
 
@@ -35,6 +35,11 @@
 
     </li>
 </ul>
+
+</div>
+<div th:if="${session.userId == null}">
+    <h1>You are not authenticated</h1>
+</div>
 
 </body>
 </html>
