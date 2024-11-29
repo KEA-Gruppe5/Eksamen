@@ -120,5 +120,23 @@ class ProjectRepositoryTest {
         }
     }
 
+    @Test
+    @DisplayName("integration Test:  adding a new subproject")
+    void AddSubProject_addASubproject() {
+        // Arrange
+        int parentProjectId = 1; // Ensure this exists in the projects table
+        int subProjectId = 3;   // Ensure this exists in the projects table but is not already a subproject of parentProjectId
+        //Act
+        projectRepository.addSubProject(parentProjectId, subProjectId);
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM subprojects WHERE parent_project_id = ? AND subproject_id = ?",
+                Integer.class,
+                parentProjectId,
+                subProjectId
+        );
+        //assert
+        assertNotNull(count);
+        assertEquals(1, count, "The subproject relationship should exist in the database");
+    }
 
 }
