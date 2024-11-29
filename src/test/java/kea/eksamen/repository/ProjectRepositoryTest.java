@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith({MockitoExtension.class})
 @Transactional
 class ProjectRepositoryTest {
-    private static final Logger logger = LoggerFactory.getLogger(ProjectRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProjectRepositoryTest.class);
 
     @Autowired
     private ProjectRepository projectRepository;
@@ -58,22 +58,19 @@ class ProjectRepositoryTest {
 
     @Test
     @DisplayName("Integration test: adding new project")
-    void addProject_addNewProject() {
+    void addProject_getAddedProjectWithId() {
         //arrange
-        Project project = new Project();
-        project.setTitle("winter");
-        project.setStartDate(LocalDate.of(2024, 1, 1));
-        project.setEndDate(LocalDate.of(2024, 12, 31));
-        project.setDuration(365);
+        Project project = new Project("winter", LocalDate.of(2024, 1, 1),
+                LocalDate.of(2024, 12, 31), 365);
         //act
         Project addedProject = projectRepository.addProject(project);
         //assert
         assertNotNull(addedProject);
-        assertNotNull(addedProject.getId());
         assertEquals("winter", addedProject.getTitle());
         assertEquals(LocalDate.of(2024, 1, 1), addedProject.getStartDate());
         assertEquals(LocalDate.of(2024, 12, 31), addedProject.getEndDate());
         assertEquals(365, addedProject.getDuration());
+        assertEquals(4, addedProject.getId());
         logger.info("Test addProject: " + addedProject);
     }
 
@@ -99,43 +96,32 @@ class ProjectRepositoryTest {
     @Test
     @DisplayName("integration test: delete a project")
     void deleteProject_deleteExistingProject() {
-        // Arrange
-        Project project = new Project();
-        project.setTitle("Project to Delete");
-        project.setStartDate(LocalDate.of(2024, 1, 1));
-        project.setEndDate(LocalDate.of(2024, 12, 31));
-        project.setDuration(365);
-        Project addedProject = projectRepository.addProject(project);
-        assertNotNull(addedProject, "The project should be added before deletion");
-        int projectId = addedProject.getId();
-        // Act
-        boolean isDeleted = projectRepository.deleteProject(projectId);
+        boolean isDeleted = projectRepository.deleteProject(1);
         //Assert
         assertTrue(isDeleted, "The project should be deleted successfully");
         try {
-            assertNull(projectRepository.getProjectById(projectId));
+            assertNull(projectRepository.getProjectById(1));
         } catch (IllegalStateException e) {
             assertEquals("No result from ResultSetExtractor", e.getMessage(), "Expected exception due to missing project");
         }
     }
 
     @Test
-    @DisplayName("integration Test:  adding a new subproject")
-    void AddSubProject_addASubproject() {
+    @DisplayName("integration Test: adding a new subproject")
+    void addSubProject() {
         // Arrange
         int parentProjectId = 1; // Ensure this exists in the projects table
         int subProjectId = 3;   // Ensure this exists in the projects table but is not already a subproject of parentProjectId
-        //Act
-        projectRepository.addSubProject(parentProjectId, subProjectId);
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM subprojects WHERE parent_project_id = ? AND subproject_id = ?",
-                Integer.class,
-                parentProjectId,
-                subProjectId
-        );
-        //assert
-        assertNotNull(count);
-        assertEquals(1, count, "The subproject relationship should exist in the database");
+        assertEquals(1, projectRepository.addSubProject(parentProjectId, subProjectId));
+    }
+
+    @Test
+    void getSubProjectsByParentId(){
+        List<Project> subprojects = projectRepository.getSubProjectsByParentId(1);
+        for(Project project: subprojects){
+            System.out.println(project);
+        }
+        assertEquals(1, subprojects.size());
     }
 
 }

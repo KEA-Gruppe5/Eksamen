@@ -1,5 +1,7 @@
 package kea.eksamen.model;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+
 import java.time.LocalDate;
 
 public class Project {
@@ -12,6 +14,13 @@ public class Project {
 
     public Project(int id, String title, LocalDate startDate, LocalDate endDate, int duration) {
         this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.duration = duration;
+    }
+
+    public Project(String title, LocalDate startDate, LocalDate endDate, int duration) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -59,5 +68,16 @@ public class Project {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", duration=" + duration +
+                '}';
     }
 }

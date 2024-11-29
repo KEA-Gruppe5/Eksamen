@@ -2,6 +2,8 @@ package kea.eksamen.repository;
 
 import kea.eksamen.model.Project;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,18 +24,20 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
     @Override
     public Project addProject(Project project) {
-        int generatedId = jdbcClient.sql("INSERT INTO PMTool.projects (title, start_date, end_date, duration) " +
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int affectedRows = jdbcClient.sql("INSERT INTO PMTool.projects (title, start_date, end_date, duration) " +
                         "VALUES (?, ?, ?, ?)")
                 .param(project.getTitle())
                 .param(project.getStartDate())
                 .param(project.getEndDate())
                 .param(project.getDuration())
-                .update();
-        if (generatedId != 0) {
-            project.setId(generatedId);
+                .update(keyHolder, "id");
+        if (affectedRows != 0 && keyHolder.getKey()!=null) {
+            project.setId(keyHolder.getKey().intValue());
             logger.info("Added new project: " + project);
             return project;
         }
+        logger.warn("adding new user failed");
         return null;
     }
 
@@ -50,7 +54,6 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .update();
         if (rows > 0) {
             logger.info("Updated project with ID: " + id + " - " + project);
-            project.setId(id);
             return project;
         }
         logger.warn("No project found with ID: " + id + ". Update failed.");
@@ -84,49 +87,25 @@ public class ProjectRepository implements ProjectRepositoryInterface {
         return jdbcClient.sql(sql).param(id).query(Project.class).optional().orElse(null);
     }
 
-
-
-    public void addSubProject(int parentProjectId, int subProjectId) {
-        jdbcClient.sql("INSERT INTO subprojects (parent_project_id, subproject_id) VALUES (:parentProjectId, :subProjectId)")
-                .param("parentProjectId", parentProjectId)
-                .param("subProjectId", subProjectId)
+    public int addSubProject(int parentProjectId, int subProjectId) {
+        return jdbcClient.sql("INSERT INTO subprojects (parent_project_id, subproject_id) VALUES (?, ?)")
+                .param(parentProjectId)
+                .param(subProjectId)
                 .update();
     }
 
     public void removeSubProject(int parentProjectId, int subProjectId) {
-        jdbcClient.sql("DELETE FROM subprojects WHERE parent_project_id = :parentProjectId AND subproject_id = :subProjectId")
-                .param("parentProjectId", parentProjectId)
-                .param("subProjectId", subProjectId)
+        jdbcClient.sql("DELETE FROM subprojects WHERE parent_project_id = ? AND subproject_id = ?")
+                .param(parentProjectId)
+                .param(subProjectId)
                 .update();
     }
 
     public List<Project> getSubProjectsByParentId(int parentProjectId) {
-        return jdbcClient.sql("""
-                                 SELECT p.* 
-                        FROM projects p
-                                 INNER JOIN subprojects s ON p.id = s.subproject_id
-                                 WHERE s.parent_project_id = :parentProjectId
-                             """)
-                .param("parentProjectId", parentProjectId)
-                .query(resultSet -> {
-                    List<Project> subProjects = new ArrayList<>();
-                    while (resultSet.next()) {
-                        Project project = new Project();
-                        project.setId(resultSet.getInt("id"));
-                        project.setTitle(resultSet.getString("title"));
-                        project.setStartDate(resultSet.getDate("start_date").toLocalDate());
-                        project.setEndDate(resultSet.getDate("end_date").toLocalDate());
-                        project.setDuration(resultSet.getInt("duration"));
-                        subProjects.add(project);
-                    }
-                    return subProjects;
-                });
+        return jdbcClient.sql("SELECT * FROM projects p INNER JOIN subprojects s ON p.id = s.subproject_id " +
+                        "WHERE s.parent_project_id = ?")
+                .param(parentProjectId)
+                .query(Project.class)
+                .list();
     }
-
-
-
-
-
-
-
 }

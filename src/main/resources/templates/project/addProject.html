@@ -9,7 +9,7 @@
 <body>
 <div th:replace="~{fragments/nav :: nav}"></div> <!-- Include navigation -->
 
-<!--<div th:if="${session.userId != null}">-->
+<div th:if="${session.userId != null}">
     <h1>Add New Project</h1>
 
     <form th:action="@{/add}" method="post" style="max-width: 600px; margin: auto;">
@@ -37,11 +37,11 @@
         </div>
     </form>
 
-<!--
+</div>
 <div th:if="${session.userId == null}">
     <h1>You are not authenticated</h1>
 </div>
--->
+
 
 </body>
 </html>
