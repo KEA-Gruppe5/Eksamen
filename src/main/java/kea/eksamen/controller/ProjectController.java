@@ -77,7 +77,6 @@ public class ProjectController {
         model.addAttribute("parentTitle", parentProject.getTitle());
         return "project/subProjects";
     }
-
     @PostMapping("/projects/{parentId}/subprojects/{subProjectId}/remove")
     public String removeSubProject(@PathVariable int parentId, @PathVariable int subProjectId) {
         projectService.removeSubProject(parentId, subProjectId);
