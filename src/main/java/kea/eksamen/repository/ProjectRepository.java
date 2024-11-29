@@ -86,7 +86,6 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
 
 
-
     public void addSubProject(int parentProjectId, int subProjectId) {
         jdbcClient.sql("INSERT INTO subprojects (parent_project_id, subproject_id) VALUES (:parentProjectId, :subProjectId)")
                 .param("parentProjectId", parentProjectId)
