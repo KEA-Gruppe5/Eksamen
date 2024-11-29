@@ -81,7 +81,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     @Override
     public Project getProjectById(int id) {
         String sql = "SELECT * FROM PMTool.projects WHERE id = ?";
-        return jdbcClient.sql(sql).query(Project.class).single();
+        return jdbcClient.sql(sql).param(id).query(Project.class).optional().orElse(null);
     }
 
 
