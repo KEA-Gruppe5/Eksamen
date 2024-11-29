@@ -5,8 +5,6 @@ import kea.eksamen.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -54,24 +52,35 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-    // Add subproject
-    @PostMapping("/projects/{parentId}/subprojects/add")
-    public String addSubProject(@PathVariable int parentId, @RequestParam int subProjectId) {
-        projectService.addSubProject(parentId, subProjectId);
-        return "redirect:/projects/" + parentId + "/subprojects"; // Correct URL path
+    @GetMapping("/projects/{parentId}/subprojects/add")
+    public String showAddSubProjectForm(@PathVariable int parentId, Model model) {
+        model.addAttribute("parentId", parentId);
+        model.addAttribute("project", new Project());
+        return "project/addSubProject";
     }
-    // List subprojects
+    @PostMapping("/projects/{parentId}/subprojects/add")
+    public String addSubProject(@PathVariable int parentId, @ModelAttribute Project subProject) {
+        Project createdSubProject = projectService.addProject(subProject);
+        if (createdSubProject != null) {
+            projectService.addSubProject(parentId, createdSubProject.getId());
+        }
+        return "redirect:/projects/" + parentId + "/subprojects";
+    }
+
     @GetMapping("/projects/{id}/subprojects")
     public String listSubProjects(@PathVariable int id, Model model) {
+        System.out.println("Fetching subprojects for Parent Project ID: " + id);
+        Project parentProject = projectService.getProjectById(id);
         List<Project> subProjects = projectService.getSubProjectsByParentId(id);
-        model.addAttribute("subProjects", subProjects); // Ensure model name matches Thymeleaf
+        model.addAttribute("subProjects", subProjects);
         model.addAttribute("parentId", id);
-        return "project/subProjects"; // Template for listing subprojects
+        model.addAttribute("parentTitle", parentProject.getTitle());
+        return "project/subProjects";
     }
-    // Remove subproject
+
     @PostMapping("/projects/{parentId}/subprojects/{subProjectId}/remove")
     public String removeSubProject(@PathVariable int parentId, @PathVariable int subProjectId) {
         projectService.removeSubProject(parentId, subProjectId);
-        return "redirect:/projects/" + parentId + "/subprojects"; // Correct URL path
+        return "redirect:/projects/" + parentId + "/subprojects";
     }
 }
