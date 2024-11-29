@@ -3,6 +3,7 @@ package kea.eksamen.model;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Project {
 
@@ -26,6 +27,7 @@ public class Project {
         this.endDate = endDate;
         this.duration = duration;
     }
+
 
     public Project() {
     }
@@ -63,12 +65,20 @@ public class Project {
     }
 
     public int getDuration() {
-        return duration;
+        if (startDate != null && endDate != null) {
+            if (startDate.isAfter(endDate)) {
+                return 0;
+            }
+            return (int) ChronoUnit.DAYS.between(startDate, endDate);
+        }
+        return 0;
     }
+
 
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
 
     @Override
     public String toString() {
