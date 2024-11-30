@@ -55,7 +55,7 @@ public class TaskController {
     @GetMapping("/{projectId}/{taskId}/edit")
     public String editTask(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId, Model model){
         model.addAttribute("editTask", taskService.findTaskById(taskId));
-        return "/task/editTask";
+        return "task/editTask";
     }
 
     @PostMapping("/{projectId}/{taskId}/edit")

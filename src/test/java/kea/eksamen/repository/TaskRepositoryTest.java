@@ -15,13 +15,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 import static com.mysql.cj.conf.PropertyKey.logger;
 import static java.sql.Types.NULL;
@@ -30,74 +33,86 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("test")
 class TaskRepositoryTest {
-    @Autowired
-    private TaskService taskService;
+
     @Autowired
     private TaskRepository taskRepository;
-    @Autowired
-    private UserRepository userRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(TaskRepository.class);
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private JdbcClient jdbcClient;
 
     @BeforeEach
     void setUp() {
-
-
+        taskRepository = new TaskRepository(jdbcClient);
     }
+
 
     @AfterEach
-    void tearDown() {
-    }
+    void tearDown() {}
 
     @Test
     void addTask() {
-        User user = new User();
-        user.setFirstName("Test");
-        user.setRole(Role.EMPLOYEE);
-        user = userRepository.addUser(user);
-
         Task task = new Task();
-        task.setTitle("testTask");
+        task.setTitle("Test");
+        task.setDescription("This is a test");
         task.setPriority(TaskPriority.HIGH);
+        task.setStartDate(Date.valueOf(LocalDate.now()));
+        task.setEndDate(Date.valueOf(LocalDate.now().plusDays(5)));
+        task.setUserId(1);
         task.setProjectId(1);
-        task.setStartDate(LocalDate.parse("2024-11-15"));
-        task.setEndDate(LocalDate.parse("2024-11-20"));
-        Period period = Period.between(task.getStartDate(),task.getEndDate());
-        int getDaysBetween = period.getDays();
-        task.setDuration(getDaysBetween);
-        task.setUserId(user.getId());
 
-        Task addedTask = taskService.addTask(task, task.getProjectId());
-
-        assertNotNull(addedTask);
-        assertEquals("testTask", addedTask.getTitle());
-        assertEquals(TaskPriority.HIGH, addedTask.getPriority());
-        assertEquals(5, task.getDuration());
-        assertEquals(user.getId(), addedTask.getUserId());
-
-        Task dbTask = taskRepository.findTaskById(addedTask.getId());
-        assertNotNull(dbTask);
-        assertEquals("testTask", dbTask.getTitle());
-        assertEquals(user.getId(), dbTask.getUserId());
-
+        Task addedTask = taskRepository.addTask(task, task.getProjectId());
+        assertEquals("Test", addedTask.getTitle());
     }
+
 
     @Test
     void updateTask() {
+        Task updatedTask = new Task();
+        updatedTask.setTitle("Updated Title");
+        updatedTask.setDescription("Updated Description");
+        updatedTask.setPriority(TaskPriority.MEDIUM);
+        updatedTask.setStartDate(Date.valueOf(LocalDate.of(2024, 1, 10)));
+        updatedTask.setEndDate(Date.valueOf(LocalDate.of(2024, 1, 20)));
+
+        Task result = taskRepository.updateTask(updatedTask, 3); //using taskId 3 to not interfere with taskId 1 which are used for the other tests.
+
+        assertEquals("Updated Title", result.getTitle());
+        assertEquals("Updated Description", result.getDescription());
+        assertEquals(TaskPriority.MEDIUM, result.getPriority());
+        assertEquals(Date.valueOf("2024-01-10"), result.getStartDate());
+        assertEquals(Date.valueOf("2024-01-20"), result.getEndDate());
     }
 
     @Test
     void deleteTask() {
+        boolean deleted = taskRepository.deleteTask(1);
+
+        assertTrue(deleted);
+
     }
 
     @Test
     void findTaskById() {
+        Task task = taskRepository.findTaskById(1);
+
+        assertNotNull(task);
+        assertEquals("Task 1 for Alpha", task.getTitle());
+        assertEquals("Task description for Alpha 1", task.getDescription());
+        assertEquals(TaskPriority.HIGH, task.getPriority());
+        assertEquals(Date.valueOf("2024-01-01"), task.getStartDate());
+        assertEquals(Date.valueOf("2024-01-15"), task.getEndDate());
+        assertEquals(14, task.getDuration());
+        assertEquals(1, task.getUserId());
     }
 
     @Test
     void getAllTasks() {
+        List<Task> tasks = taskRepository.getAllTasks(1);
+
+        assertFalse(tasks.isEmpty());
+        Task task = tasks.get(0);
+        assertEquals("Task 1 for Alpha", task.getTitle());
+        assertEquals("Task description for Alpha 1", task.getDescription());
+        assertEquals(TaskPriority.HIGH, task.getPriority());
     }
 }
