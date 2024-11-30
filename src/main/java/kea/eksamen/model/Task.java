@@ -1,6 +1,9 @@
 package kea.eksamen.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Task {
     private int id;
@@ -9,15 +12,18 @@ public class Task {
     private String title;
     private String description;
     private TaskPriority priority;
-    private LocalDate startDate;
-    private LocalDate endDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endDate;
     private int duration;
     private int userId;
 
     public Task() {
     }
 
-    public Task(int projectId, int subProjectId, String title, String description, TaskPriority priority, LocalDate startDate, LocalDate endDate, int duration, int userId) {
+    public Task(int projectId, int subProjectId, String title, String description, TaskPriority priority, Date startDate, Date endDate, int duration, int userId) {
         this.projectId = projectId;
         this.subProjectId = subProjectId;
         this.title = title;
@@ -57,19 +63,19 @@ public class Task {
         this.title = title;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

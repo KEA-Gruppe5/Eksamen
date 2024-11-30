@@ -9,6 +9,6 @@ public interface TaskRepositoryInterface {
     Task updateTask(Task task, int taskId);
     boolean deleteTask(int taskId);
     Task findTaskById(int taskId);
-    List<Task> getAllTasks();
+    List<Task> getAllTasks(int projectId);
 
 }

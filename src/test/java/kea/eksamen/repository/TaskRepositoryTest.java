@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.Period;
 
 import static com.mysql.cj.conf.PropertyKey.logger;
 import static java.sql.Types.NULL;
@@ -56,23 +57,29 @@ class TaskRepositoryTest {
         User user = new User();
         user.setFirstName("Test");
         user.setRole(Role.EMPLOYEE);
-        user = userRepository.addUser(user); // Persist user in the database
+        user = userRepository.addUser(user);
 
         Task task = new Task();
         task.setTitle("testTask");
         task.setPriority(TaskPriority.HIGH);
         task.setProjectId(1);
-        task.setUserId(user.getId()); // Set the valid user_id
+        task.setStartDate(LocalDate.parse("2024-11-15"));
+        task.setEndDate(LocalDate.parse("2024-11-20"));
+        Period period = Period.between(task.getStartDate(),task.getEndDate());
+        int getDaysBetween = period.getDays();
+        task.setDuration(getDaysBetween);
+        task.setUserId(user.getId());
 
         Task addedTask = taskService.addTask(task, task.getProjectId());
 
         assertNotNull(addedTask);
         assertEquals("testTask", addedTask.getTitle());
         assertEquals(TaskPriority.HIGH, addedTask.getPriority());
+        assertEquals(5, task.getDuration());
         assertEquals(user.getId(), addedTask.getUserId());
 
         Task dbTask = taskRepository.findTaskById(addedTask.getId());
-        assertNotNull(dbTask); // Ensure the task was found
+        assertNotNull(dbTask);
         assertEquals("testTask", dbTask.getTitle());
         assertEquals(user.getId(), dbTask.getUserId());
 
