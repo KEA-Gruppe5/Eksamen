@@ -180,4 +180,11 @@ public class TaskRepository implements TaskRepositoryInterface {
 
     }
 
+    public void removeAssignedUser(int taskId){
+        String sql = "UPDATE tasks SET assigned_user_id = NULL WHERE id = ?";
+        jdbcClient.sql(sql)
+                .param(taskId)
+                .update();
+    }
+
 }

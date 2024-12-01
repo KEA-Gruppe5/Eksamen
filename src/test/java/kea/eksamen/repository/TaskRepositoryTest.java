@@ -126,4 +126,14 @@ class TaskRepositoryTest {
         assertNotNull(updatedTask);
         assertEquals(2, updatedTask.getAssignedUserId());
     }
+
+    @Test
+    void removeAssignedUser() {
+        Task task = taskRepository.findTaskById(2);
+        assertNotNull(task);
+        taskRepository.removeAssignedUser(2);
+        Task updatedTask = taskRepository.findTaskById(2);
+        assertNotNull(updatedTask);
+        assertEquals(0, updatedTask.getAssignedUserId());
+    }
 }

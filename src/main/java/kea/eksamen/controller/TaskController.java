@@ -83,4 +83,12 @@ public class TaskController {
         taskService.assignMemberToTask(taskId, userIdToAssign);
         return "redirect:/task/" + projectId +"/tasks";
     }
+
+    @PostMapping("/{projectId}/{taskId}/removeMember")
+    public String removeAssignedUser(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId) {
+        taskService.removeAssignedUser(taskId);
+        return "redirect:/task/" + projectId +"/tasks";
+    }
+
+
 }

@@ -42,6 +42,10 @@
                 <a th:href="@{/task/{projectId}/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}" class="btn btn-primary btn-sm">Edit</a>
                 <a th:href="@{/task/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${task.id})}" class="btn btn-warning btn-sm">Assign User</a>
 
+                <form th:action="@{/task/{projectId}/{taskId}/removeMember(projectId=${projectId}, taskId=${task.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Remove member</button>
+                </form>
+
                 <form th:action="@{/task/{projectId}/{taskId}/delete(projectId=${projectId}, taskId=${task.id})}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                 </form>

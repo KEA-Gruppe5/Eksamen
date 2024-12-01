@@ -154,4 +154,15 @@ class TaskControllerTest {
 
         verify(taskService, times(1)).assignMemberToTask(task.getId(), userIdToAssign);
     }
+
+    @Test
+    void removeAssignedUser() throws Exception {
+        int userIdToAssign = 1;
+        doNothing().when(taskService).removeAssignedUser(task.getId());
+        mockMvc.perform(post("/task/{projectId}/{taskId}/removeMember", task.getProjectId(), task.getId()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/task/" + task.getProjectId() + "/tasks"));
+
+        verify(taskService, times(1)).removeAssignedUser(task.getId());
+    }
 }

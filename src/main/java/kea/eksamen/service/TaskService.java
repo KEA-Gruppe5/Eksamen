@@ -42,4 +42,8 @@ public class TaskService {
     public void assignMemberToTask(int taskId, int userId){
          taskRepository.assignMember(taskId,userId);
     }
+
+    public void removeAssignedUser(int taskId){
+        taskRepository.removeAssignedUser(taskId);
+    }
 }

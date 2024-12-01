@@ -108,4 +108,10 @@ class TaskServiceTest {
         taskService.assignMemberToTask(task.getId(),userId);
         verify(taskRepository).assignMember(task.getId(),userId);
     }
+
+    @Test
+    void removeAssignedUser() {
+         taskService.removeAssignedUser(task.getId());
+        verify(taskRepository).removeAssignedUser(task.getId());
+    }
 }
