@@ -1,11 +1,15 @@
 package kea.eksamen.controller;
 
+import kea.eksamen.model.Role;
 import kea.eksamen.model.Task;
+import kea.eksamen.model.User;
 import kea.eksamen.service.TaskService;
+import kea.eksamen.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -30,8 +35,11 @@ class TaskControllerTest {
     @MockBean
     private TaskService taskService;
 
-    @InjectMocks
-    private TaskController taskController;
+    @MockBean
+    private UserService userService;
+
+    private User users;
+    private List<User> userList;
 
     private Task task;
 
@@ -42,6 +50,11 @@ class TaskControllerTest {
         task.setTitle("Test Task");
         task.setUserId(1);
         task.setProjectId(1);
+        userList = new ArrayList<>();
+        users = (new User("FirstName", "LastName", "email@test", "kea123"));
+        users.setRole(Role.EMPLOYEE);
+        userList.add(users);
+
     }
 
     @AfterEach
@@ -116,5 +129,29 @@ class TaskControllerTest {
                 .andExpect(redirectedUrl("/task/" + task.getProjectId() + "/tasks"));
 
         verify(taskService, times(1)).editTask(any(Task.class), eq(task.getId()));
+    }
+
+    @Test
+    void assignMember() throws Exception {
+        when(userService.findAllUsers()).thenReturn(userList);
+
+        mockMvc.perform(get("/task/{projectId}/{taskId}/assign", task.getProjectId(), task.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("task/assignTask"))
+                .andExpect(model().attribute("taskId", task.getId()))
+                .andExpect(model().attribute("projectId", task.getProjectId()))
+                .andExpect(model().attribute("users", userList));
+    }
+
+    @Test
+    void assignTeamMemberToTask() throws Exception {
+        int userIdToAssign = 1;
+        doNothing().when(taskService).assignMemberToTask(task.getId(), userIdToAssign);
+        mockMvc.perform(post("/task/{projectId}/{taskId}/assign", task.getProjectId(), task.getId())
+                        .param("userIdToAssign", String.valueOf(userIdToAssign)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/task/" + task.getProjectId() + "/tasks"));
+
+        verify(taskService, times(1)).assignMemberToTask(task.getId(), userIdToAssign);
     }
 }

@@ -101,4 +101,11 @@ class TaskServiceTest {
         assertEquals(task, result);
         verify(taskRepository, times(1)).findTaskById(task.getId());
     }
+
+    @Test
+    void assignMemberToTask() {
+        int userId = 1;
+        taskService.assignMemberToTask(task.getId(),userId);
+        verify(taskRepository).assignMember(task.getId(),userId);
+    }
 }

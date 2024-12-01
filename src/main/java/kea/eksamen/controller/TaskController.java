@@ -2,12 +2,12 @@ package kea.eksamen.controller;
 
 import jakarta.servlet.http.HttpSession;
 import kea.eksamen.model.Task;
+import kea.eksamen.model.User;
 import kea.eksamen.service.TaskService;
-import org.springframework.http.HttpStatus;
+import kea.eksamen.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -15,10 +15,12 @@ import java.util.List;
 @RequestMapping("/task")
 public class TaskController {
     private final TaskService taskService;
+    private final UserService userService;
 
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, UserService userService) {
         this.taskService = taskService;
+        this.userService = userService;
     }
 
     @GetMapping("/{projectId}/add")
@@ -54,6 +56,7 @@ public class TaskController {
 
     @GetMapping("/{projectId}/{taskId}/edit")
     public String editTask(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId, Model model){
+        model.addAttribute("projectId", projectId);
         model.addAttribute("editTask", taskService.findTaskById(taskId));
         return "task/editTask";
     }
@@ -61,6 +64,23 @@ public class TaskController {
     @PostMapping("/{projectId}/{taskId}/edit")
     public String editTask(@PathVariable("taskId")int taskId, @PathVariable("projectId") int projectId, @ModelAttribute Task task){
         taskService.editTask(task, taskId);
+        return "redirect:/task/" + projectId +"/tasks";
+    }
+
+    @GetMapping("/{projectId}/{taskId}/assign")
+    public String assignMember(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId, Model model){
+        model.addAttribute("taskId", taskId);
+        model.addAttribute("projectId", projectId);
+
+        List<User> users = userService.findAllUsers();
+        model.addAttribute("users", users);
+        return "task/assignTask";
+    }
+
+    @PostMapping("/{projectId}/{taskId}/assign")
+    public String assignTeamMemberToTask(@PathVariable("projectId") int projectId,
+                                         @PathVariable("taskId") int taskId, @RequestParam("userIdToAssign") int userIdToAssign)  {
+        taskService.assignMemberToTask(taskId, userIdToAssign);
         return "redirect:/task/" + projectId +"/tasks";
     }
 }

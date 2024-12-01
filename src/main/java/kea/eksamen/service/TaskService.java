@@ -1,6 +1,7 @@
 package kea.eksamen.service;
 
 import jakarta.servlet.http.HttpSession;
+import kea.eksamen.dto.TeamMemberDTO;
 import kea.eksamen.model.Task;
 import kea.eksamen.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,9 @@ public class TaskService {
 
     public Task findTaskById(int taskId) {
         return taskRepository.findTaskById(taskId);
+    }
+
+    public void assignMemberToTask(int taskId, int userId){
+         taskRepository.assignMember(taskId,userId);
     }
 }
