@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Assign Team Member</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1>Assign member to task</h1>
+    <form th:action="@{/task/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${taskId})}" method="post">
+        <h3>Select a member</h3>
+        <div th:each="user : ${users}" th:if="${user.role != null and user.role.name() == 'EMPLOYEE'}">
+            <input type="radio" th:value="${user.id}" th:id="${user.id}" name="userIdToAssign" />
+            <label th:text="${user.firstName} + ' ' + ${user.lastName}"></label><br />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Assign</button>
+    </form>
+
+    <a th:href="@{/task/{projectId}/tasks(projectId=${projectId})}" class="btn btn-secondary mt-3">Back to Tasks</a>
+</div>
+
+</body>
+</html>
