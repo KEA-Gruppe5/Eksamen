@@ -13,7 +13,9 @@ public class Task {
     private String title;
     private String description;
     private TaskPriority priority;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
     private int duration;
     private int userId;
