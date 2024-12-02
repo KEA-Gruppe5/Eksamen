@@ -35,15 +35,9 @@
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="startDate" class="form-label">Start Date</label>
-                <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required>
+                <label for="title" class="form-label">Estimated hours for task</label>
+                <input type="number" class="form-control" id="estimatedHours" th:field="*{estimatedHours}" required>
             </div>
-
-            <div class="col-md-6 mb-3">
-                <label for="endDate" class="form-label">End Date</label>
-                <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
-            </div>
-
         </div>
 
         <button type="submit" class="btn btn-primary">Add Task</button>
