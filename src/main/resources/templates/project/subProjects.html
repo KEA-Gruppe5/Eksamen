@@ -19,6 +19,7 @@
             <p th:text="'Start: ' + ${subProject.startDate}"></p>
             <p th:text="'End: ' + ${subProject.endDate}"></p>
             <p th:text="'Duration: ' + ${subProject.duration} + ' days'"></p>
+            <p th:text="'How much to work every day: ' + ${subProject.hoursToWorkPerDay} + ' hours'"></p>
         </div>
 
         <form th:action="@{/projects/{parentId}/subprojects/{subProjectId}/remove(parentId=${parentId}, subProjectId=${subProject.id})}"

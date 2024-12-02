@@ -1,7 +1,5 @@
 package kea.eksamen.model;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 

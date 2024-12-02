@@ -127,4 +127,12 @@ class TaskRepositoryTest {
         assertNotNull(updatedTask);
         assertEquals(0, updatedTask.getAssignedUserId());
     }
+
+
+    @Test
+    void getHoursForAllTasks(){
+        int expected = 148;
+        int actual = taskRepository.getHoursForAllTasks(2);
+        assertEquals(expected, actual);
+    }
 }

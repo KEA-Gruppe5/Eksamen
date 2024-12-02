@@ -121,7 +121,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .update();
     }
 
-    public void removeSubProject(int parentProjectId, int subProjectId) {
+    public void removeSubProject(int parentProjectId, int subProjectId) { //TODO: reuse deleteProject
         jdbcClient.sql("DELETE FROM subprojects WHERE parent_project_id = ? AND subproject_id = ?")
                 .param(parentProjectId)
                 .param(subProjectId)
