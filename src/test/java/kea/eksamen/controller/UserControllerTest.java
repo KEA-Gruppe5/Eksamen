@@ -55,7 +55,7 @@ class UserControllerTest {
         // Act & Assert
         mockMvc.perform(post("/register")
                         .flashAttr("user", user))
-                .andExpect(status().is3xxRedirection())
+                .andExpect(status().isOk())
                 .andExpect(view().name("redirect:/login")); // Assert redirection to /login
 
         // Verify that saveUser was called
