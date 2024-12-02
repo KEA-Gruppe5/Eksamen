@@ -1,6 +1,7 @@
 package kea.eksamen.dto;
 
 public class TeamMemberDTO {
+    private int id;
     private String fullName;
     private String email;
 
@@ -23,5 +24,13 @@ public class TeamMemberDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

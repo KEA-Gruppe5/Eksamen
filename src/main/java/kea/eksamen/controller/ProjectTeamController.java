@@ -5,10 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -35,6 +32,12 @@ public class ProjectTeamController {
     public String assignUserToProject(@PathVariable int projectId, @RequestParam("newTeamMembers") ArrayList<Integer> newTeamMembersIds){
         logger.info("newTeamMembersIds size is " + newTeamMembersIds.size());
         projectTeamService.assignUserToProject(projectId, newTeamMembersIds);
+        return "redirect:/projects/" + projectId + "/team";
+    }
+
+    @DeleteMapping("/projects/{projectId}/team/{userId}")
+    public String removeUserFromProject(@PathVariable int userId, @PathVariable int projectId) {
+        projectTeamService.removeUserFromProject(userId, projectId);
         return "redirect:/projects/" + projectId + "/team";
     }
 }
