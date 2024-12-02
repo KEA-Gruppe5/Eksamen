@@ -42,7 +42,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("UserController test: registration successful")
-    void testUserRegistration_RedirectsToLogin() throws Exception {
+    void testUserRegistration_showSuccess() throws Exception {
         // Arrange
         User user = new User("FirstName", "LastName", "email@test", "kea123");
         user.setRole(Role.EMPLOYEE);
@@ -56,7 +56,7 @@ class UserControllerTest {
         mockMvc.perform(post("/register")
                         .flashAttr("user", user))
                 .andExpect(status().isOk())
-                .andExpect(view().name("redirect:/login")); // Assert redirection to /login
+                .andExpect(view().name("user/registerForm")); // Assert redirection to /login
 
         // Verify that saveUser was called
         verify(userService, times(1)).saveUser(any(User.class));
