@@ -31,10 +31,13 @@ public class ProjectController {
     }
 
     @GetMapping("/projects")
-    public String listProjects(Model model){
-        model.addAttribute("projects", projectService.getAllProjects());
-        return "project/projects";
+    public String listProjects(Model model, @RequestParam(required = false, defaultValue = "false") boolean archived) {
+        List<Project> projects = archived ? projectService.getArchivedProjects() : projectService.getAllProjects();
+        model.addAttribute("projects", projects);
+        model.addAttribute("isArchived", archived);
+        return "project/projects"; // Reuse the same template
     }
+
 
     @PostMapping("/projects/{id}/delete")
     public String deleteProject(@PathVariable("id") int id) {
@@ -96,14 +99,9 @@ public class ProjectController {
     @PostMapping("/projects/{id}/unarchive")
     public String unarchiveProject(@PathVariable int id) {
         projectService.unarchiveProject(id);
-        return "redirect:/archived";
+        return "redirect:/projects?archived=true"; // Correct redirection
     }
 
 
-    @GetMapping("/archived")
-    public String listArchivedProjects(Model model) {
-        model.addAttribute("projects", projectService.getArchivedProjects());
-        return "project/archivedProjects";
-    }
 
 }
