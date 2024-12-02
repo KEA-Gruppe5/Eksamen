@@ -4,10 +4,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
