@@ -2,6 +2,8 @@ package kea.eksamen.controller;
 
 import kea.eksamen.model.Project;
 import kea.eksamen.service.ProjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import java.util.List;
 @Controller
 public class ProjectController {
     private final ProjectService projectService;
+    private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
@@ -28,10 +31,13 @@ public class ProjectController {
     }
 
     @GetMapping("/projects")
-    public String listProjects(Model model){
-        model.addAttribute("projects", projectService.getAllProjects());
-        return "project/projects";
+    public String listProjects(Model model, @RequestParam(required = false, defaultValue = "false") boolean archived) {
+        List<Project> projects = archived ? projectService.getArchivedProjects() : projectService.getAllProjects();
+        model.addAttribute("projects", projects);
+        model.addAttribute("isArchived", archived);
+        return "project/projects"; // Reuse the same template
     }
+
 
     @PostMapping("/projects/{id}/delete")
     public String deleteProject(@PathVariable("id") int id) {
@@ -82,4 +88,20 @@ public class ProjectController {
         projectService.removeSubProject(parentId, subProjectId);
         return "redirect:/projects/" + parentId + "/subprojects";
     }
+
+
+    @PostMapping("/projects/{id}/archive")
+    public String archiveProject(@PathVariable int id) {
+        projectService.archiveProject(id);
+        return "redirect:/projects";
+    }
+
+    @PostMapping("/projects/{id}/unarchive")
+    public String unarchiveProject(@PathVariable int id) {
+        projectService.unarchiveProject(id);
+        return "redirect:/projects?archived=true"; // Correct redirection
+    }
+
+
+
 }

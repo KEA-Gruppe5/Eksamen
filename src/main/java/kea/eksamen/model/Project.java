@@ -12,13 +12,15 @@ public class Project {
     private LocalDate startDate;
     private LocalDate endDate;
     private int duration;
+    private boolean archived;
 
-    public Project(int id, String title, LocalDate startDate, LocalDate endDate, int duration) {
+    public Project(int id, String title, LocalDate startDate, LocalDate endDate, int duration, boolean archived) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.duration = duration;
+        this.archived = archived;
     }
 
     public Project(String title, LocalDate startDate, LocalDate endDate, int duration) {
@@ -73,12 +75,17 @@ public class Project {
         }
         return 0;
     }
-
-
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
 
     @Override
     public String toString() {

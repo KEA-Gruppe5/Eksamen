@@ -50,5 +50,17 @@ public class ProjectService {
         return projectRepository.getSubProjectsByParentId(parentProjectId);
     }
 
+    public boolean archiveProject(int id) {
+        return projectRepository.archiveProject(id);
+    }
+
+    public boolean unarchiveProject(int id) {
+        return projectRepository.unarchiveProject(id);
+    }
+
+    public List<Project> getArchivedProjects() {
+        return projectRepository.getArchivedProjects();
+    }
+
 
 }
