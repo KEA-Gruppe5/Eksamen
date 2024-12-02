@@ -82,4 +82,25 @@ public class ProjectController {
         projectService.removeSubProject(parentId, subProjectId);
         return "redirect:/projects/" + parentId + "/subprojects";
     }
+
+
+    @PostMapping("/{id}/archive")
+    public String archiveProject(@PathVariable int id) {
+        projectService.archiveProject(id);
+        return "redirect:/projects";
+    }
+
+    @PostMapping("/{id}/unarchive")
+    public String unarchiveProject(@PathVariable int id) {
+        projectService.unarchiveProject(id);
+        return "redirect:/projects/archived";
+    }
+
+
+    @GetMapping("/archived")
+    public String listArchivedProjects(Model model) {
+        model.addAttribute("projects", projectService.getArchivedProjects());
+        return "project/archivedProjects";
+    }
+
 }

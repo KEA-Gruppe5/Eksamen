@@ -29,9 +29,6 @@ class ProjectRepositoryTest {
     @Autowired
     private ProjectRepository projectRepository;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     @Test
     @DisplayName("Integration test: get project via ID")
     void getProjectById_retrieveCorrectProject() {
@@ -123,5 +120,6 @@ class ProjectRepositoryTest {
         }
         assertEquals(1, subprojects.size());
     }
+
 
 }
