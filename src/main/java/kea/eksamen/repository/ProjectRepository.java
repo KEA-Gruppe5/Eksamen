@@ -4,10 +4,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -24,31 +21,33 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     @Override
     public Project addProject(Project project) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        int affectedRows = jdbcClient.sql("INSERT INTO PMTool.projects (title, start_date, end_date, duration) " +
-                        "VALUES (?, ?, ?, ?)")
+        int affectedRows = jdbcClient.sql("INSERT INTO PMTool.projects (title, start_date, end_date, duration, archived) " +
+                        "VALUES (?, ?, ?, ?, ?)")
                 .param(project.getTitle())
                 .param(project.getStartDate())
                 .param(project.getEndDate())
                 .param(project.getDuration())
+                .param(false)
                 .update(keyHolder, "id");
-        if (affectedRows != 0 && keyHolder.getKey()!=null) {
+        if (affectedRows != 0 && keyHolder.getKey() != null) {
             project.setId(keyHolder.getKey().intValue());
             logger.info("Added new project: " + project);
             return project;
         }
-        logger.warn("adding new user failed");
+        logger.warn("Adding new project failed");
         return null;
     }
 
     @Override
     public Project updateProject(Project project, int id) {
         int rows = jdbcClient.sql("UPDATE PMTool.projects " +
-                        "SET title = ?, start_date = ?, end_date = ?, duration = ? " +
+                        "SET title = ?, start_date = ?, end_date = ?, duration = ?, archived = ? " +
                         "WHERE id = ?")
                 .param(project.getTitle())
                 .param(project.getStartDate())
                 .param(project.getEndDate())
                 .param(project.getDuration())
+                .param(false)
                 .param(id)
                 .update();
         if (rows > 0) {
@@ -75,12 +74,41 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
     @Override
     public List<Project> getAllProjects() {
-        return jdbcClient.sql("SELECT * FROM PMTool.projects")
+        return jdbcClient.sql("SELECT * FROM PMTool.projects WHERE archived = false")
                 .query(Project.class)
                 .list();
     }
 
-    @Override
+    public List<Project> getArchivedProjects() {
+        return jdbcClient.sql("SELECT * FROM PMTool.projects WHERE archived = true")
+                .query(Project.class)
+                .list();
+    }
+
+    public boolean archiveProject(int id) {
+        int rows = jdbcClient.sql("UPDATE PMTool.projects SET archived = true WHERE id = ?")
+                .param(id)
+                .update();
+        if (rows > 0) {
+            logger.info("Archived project with ID: " + id);
+            return true;
+        }
+        logger.warn("Archiving project failed for ID: " + id);
+        return false;
+    }
+
+    public boolean unarchiveProject(int id) {
+        int rows = jdbcClient.sql("UPDATE PMTool.projects SET archived = false WHERE id = ?")
+                .param(id)
+                .update();
+        if (rows > 0) {
+            logger.info("Unarchived project with ID: " + id);
+            return true;
+        }
+        logger.warn("Unarchiving project failed for ID: " + id);
+        return false;
+    }
+
     public Project getProjectById(int id) {
         String sql = "SELECT * FROM PMTool.projects WHERE id = ?";
         return jdbcClient.sql(sql).param(id).query(Project.class).optional().orElse(null);
