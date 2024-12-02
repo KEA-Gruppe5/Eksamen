@@ -69,7 +69,7 @@ class TaskControllerTest {
 
     @Test
     void addTask() throws Exception {
-        mockMvc.perform(get("/task/{projectId}/add", task.getProjectId()).session(mockHttpSession))
+        mockMvc.perform(get("/project/{projectId}/add", task.getProjectId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("addNewTask"))
                 .andExpect(model().attribute("projectId", task.getProjectId()))
@@ -81,10 +81,10 @@ class TaskControllerTest {
 
         when(taskService.addTask(any(Task.class), eq(task.getProjectId()))).thenReturn(task);
 
-        mockMvc.perform(post("/task/{projectId}/add", task.getProjectId())
+        mockMvc.perform(post("/project/{projectId}/add", task.getProjectId())
                         .sessionAttr("userId", 1))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/task/" + task.getProjectId() + "/tasks"));
+                .andExpect(redirectedUrl("/project/" + task.getProjectId() + "/tasks"));
 
         verify(taskService, times(1)).addTask(any(Task.class), eq(task.getProjectId()));
     }
@@ -95,7 +95,7 @@ class TaskControllerTest {
 
         when(taskService.getAllTasks(task.getProjectId())).thenReturn(List.of(task));
 
-        mockMvc.perform(get("/task/{projectId}/tasks", task.getProjectId()).session(mockHttpSession))
+        mockMvc.perform(get("/project/{projectId}/tasks", task.getProjectId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/tasks"))
                 .andExpect(model().attribute("tasks", List.of(task)))
@@ -106,9 +106,9 @@ class TaskControllerTest {
     void deleteTask() throws Exception {
 
 
-        mockMvc.perform(post("/task/{projectId}/{taskId}/delete", task.getProjectId(), task.getId()))
+        mockMvc.perform(post("/project/{projectId}/{taskId}/delete", task.getProjectId(), task.getId()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/task/" + task.getProjectId() + "/tasks"));
+                .andExpect(redirectedUrl("/project/" + task.getProjectId() + "/tasks"));
 
         verify(taskService, times(1)).deleteTask(task.getId());
     }
@@ -118,7 +118,7 @@ class TaskControllerTest {
 
         when(taskService.findTaskById(task.getId())).thenReturn(task);
 
-        mockMvc.perform(get("/task/{projectId}/{taskId}/edit", task.getProjectId(), task.getId()).session(mockHttpSession))
+        mockMvc.perform(get("/project/{projectId}/{taskId}/edit", task.getProjectId(), task.getId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/editTask"))
                 .andExpect(model().attribute("editTask", task));
@@ -128,10 +128,10 @@ class TaskControllerTest {
     void testEditTask() throws Exception {
         when(taskService.editTask(any(Task.class), eq(task.getId()))).thenReturn(task);
 
-        mockMvc.perform(post("/task/{projectId}/{taskId}/edit", task.getProjectId(), task.getId())
+        mockMvc.perform(post("/project/{projectId}/{taskId}/edit", task.getProjectId(), task.getId())
                         .param("title", "Updated Task Title"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/task/" + task.getProjectId() + "/tasks"));
+                .andExpect(redirectedUrl("/project/" + task.getProjectId() + "/tasks"));
 
         verify(taskService, times(1)).editTask(any(Task.class), eq(task.getId()));
     }
@@ -140,7 +140,7 @@ class TaskControllerTest {
     void assignMember() throws Exception {
         when(userService.findAllUsers()).thenReturn(userList);
 
-        mockMvc.perform(get("/task/{projectId}/{taskId}/assign", task.getProjectId(), task.getId()).session(mockHttpSession))
+        mockMvc.perform(get("/project/{projectId}/{taskId}/assign", task.getProjectId(), task.getId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/assignTask"))
                 .andExpect(model().attribute("taskId", task.getId()))
@@ -152,10 +152,10 @@ class TaskControllerTest {
     void assignTeamMemberToTask() throws Exception {
         int userIdToAssign = 1;
         doNothing().when(taskService).assignMemberToTask(task.getId(), userIdToAssign);
-        mockMvc.perform(post("/task/{projectId}/{taskId}/assign", task.getProjectId(), task.getId())
+        mockMvc.perform(post("/project/{projectId}/{taskId}/assign", task.getProjectId(), task.getId())
                         .param("userIdToAssign", String.valueOf(userIdToAssign)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/task/" + task.getProjectId() + "/tasks"));
+                .andExpect(redirectedUrl("/project/" + task.getProjectId() + "/tasks"));
 
         verify(taskService, times(1)).assignMemberToTask(task.getId(), userIdToAssign);
     }
@@ -164,9 +164,9 @@ class TaskControllerTest {
     void removeAssignedUser() throws Exception {
         int userIdToAssign = 1;
         doNothing().when(taskService).removeAssignedUser(task.getId());
-        mockMvc.perform(post("/task/{projectId}/{taskId}/removeMember", task.getProjectId(), task.getId()))
+        mockMvc.perform(post("/project/{projectId}/{taskId}/removeMember", task.getProjectId(), task.getId()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/task/" + task.getProjectId() + "/tasks"));
+                .andExpect(redirectedUrl("/project/" + task.getProjectId() + "/tasks"));
 
         verify(taskService, times(1)).removeAssignedUser(task.getId());
     }
