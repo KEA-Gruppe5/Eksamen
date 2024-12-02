@@ -2,6 +2,8 @@ package kea.eksamen.controller;
 
 import kea.eksamen.model.Project;
 import kea.eksamen.service.ProjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import java.util.List;
 @Controller
 public class ProjectController {
     private final ProjectService projectService;
+    private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
@@ -99,7 +102,10 @@ public class ProjectController {
 
     @GetMapping("/archived")
     public String listArchivedProjects(Model model) {
+        logger.info("Fetching archived projects...");
         model.addAttribute("projects", projectService.getArchivedProjects());
+        List<Project> archivedProjects = projectService.getArchivedProjects();
+        logger.info("Archived Projects Retrieved: " + archivedProjects);
         return "project/archivedProjects";
     }
 

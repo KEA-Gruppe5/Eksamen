@@ -12,10 +12,13 @@
 <div th:if="${session.userId != null}">
     <h1>All Projects</h1>
     <a th:href="@{/add}" class="btn btn-success">Add New Project</a>
+    <a th:href="@{/archived}" class="btn btn-info">View Archived Projects</a>
 
-    <a th:href="@{/projects/archivedProjects}" class="btn btn-info">View Archived Projects</a>
+    <div th:if="${projects.isEmpty()}">
+        <p>No projects available.</p>
+    </div>
 
-    <ul>
+    <ul th:if="${!projects.isEmpty()}">
         <li th:each="project : ${projects}">
             <div>
                 <strong th:text="${project.title}"></strong>
@@ -30,9 +33,7 @@
                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
             </form>
 
-
             <a th:href="@{/projects/{id}/subprojects(id=${project.id})}" class="btn btn-secondary">View Subprojects</a>
-
 
             <form th:action="@{/projects/{id}/archive(id=${project.id})}" method="post" style="display: inline-block;">
                 <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to archive this project?')">Archive</button>
