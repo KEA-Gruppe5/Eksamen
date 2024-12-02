@@ -1,37 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add Project</title>
+    <title>Add Subproject</title>
 </head>
 <body>
-<h1>Add New Project</h1>
+<div th:replace="~{fragments/nav :: nav}"></div>
+<h1>Add Subproject</h1>
 
-<!-- Form to add a project -->
-<form th:action="@{/projects/add}" th:object="${project}" method="post">
+<form th:action="@{/projects/{parentId}/subprojects/add(parentId=${parentId})}" method="post">
     <div>
         <label for="title">Title:</label>
-        <input type="text" id="title" name="title" th:field="*{title}" placeholder="Enter project title" required>
+        <input type="text" id="title" name="title" required>
     </div>
-
     <div>
         <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" name="startDate" th:field="*{startDate}" required>
+        <input type="date" id="startDate" name="startDate" required>
     </div>
-
     <div>
         <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" name="endDate" th:field="*{endDate}" required>
+        <input type="date" id="endDate" name="endDate" required>
     </div>
-
-    <div>
-        <label for="duration">Duration (in days):</label>
-        <input type="number" id="duration" name="duration" th:field="*{duration}" placeholder="Enter duration in days" required>
-    </div>
-
-    <div>
-        <button type="submit">Add Project</button>
-        <a th:href="@{/projects}">Cancel</a>
-    </div>
+    <button type="submit">Add Subproject</button>
 </form>
+
+<!-- Back to Subprojects -->
+<a th:href="@{/projects/{parentId}/subprojects(parentId=${parentId})}" class="btn btn-secondary">Back to Subprojects</a>
 </body>
 </html>
+

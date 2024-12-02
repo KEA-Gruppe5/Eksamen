@@ -1,5 +1,4 @@
 package kea.eksamen.repository;
-
 import kea.eksamen.model.Project;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

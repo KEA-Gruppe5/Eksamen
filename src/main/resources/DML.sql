@@ -25,6 +25,6 @@ VALUES (1, 1),
 
 INSERT INTO tasks (project_id, sub_project_id, title, description, priority, start_date, end_date, duration, user_id)
 VALUES
-(1, NULL, 'Task 1 for Alpha', 'Task description for Alpha 1', 'High', '2024-01-01', '2024-01-15', 14, 1),
-(1, NULL, 'Task 2 for Alpha', 'Task description for Alpha 2', 'Medium', '2024-01-01', '2024-01-15', 14, 1),
-(1, NULL, 'Task 3 for Alpha', 'Task description for Alpha 3', 'Low', '2024-01-01', '2024-01-15', 14, 1);
+(1, NULL, 'Task 1 for Alpha', 'Task description for Alpha 1', 'HIGH', '2024-01-01', '2024-01-15', 14, 1),
+(2, NULL, 'Task 2 for Alpha', 'Task description for Alpha 2', 'MEDIUM', '2024-01-01', '2024-01-15', 14, 1),
+(1, NULL, 'Task 3 for Alpha', 'Task description for Alpha 3', 'LOW', '2024-01-01', '2024-01-15', 14, 1);
