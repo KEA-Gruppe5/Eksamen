@@ -45,12 +45,10 @@ CREATE TABLE tasks
     title            VARCHAR(255),
     description      VARCHAR(255),
     priority         ENUM('Low', 'Medium', 'High'),
-    start_date       DATE,
-    end_date         DATE,
-    duration         INT,
     archived         BOOLEAN DEFAULT FALSE,
     user_id          INT,
     assigned_user_id INT NULL,
+    estimated_hours INT,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
     FOREIGN KEY (sub_project_id) REFERENCES projects (id) ON DELETE CASCADE
