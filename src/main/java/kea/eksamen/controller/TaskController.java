@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/task")
+@RequestMapping("/project")
 public class TaskController {
     private final TaskService taskService;
     private final UserService userService;
@@ -43,7 +43,7 @@ public class TaskController {
         //TODO instead of projectId in the path, get projectId directly from project class
         taskService.addTask(task, projectId);
         System.out.println("Redirecting to: /task/" + projectId + "/tasks");
-        return "redirect:/task/" + projectId +"/tasks";
+        return "redirect:/project/" + projectId +"/tasks";
     }
 
     @GetMapping("/{projectId}/tasks")
@@ -62,7 +62,7 @@ public class TaskController {
     @PostMapping("/{projectId}/{taskId}/delete")
     public String deleteTask(@PathVariable("taskId")int taskId, @PathVariable("projectId") int projectId){
         taskService.deleteTask(taskId);
-        return "redirect:/task/" + projectId +"/tasks";
+        return "redirect:/project/" + projectId +"/tasks";
     }
 
     @GetMapping("/{projectId}/{taskId}/edit")
@@ -80,7 +80,7 @@ public class TaskController {
     @PostMapping("/{projectId}/{taskId}/edit")
     public String editTask(@PathVariable("taskId")int taskId, @PathVariable("projectId") int projectId, @ModelAttribute Task task){
         taskService.editTask(task, taskId);
-        return "redirect:/task/" + projectId +"/tasks";
+        return "redirect:/project/" + projectId +"/tasks";
     }
 
     @GetMapping("/{projectId}/{taskId}/assign")
@@ -102,13 +102,13 @@ public class TaskController {
     public String assignTeamMemberToTask(@PathVariable("projectId") int projectId,
                                          @PathVariable("taskId") int taskId, @RequestParam("userIdToAssign") int userIdToAssign)  {
         taskService.assignMemberToTask(taskId, userIdToAssign);
-        return "redirect:/task/" + projectId +"/tasks";
+        return "redirect:/project/" + projectId +"/tasks";
     }
 
     @PostMapping("/{projectId}/{taskId}/removeMember")
     public String removeAssignedUser(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId) {
         taskService.removeAssignedUser(taskId);
-        return "redirect:/task/" + projectId +"/tasks";
+        return "redirect:/project/" + projectId +"/tasks";
     }
 
 

@@ -29,6 +29,11 @@
                 Delete Subproject
             </button>
         </form>
+
+        <a th:href="@{/project/{subProjectId}/tasks(subProjectId=${subProject.id})}" class="btn btn-success">
+            To task list
+        </a>
+
     </li>
 </ul>
 
