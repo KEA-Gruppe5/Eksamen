@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -32,6 +33,7 @@ class TaskControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private MockHttpSession mockHttpSession;
     @MockBean
     private TaskService taskService;
 
@@ -54,6 +56,9 @@ class TaskControllerTest {
         users = (new User("FirstName", "LastName", "email@test", "kea123"));
         users.setRole(Role.EMPLOYEE);
         userList.add(users);
+        mockHttpSession = new MockHttpSession();
+        mockHttpSession.setAttribute("userId", 1);
+
 
     }
 
@@ -64,7 +69,7 @@ class TaskControllerTest {
 
     @Test
     void addTask() throws Exception {
-        mockMvc.perform(get("/task/{projectId}/add", task.getProjectId()))
+        mockMvc.perform(get("/task/{projectId}/add", task.getProjectId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("addNewTask"))
                 .andExpect(model().attribute("projectId", task.getProjectId()))
@@ -90,7 +95,7 @@ class TaskControllerTest {
 
         when(taskService.getAllTasks(task.getProjectId())).thenReturn(List.of(task));
 
-        mockMvc.perform(get("/task/{projectId}/tasks", task.getProjectId()))
+        mockMvc.perform(get("/task/{projectId}/tasks", task.getProjectId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/tasks"))
                 .andExpect(model().attribute("tasks", List.of(task)))
@@ -113,7 +118,7 @@ class TaskControllerTest {
 
         when(taskService.findTaskById(task.getId())).thenReturn(task);
 
-        mockMvc.perform(get("/task/{projectId}/{taskId}/edit", task.getProjectId(), task.getId()))
+        mockMvc.perform(get("/task/{projectId}/{taskId}/edit", task.getProjectId(), task.getId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/editTask"))
                 .andExpect(model().attribute("editTask", task));
@@ -135,7 +140,7 @@ class TaskControllerTest {
     void assignMember() throws Exception {
         when(userService.findAllUsers()).thenReturn(userList);
 
-        mockMvc.perform(get("/task/{projectId}/{taskId}/assign", task.getProjectId(), task.getId()))
+        mockMvc.perform(get("/task/{projectId}/{taskId}/assign", task.getProjectId(), task.getId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/assignTask"))
                 .andExpect(model().attribute("taskId", task.getId()))

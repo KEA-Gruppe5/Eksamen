@@ -1,9 +1,6 @@
 package kea.eksamen.model;
 
 import kea.eksamen.dto.TeamMemberDTO;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Task {
@@ -13,42 +10,42 @@ public class Task {
     private String title;
     private String description;
     private TaskPriority priority;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endDate;
     private int duration;
     private int userId;
     private TeamMemberDTO assignedUser;
+    private int estimatedHours;
     private int assignedUserId;
 
 
     public Task() {
     }
 
-    public Task(int assignedUserId, TeamMemberDTO assignedUser, int userId, int duration, Date endDate, Date startDate, TaskPriority priority, String description, String title, int subProjectId, int projectId) {
-        this.assignedUserId = assignedUserId;
-        this.assignedUser = assignedUser;
-        this.userId = userId;
-        this.duration = duration;
-        this.endDate = endDate;
-        this.startDate = startDate;
-        this.priority = priority;
-        this.description = description;
-        this.title = title;
-        this.subProjectId = subProjectId;
+    public Task(int projectId, int subProjectId, String title, String description, TaskPriority priority, int duration, int userId, TeamMemberDTO assignedUser, int estimatedHours, int assignedUserId) {
         this.projectId = projectId;
+        this.subProjectId = subProjectId;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.duration = duration;
+        this.userId = userId;
+        this.assignedUser = assignedUser;
+        this.estimatedHours = estimatedHours;
+        this.assignedUserId = assignedUserId;
     }
 
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
+                ", projectId=" + projectId +
+                ", subProjectId=" + subProjectId +
                 ", title='" + title + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", description='" + description + '\'' +
+                ", priority=" + priority +
                 ", duration=" + duration +
-                ", user=" + userId +
+                ", userId=" + userId +
+                ", assignedUser=" + assignedUser +
+                ", assignedUserId=" + assignedUserId +
                 '}';
     }
 
@@ -66,22 +63,6 @@ public class Task {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public int getDuration() {
@@ -146,5 +127,13 @@ public class Task {
 
     public void setAssignedUserId(int assignedUserId) {
         this.assignedUserId = assignedUserId;
+    }
+
+    public int getEstimatedHours() {
+        return estimatedHours;
+    }
+
+    public void setEstimatedHours(int estimatedHours) {
+        this.estimatedHours = estimatedHours;
     }
 }

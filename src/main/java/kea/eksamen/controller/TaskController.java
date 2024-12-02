@@ -25,12 +25,13 @@ public class TaskController {
 
     @GetMapping("/{projectId}/add")
     public String addTask(Model model, @PathVariable("projectId") int projectId, HttpSession session){
-        model.addAttribute("addNewTask", new Task());
-        model.addAttribute("projectId", projectId);
-
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }
+        model.addAttribute("addNewTask", new Task());
+        model.addAttribute("projectId", projectId);
+
+
 
         return "task/addTask";
     }
@@ -47,13 +48,14 @@ public class TaskController {
 
     @GetMapping("/{projectId}/tasks")
     public String viewTasks(@PathVariable("projectId") int projectId, Model model, HttpSession session) {
-        List<Task> tasks = taskService.getAllTasks(projectId);
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("projectId", projectId);
 
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }
+        List<Task> tasks = taskService.getAllTasks(projectId);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("projectId", projectId);
+
         return "task/tasks";
     }
 
@@ -65,12 +67,13 @@ public class TaskController {
 
     @GetMapping("/{projectId}/{taskId}/edit")
     public String editTask(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId, Model model, HttpSession session){
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("editTask", taskService.findTaskById(taskId));
-
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("editTask", taskService.findTaskById(taskId));
+
+
         return "task/editTask";
     }
 
@@ -82,15 +85,16 @@ public class TaskController {
 
     @GetMapping("/{projectId}/{taskId}/assign")
     public String assignMember(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId, Model model, HttpSession session){
+
+        if (session.getAttribute("userId") == null) {
+            return "unauthorized";
+        }
         model.addAttribute("taskId", taskId);
         model.addAttribute("projectId", projectId);
 
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
 
-        if (session.getAttribute("userId") == null) {
-            return "unauthorized";
-        }
         return "task/assignTask";
     }
 

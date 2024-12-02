@@ -18,9 +18,7 @@
             <th>Task Name</th>
             <th>Description</th>
             <th>Priority</th>
-            <th>Duration (days)</th>
-            <th>Start Date</th>
-            <th>End Date</th>
+            <th>Estimated hours for task</th>
             <th>Assigned Team Member</th>
             <th>Actions</th>
         </tr>
@@ -31,9 +29,7 @@
             <td th:text="${task.title}"></td>
             <td th:text="${task.description}"></td>
             <td th:text="${task.priority}"></td>
-            <td th:text="${task.duration}"></td>
-            <td th:text="${task.startDate}"></td>
-            <td th:text="${task.endDate}"></td>
+            <td th:text="${task.estimatedHours + ' hours'}"></td>
             <td>
                 <span th:if="${task.assignedUser != null}" th:text="${task.assignedUser.fullName}"></span>
                 <span th:if="${task.assignedUser == null}">Not Assigned</span>
