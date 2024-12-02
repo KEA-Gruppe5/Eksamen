@@ -21,6 +21,7 @@
             <th>Duration (days)</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Assigned Team Member</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -34,7 +35,16 @@
             <td th:text="${task.startDate}"></td>
             <td th:text="${task.endDate}"></td>
             <td>
+                <span th:if="${task.assignedUser != null}" th:text="${task.assignedUser.fullName}"></span>
+                <span th:if="${task.assignedUser == null}">Not Assigned</span>
+            </td>
+            <td>
                 <a th:href="@{/task/{projectId}/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}" class="btn btn-primary btn-sm">Edit</a>
+                <a th:href="@{/task/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${task.id})}" class="btn btn-warning btn-sm">Assign User</a>
+
+                <form th:action="@{/task/{projectId}/{taskId}/removeMember(projectId=${projectId}, taskId=${task.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Remove member</button>
+                </form>
 
                 <form th:action="@{/task/{projectId}/{taskId}/delete(projectId=${projectId}, taskId=${task.id})}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>

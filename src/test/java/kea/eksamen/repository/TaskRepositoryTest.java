@@ -40,6 +40,7 @@ class TaskRepositoryTest {
     @Autowired
     private JdbcClient jdbcClient;
 
+
     @BeforeEach
     void setUp() {
         taskRepository = new TaskRepository(jdbcClient);
@@ -114,5 +115,25 @@ class TaskRepositoryTest {
         assertEquals("Task 1 for Alpha", task.getTitle());
         assertEquals("Task description for Alpha 1", task.getDescription());
         assertEquals(TaskPriority.HIGH, task.getPriority());
+    }
+
+    @Test
+    void assignMember() {
+        Task task = taskRepository.findTaskById(2);
+        assertNotNull(task);
+        taskRepository.assignMember(2, 2);
+        Task updatedTask = taskRepository.findTaskById(2);
+        assertNotNull(updatedTask);
+        assertEquals(2, updatedTask.getAssignedUserId());
+    }
+
+    @Test
+    void removeAssignedUser() {
+        Task task = taskRepository.findTaskById(2);
+        assertNotNull(task);
+        taskRepository.removeAssignedUser(2);
+        Task updatedTask = taskRepository.findTaskById(2);
+        assertNotNull(updatedTask);
+        assertEquals(0, updatedTask.getAssignedUserId());
     }
 }
