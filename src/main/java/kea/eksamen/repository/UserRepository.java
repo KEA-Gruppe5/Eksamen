@@ -84,12 +84,23 @@ public class UserRepository implements UserRepositoryInterface{
 
     public void assignUserToProject(int userId, int projectId) {
         String sql = "INSERT INTO PMTool.users_projects(user_id, project_id) VALUES (?, ?)";
-        int affectedRows =jdbcClient.sql(sql)
+        int affectedRows = jdbcClient.sql(sql)
                 .param(userId)
                 .param(projectId)
                 .update();
         if(affectedRows>0){
             logger.info("adding user with id " + userId + " to the project with id " + projectId);
+        }
+    }
+
+    public void removeUserFromProject(int userId, int projectId) {
+        String sql = "DELETE FROM PMTool.users_projects up WHERE up.user_id = ? AND up.project_id = ?";
+        int affectedRows = jdbcClient.sql(sql)
+                .param(userId)
+                .param(projectId)
+                .update();
+        if(affectedRows>0){
+            logger.info("delete user with id " + userId + " from the project with id " + projectId);
         }
     }
 

@@ -24,6 +24,7 @@ public class ProjectTeamService {
         List<TeamMemberDTO> teamMemberDTOS = new ArrayList<>();
         for(User user:userRepository.findTeamMembers(projectId)){
             TeamMemberDTO teamMemberDTO = new TeamMemberDTO(user.getFirstName() + " " + user.getLastName(), user.getEmail());
+            teamMemberDTO.setId(user.getId());
             teamMemberDTOS.add(teamMemberDTO);
         }
         return teamMemberDTOS;
@@ -34,6 +35,10 @@ public class ProjectTeamService {
         for(Integer i : newTeamMembersIds){
             userRepository.assignUserToProject(i, projectId);
         }
+    }
+
+    public void removeUserFromProject(int userId, int projectId) {
+       userRepository.removeUserFromProject(userId, projectId);
     }
 
     public List<User> findUnassignedUsers(int projectId){

@@ -15,17 +15,25 @@
             <strong th:text="${teamMember.fullName}"></strong>
             <p th:text="'Email: ' + ${teamMember.email}"></p>
         </div>
+        <div th:if="${session.role eq 'PM'}">
+        <form th:action="@{/projects/{projectId}/team/{userId}(projectId = ${projectId}, userId = ${teamMember.id})}" method="post" style="display: inline-block;">
+            <input type="hidden" name="_method" value="delete" />
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this user from the project?')">Remove</button>
+        </form>
+        </div>
     </li>
     <br>
     <div th:if="${session.role eq 'PM'}">
         <form th:action="@{/projects/{projectId}/team(projectId = ${projectId})}" th:method="post">
             <div class="form-group">
-                <select name="newTeamMembers" multiple>
-                    <option th:each="user : ${allUsers}"
-                            th:value="${user.id}"
-                            th:text="${user.firstName + ' ' + user.lastName}">
-                    </option>
-                </select>
+                <label>
+                    <select name="newTeamMembers" multiple>
+                        <option th:each="user : ${allUsers}"
+                                th:value="${user.id}"
+                                th:text="${user.firstName + ' ' + user.lastName}">
+                        </option>
+                    </select>
+                </label>
             </div>
             <button type="submit">Add Users</button>
         </form>

@@ -3,6 +3,7 @@ package kea.eksamen.controller;
 import jakarta.servlet.http.HttpSession;
 import kea.eksamen.dto.UserDTO;
 import kea.eksamen.exceptions.BadCredentialsException;
+import kea.eksamen.exceptions.EmailAlreadyExistsException;
 import kea.eksamen.model.User;
 import kea.eksamen.service.UserService;
 import kea.eksamen.util.PasswordValidator;
@@ -31,11 +32,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String saveUser(@ModelAttribute User user) throws SQLException {
-        if (passwordValidator.isValid(user.getPassword())) {
-            userService.saveUser(user);
+    public String saveUser(@ModelAttribute User user, Model model) throws SQLException {
+        try{
+            if (passwordValidator.isValid(user.getPassword())) {
+                userService.saveUser(user);
+                model.addAttribute("success", "Registration successful!");
+                return "user/registerForm";
+            }
+        }catch (EmailAlreadyExistsException e){
+            model.addAttribute("error", e.getMessage());
         }
-        return "redirect:/login";
+        return "user/registerForm";
     }
 
     @GetMapping("/login")
