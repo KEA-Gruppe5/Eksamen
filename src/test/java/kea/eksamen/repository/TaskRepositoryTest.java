@@ -56,8 +56,6 @@ class TaskRepositoryTest {
         task.setTitle("Test");
         task.setDescription("This is a test");
         task.setPriority(TaskPriority.HIGH);
-        task.setStartDate(Date.valueOf(LocalDate.now()));
-        task.setEndDate(Date.valueOf(LocalDate.now().plusDays(5)));
         task.setUserId(1);
         task.setProjectId(1);
 
@@ -72,16 +70,12 @@ class TaskRepositoryTest {
         updatedTask.setTitle("Updated Title");
         updatedTask.setDescription("Updated Description");
         updatedTask.setPriority(TaskPriority.MEDIUM);
-        updatedTask.setStartDate(Date.valueOf(LocalDate.of(2024, 1, 10)));
-        updatedTask.setEndDate(Date.valueOf(LocalDate.of(2024, 1, 20)));
 
         Task result = taskRepository.updateTask(updatedTask, 3); //using taskId 3 to not interfere with taskId 1 which are used for the other tests.
 
         assertEquals("Updated Title", result.getTitle());
         assertEquals("Updated Description", result.getDescription());
         assertEquals(TaskPriority.MEDIUM, result.getPriority());
-        assertEquals(Date.valueOf("2024-01-10"), result.getStartDate());
-        assertEquals(Date.valueOf("2024-01-20"), result.getEndDate());
     }
 
     @Test
@@ -100,9 +94,6 @@ class TaskRepositoryTest {
         assertEquals("Task 1 for Alpha", task.getTitle());
         assertEquals("Task description for Alpha 1", task.getDescription());
         assertEquals(TaskPriority.HIGH, task.getPriority());
-        assertEquals(Date.valueOf("2024-01-01"), task.getStartDate());
-        assertEquals(Date.valueOf("2024-01-15"), task.getEndDate());
-        assertEquals(14, task.getDuration());
         assertEquals(1, task.getUserId());
     }
 

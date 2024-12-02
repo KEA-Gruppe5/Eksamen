@@ -29,24 +29,19 @@ public class TaskRepository implements TaskRepositoryInterface {
     @Override
     public Task addTask(Task task, int projectId) {
         System.out.println("adding task..");
-        Date startDate = task.getStartDate();
-        Date endDate = task.getEndDate();
-        int duration = (int) ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
         Integer userId = task.getUserId();
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        int id = jdbcClient.sql("INSERT INTO PMTool.tasks (project_id, sub_project_id, title, description, priority, start_date, end_date, duration, user_id) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        int id = jdbcClient.sql("INSERT INTO PMTool.tasks (project_id, sub_project_id, title, description, priority, user_id, estimated_hours) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)")
                 .param(projectId)
                 .param(projectId)
                 .param(task.getTitle())
                 .param(task.getDescription())
                 .param(task.getPriority().getDisplayName().toUpperCase())
-                .param(task.getStartDate())
-                .param(task.getEndDate())
-                .param(duration)
                 .param(userId)
+                .param(task.getEstimatedHours())
                 .update(keyHolder, "id");
         System.out.println("task added..");
 
@@ -67,20 +62,15 @@ public class TaskRepository implements TaskRepositoryInterface {
 
 
         //TODO add calculation in service layer
-        Date startDate = task.getStartDate();
-        Date endDate = task.getEndDate();
-        int duration = (int) ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
 
         int rowsAffected = jdbcClient.sql("UPDATE PMTool.tasks " +
-                        "SET title = ?, description = ?, priority = ?, start_date = ?, end_date = ?, duration = ? " +
+                        "SET title = ?, description = ?, priority = ?, estimated_hours = ? " +
                         "WHERE id = ?")
                 .param(task.getTitle())
                 .param(task.getDescription())
                 .param(task.getPriority().getDisplayName().toUpperCase())
-                .param(task.getStartDate())
-                .param(task.getEndDate())
-                .param(duration)
+                .param(task.getEstimatedHours())
                 .param(taskId)
                 .update();
 
@@ -123,17 +113,13 @@ public class TaskRepository implements TaskRepositoryInterface {
                         if (priority != null) {
                             task.setPriority(TaskPriority.valueOf(priority.toUpperCase()));
                         }
-
-                        task.setStartDate(resultSet.getDate("start_date"));
-                        task.setEndDate(resultSet.getDate("end_date"));
-                        task.setDuration(resultSet.getInt("duration"));
                         task.setUserId(resultSet.getInt("user_id"));
                         task.setAssignedUserId(resultSet.getInt("assigned_user_id"));
+                        task.setEstimatedHours(resultSet.getInt("estimated_hours"));
 
-                        // Return the populated Task object
                         return task;
                     }
-                    return null; // Return null if no task found
+                    return null;
                 });
     }
 
@@ -151,11 +137,9 @@ public class TaskRepository implements TaskRepositoryInterface {
                     task.setTitle(rs.getString("title"));
                     task.setDescription(rs.getString("description"));
                     task.setPriority(TaskPriority.valueOf(rs.getString("priority").toUpperCase()));
-                    task.setStartDate(rs.getDate("start_date"));
-                    task.setEndDate(rs.getDate("end_date"));
-                    task.setDuration(rs.getInt("duration"));
                     task.setUserId(rs.getInt("user_id"));
                     task.setAssignedUserId(rs.getInt("assigned_user_id"));
+                    task.setEstimatedHours(rs.getInt("estimated_hours"));
 
                     TeamMemberDTO assignedUser = null;
                     String firstName = rs.getString("firstname");
