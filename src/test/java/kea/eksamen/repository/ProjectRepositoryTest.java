@@ -29,9 +29,6 @@ class ProjectRepositoryTest {
     @Autowired
     private ProjectRepository projectRepository;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     @Test
     @DisplayName("Integration test: get project via ID")
     void getProjectById_retrieveCorrectProject() {
@@ -85,11 +82,11 @@ class ProjectRepositoryTest {
         project.setDuration(120);
         Project addedProject = projectRepository.addProject(project);
         //act
-        project.setDuration(100);
+        project.setTitle("vinter");
         Project updatedProject = projectRepository.updateProject(project, addedProject.getId());
         //Assert
         assertNotNull(updatedProject);
-        assertEquals(100, updatedProject.getDuration());
+        assertEquals("vinter", updatedProject.getTitle());
         assertEquals(addedProject.getId(), updatedProject.getId());
     }
 
@@ -123,5 +120,6 @@ class ProjectRepositoryTest {
         }
         assertEquals(1, subprojects.size());
     }
+
 
 }

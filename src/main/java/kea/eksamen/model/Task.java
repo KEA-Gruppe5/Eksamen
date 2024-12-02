@@ -1,5 +1,6 @@
 package kea.eksamen.model;
 
+import kea.eksamen.dto.TeamMemberDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -12,27 +13,31 @@ public class Task {
     private String title;
     private String description;
     private TaskPriority priority;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
     private int duration;
     private int userId;
+    private TeamMemberDTO assignedUser;
+    private int assignedUserId;
+
 
     public Task() {
     }
 
-    public Task(int projectId, int subProjectId, String title, String description, TaskPriority priority, Date startDate, Date endDate, int duration, int userId) {
-        this.projectId = projectId;
-        this.subProjectId = subProjectId;
-        this.title = title;
-        this.description = description;
-        this.priority = priority;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.duration = duration;
+    public Task(int assignedUserId, TeamMemberDTO assignedUser, int userId, int duration, Date endDate, Date startDate, TaskPriority priority, String description, String title, int subProjectId, int projectId) {
+        this.assignedUserId = assignedUserId;
+        this.assignedUser = assignedUser;
         this.userId = userId;
+        this.duration = duration;
+        this.endDate = endDate;
+        this.startDate = startDate;
+        this.priority = priority;
+        this.description = description;
+        this.title = title;
+        this.subProjectId = subProjectId;
+        this.projectId = projectId;
     }
 
     @Override
@@ -125,5 +130,21 @@ public class Task {
 
     public void setSubProjectId(int subProjectId) {
         this.subProjectId = subProjectId;
+    }
+
+    public TeamMemberDTO getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(TeamMemberDTO assignedUser) {
+        this.assignedUser = assignedUser;
+    }
+
+    public int getAssignedUserId() {
+        return assignedUserId;
+    }
+
+    public void setAssignedUserId(int assignedUserId) {
+        this.assignedUserId = assignedUserId;
     }
 }

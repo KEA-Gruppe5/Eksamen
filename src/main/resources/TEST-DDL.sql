@@ -14,7 +14,8 @@ CREATE TABLE projects
     title      VARCHAR(255),
     start_date DATE,
     end_date   DATE,
-    duration   INT
+    duration   INT,
+    archived   BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE subprojects
@@ -55,6 +56,8 @@ CREATE TABLE tasks
     end_date   DATE,
     duration   INT,
     user_id    INT,
+    assigned_user_id INT NULL,
+    archived   BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
     FOREIGN KEY (sub_project_id) REFERENCES projects (id) ON DELETE CASCADE
