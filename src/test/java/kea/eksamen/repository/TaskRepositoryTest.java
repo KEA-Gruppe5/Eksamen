@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 class TaskRepositoryTest {
 
     @Autowired
@@ -91,7 +92,7 @@ class TaskRepositoryTest {
         Task task = taskRepository.findTaskById(1);
 
         assertNotNull(task);
-        assertEquals("Task 1 for Alpha", task.getTitle());
+        assertEquals("Task 1 for Beta", task.getTitle());
         assertEquals("Task description for Alpha 1", task.getDescription());
         assertEquals(TaskPriority.HIGH, task.getPriority());
         assertEquals(1, task.getUserId());
@@ -103,7 +104,7 @@ class TaskRepositoryTest {
 
         assertFalse(tasks.isEmpty());
         Task task = tasks.get(0);
-        assertEquals("Task 1 for Alpha", task.getTitle());
+        assertEquals("Task 1 for Beta", task.getTitle());
         assertEquals("Task description for Alpha 1", task.getDescription());
         assertEquals(TaskPriority.HIGH, task.getPriority());
     }
@@ -126,5 +127,13 @@ class TaskRepositoryTest {
         Task updatedTask = taskRepository.findTaskById(2);
         assertNotNull(updatedTask);
         assertEquals(0, updatedTask.getAssignedUserId());
+    }
+
+
+    @Test
+    void getHoursForAllTasks(){
+        int expected = 148;
+        int actual = taskRepository.getHoursForAllTasks(2);
+        assertEquals(expected, actual);
     }
 }

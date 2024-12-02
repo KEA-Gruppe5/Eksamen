@@ -1,5 +1,6 @@
 package kea.eksamen.controller;
 
+import kea.eksamen.dto.SubprojectDTO;
 import kea.eksamen.model.Project;
 import kea.eksamen.service.ProjectService;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public class ProjectController {
         return "project/addProject";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add") //TODO: change to projects/add?
     public String addProject(@ModelAttribute Project project){
         projectService.addProject(project);
         return "redirect:/projects";
@@ -68,7 +69,7 @@ public class ProjectController {
     public String addSubProject(@PathVariable("parentId") int parentId, @ModelAttribute Project subProject) {
         Project createdSubProject = projectService.addProject(subProject);
         if (createdSubProject != null) {
-            projectService.addSubProject(parentId, createdSubProject.getId());
+            projectService.addSubProject(parentId, createdSubProject.getId()); //TODO: move the logic to service ?
         }
         return "redirect:/projects/" + parentId + "/subprojects";
     }
@@ -77,13 +78,13 @@ public class ProjectController {
     public String listSubProjects(@PathVariable("id")int id, Model model) {
         System.out.println("Fetching subprojects for Parent Project ID: " + id);
         Project parentProject = projectService.getProjectById(id);
-        List<Project> subProjects = projectService.getSubProjectsByParentId(id);
+        List<SubprojectDTO> subProjects = projectService.getSubprojectDtosById(id);
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("parentId", id);
         model.addAttribute("parentTitle", parentProject.getTitle());
         return "project/subProjects";
     }
-    @PostMapping("/projects/{parentId}/subprojects/{subProjectId}")
+    @PostMapping("/projects/{parentId}/subprojects/{subProjectId}")  //TODO:possible to remove and use deleteProject
     public String removeSubProject(@PathVariable("parentId")int parentId, @PathVariable int subProjectId) {
         projectService.removeSubProject(parentId, subProjectId);
         return "redirect:/projects/" + parentId + "/subprojects";
