@@ -34,32 +34,32 @@ public class ProjectController {
     }
 
     @PostMapping("/projects/{id}/delete")
-    public String deleteProject(@PathVariable int id) {
+    public String deleteProject(@PathVariable("id") int id) {
         projectService.deleteProject(id);
         return "redirect:/projects";
     }
 
     @GetMapping("/projects/{id}/update")
-    public String editProject(@PathVariable int id, Model model) {
+    public String editProject(@PathVariable("id") int id, Model model) {
         Project project = projectService.getProjectById(id);
         model.addAttribute("project", project);
         return "project/updateProject";
     }
 
     @PostMapping("/projects/{id}/update")
-    public String updateProject(@PathVariable int id, @ModelAttribute Project project) {
+    public String updateProject(@PathVariable("id") int id, @ModelAttribute Project project) {
         projectService.updateProject(project, id);
         return "redirect:/projects";
     }
 
     @GetMapping("/projects/{parentId}/subprojects/add")
-    public String showAddSubProjectForm(@PathVariable int parentId, Model model) {
+    public String showAddSubProjectForm(@PathVariable("parentId") int parentId, Model model) {
         model.addAttribute("parentId", parentId);
         model.addAttribute("project", new Project());
         return "project/addSubProject";
     }
     @PostMapping("/projects/{parentId}/subprojects/add")
-    public String addSubProject(@PathVariable int parentId, @ModelAttribute Project subProject) {
+    public String addSubProject(@PathVariable("parentId") int parentId, @ModelAttribute Project subProject) {
         Project createdSubProject = projectService.addProject(subProject);
         if (createdSubProject != null) {
             projectService.addSubProject(parentId, createdSubProject.getId());
@@ -68,7 +68,7 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/{id}/subprojects")
-    public String listSubProjects(@PathVariable int id, Model model) {
+    public String listSubProjects(@PathVariable("id")int id, Model model) {
         System.out.println("Fetching subprojects for Parent Project ID: " + id);
         Project parentProject = projectService.getProjectById(id);
         List<Project> subProjects = projectService.getSubProjectsByParentId(id);
@@ -77,8 +77,8 @@ public class ProjectController {
         model.addAttribute("parentTitle", parentProject.getTitle());
         return "project/subProjects";
     }
-    @PostMapping("/projects/{parentId}/subprojects/{subProjectId}/remove")
-    public String removeSubProject(@PathVariable int parentId, @PathVariable int subProjectId) {
+    @PostMapping("/projects/{parentId}/subprojects/{subProjectId}")
+    public String removeSubProject(@PathVariable("parentId")int parentId, @PathVariable int subProjectId) {
         projectService.removeSubProject(parentId, subProjectId);
         return "redirect:/projects/" + parentId + "/subprojects";
     }
