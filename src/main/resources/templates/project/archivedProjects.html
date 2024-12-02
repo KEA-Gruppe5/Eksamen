@@ -13,12 +13,12 @@
     <h1>Archived Projects</h1>
     <a th:href="@{/projects}" class="btn btn-secondary">Back to Active Projects</a>
 
-    <!-- Display a message if no projects are archived -->
+
     <div th:if="${#lists.isEmpty(projects)}">
         <p>No archived projects available.</p>
     </div>
 
-    <!-- List archived projects if available -->
+
     <ul th:if="${!#lists.isEmpty(projects)}">
         <li th:each="project : ${projects}">
             <div>
@@ -31,6 +31,7 @@
             <form th:action="@{/projects/{id}/unarchive(id=${project.id})}" method="post" style="display: inline-block;">
                 <button type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to unarchive this project?')">Unarchive</button>
             </form>
+
         </li>
     </ul>
 </div>

@@ -87,25 +87,22 @@ public class ProjectController {
     }
 
 
-    @PostMapping("/{id}/archive")
+    @PostMapping("/projects/{id}/archive")
     public String archiveProject(@PathVariable int id) {
         projectService.archiveProject(id);
         return "redirect:/projects";
     }
 
-    @PostMapping("/{id}/unarchive")
+    @PostMapping("/projects/{id}/unarchive")
     public String unarchiveProject(@PathVariable int id) {
         projectService.unarchiveProject(id);
-        return "redirect:/projects/archived";
+        return "redirect:/archived";
     }
 
 
     @GetMapping("/archived")
     public String listArchivedProjects(Model model) {
-        logger.info("Fetching archived projects...");
         model.addAttribute("projects", projectService.getArchivedProjects());
-        List<Project> archivedProjects = projectService.getArchivedProjects();
-        logger.info("Archived Projects Retrieved: " + archivedProjects);
         return "project/archivedProjects";
     }
 
