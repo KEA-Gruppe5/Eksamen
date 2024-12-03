@@ -3,6 +3,7 @@ package kea.eksamen.controller;
 import kea.eksamen.dto.SubprojectDTO;
 import kea.eksamen.model.Project;
 import kea.eksamen.service.ProjectService;
+import kea.eksamen.service.SubprojectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,9 +14,12 @@ import java.util.List;
 @Controller
 public class ProjectController {
     private final ProjectService projectService;
+    private final SubprojectService subprojectService;
     private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
-    public ProjectController(ProjectService projectService) {
+
+    public ProjectController(ProjectService projectService, SubprojectService subprojectService) {
         this.projectService = projectService;
+        this.subprojectService = subprojectService;
     }
 
     @GetMapping("/add")
@@ -80,7 +84,7 @@ public class ProjectController {
     public String addSubProject(@PathVariable("parentId") int parentId, @ModelAttribute Project subProject) {
         Project createdSubProject = projectService.addProject(subProject);
         if (createdSubProject != null) {
-            projectService.addSubProject(parentId, createdSubProject.getId()); //TODO: move the logic to service ?
+            subprojectService.addSubProject(parentId, createdSubProject.getId()); //TODO: move the logic to service ?
         }
         return "redirect:/projects/" + parentId + "/subprojects";
     }
@@ -89,15 +93,16 @@ public class ProjectController {
     public String listSubProjects(@PathVariable("id")int id, Model model) {
         System.out.println("Fetching subprojects for Parent Project ID: " + id);
         Project parentProject = projectService.getProjectById(id);
-        List<SubprojectDTO> subProjects = projectService.getSubprojectDtosById(id);
+        List<SubprojectDTO> subProjects = subprojectService.getSubprojectDtosById(id);
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("parentId", id);
         model.addAttribute("parentTitle", parentProject.getTitle());
         return "project/subProjects";
     }
+
     @PostMapping("/projects/{parentId}/subprojects/{subProjectId/}/remove")
     public String removeSubProject(@PathVariable("parentId") int parentId, @PathVariable("subProjectId") int subProjectId) {
-        projectService.deleteProject(subProjectId);
+       subprojectService.removeSubProject(parentId, subProjectId);
         return "redirect:/projects/" + parentId + "/subprojects";
     }
 

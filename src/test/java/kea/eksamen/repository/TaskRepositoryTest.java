@@ -132,8 +132,8 @@ class TaskRepositoryTest {
 
     @Test
     void getHoursForAllTasks(){
-        int expected = 148;
-        int actual = taskRepository.getHoursForAllTasks(2);
+        double expected = 148;
+        double actual = taskRepository.getHoursForAllTasks(2);
         assertEquals(expected, actual);
     }
 }
