@@ -12,12 +12,10 @@ import java.util.List;
 @Service
 public class ProjectService {
     private final ProjectRepository projectRepository;
-    private final SubprojectService subprojectService;
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectService.class);
-    public ProjectService(ProjectRepository projectRepository, SubprojectService subprojectService) {
+    public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
-        this.subprojectService = subprojectService;
     }
 
     public Project addProject(Project project) {

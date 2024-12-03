@@ -28,27 +28,21 @@ public class TaskController {
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }
-        model.addAttribute("addNewTask", new Task());
+        Task task = new Task();
+        task.setProjectId(projectId); // Pre-set the projectId
+        model.addAttribute("addNewTask", task);
         model.addAttribute("projectId", projectId);
-
-
-
         return "task/addTask";
     }
     @PostMapping("/{projectId}/add")
-    public String addTask(HttpSession session, @PathVariable("projectId") int projectId, @ModelAttribute Task task){
-        Integer userId = (Integer) session.getAttribute("userId");
-        task.setUserId(userId);
-
-        //TODO instead of projectId in the path, get projectId directly from project class
-        taskService.addTask(task, projectId);
-        System.out.println("Redirecting to: /task/" + projectId + "/tasks");
-        return "redirect:/project/" + projectId +"/tasks";
+    public String addTask(@ModelAttribute Task task){
+        taskService.addTask(task);
+        System.out.println("Redirecting to: /task/" + task.getProjectId() + "/tasks");
+        return "redirect:/project/" + task.getProjectId() +"/tasks";
     }
 
     @GetMapping("/{projectId}/tasks")
     public String viewTasks(@PathVariable("projectId") int projectId, Model model, HttpSession session) {
-
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }

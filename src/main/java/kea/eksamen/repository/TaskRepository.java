@@ -1,8 +1,8 @@
 package kea.eksamen.repository;
 
-import kea.eksamen.dto.TeamMemberDTO;
+import kea.eksamen.exceptions.TaskNotFoundExeption;
 import kea.eksamen.model.Task;
-import kea.eksamen.model.TaskPriority;
+import kea.eksamen.util.TaskMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -11,7 +11,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,23 +26,18 @@ public class TaskRepository implements TaskRepositoryInterface {
 
 
     @Override
-    public Task addTask(Task task, int projectId) {
-        System.out.println("adding task..");
-
-        Integer userId = task.getUserId();
+    public Task addTask(Task task) {
+        logger.info("adding task..");
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        int id = jdbcClient.sql("INSERT INTO PMTool.tasks (project_id, sub_project_id, title, description, priority, user_id, estimated_hours) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)")
-                .param(projectId)
-                .param(projectId)
+        int id = jdbcClient.sql("INSERT INTO PMTool.tasks (project_id, title, description, priority, estimated_hours) " +
+                        "VALUES (?, ?, ?, ?, ?)")
+                .param(task.getProjectId())
                 .param(task.getTitle())
                 .param(task.getDescription())
                 .param(task.getPriority().getDisplayName().toUpperCase())
-                .param(userId)
                 .param(task.getEstimatedHours())
                 .update(keyHolder, "id");
-        System.out.println("task added..");
 
         if (id != 0 && keyHolder.getKey() != null) {
             task.setId(keyHolder.getKey().intValue());
@@ -59,11 +53,6 @@ public class TaskRepository implements TaskRepositoryInterface {
     @Override
     public Task updateTask(Task task, int taskId) {
         logger.info("Updating task with ID: " + taskId);
-
-
-        //TODO add calculation in service layer
-
-
         int rowsAffected = jdbcClient.sql("UPDATE PMTool.tasks " +
                         "SET title = ?, description = ?, priority = ?, estimated_hours = ? " +
                         "WHERE id = ?")
@@ -89,9 +78,12 @@ public class TaskRepository implements TaskRepositoryInterface {
         int deleteTask = jdbcClient.sql("DELETE FROM tasks WHERE id = ?")
                 .param(taskId)
                 .update();
-        if (deleteTask < 0) ;
-        logger.info("Successfully deleted task with ID: " + deleteTask);
-        return true;
+        if (deleteTask > 0) {
+            logger.info("Successfully deleted task with ID: " + deleteTask);
+            return true;
+        }
+        logger.warn("No task found with ID: " + taskId + ". Deletion failed.");
+        return false;
     }
 
 
@@ -100,62 +92,20 @@ public class TaskRepository implements TaskRepositoryInterface {
         String sql = "SELECT * FROM PMTool.tasks WHERE id = ?";
         return jdbcClient.sql(sql)
                 .param(taskId)
-                .query(resultSet -> {
-                    if (resultSet.next()) {
-                        Task task = new Task();
-                        task.setId(resultSet.getInt("id"));
-                        task.setProjectId(resultSet.getInt("project_id"));
-                        task.setSubProjectId(resultSet.getInt("sub_project_id"));
-                        task.setTitle(resultSet.getString("title"));
-                        task.setDescription(resultSet.getString("description"));
-
-                        String priority = resultSet.getString("priority");
-                        if (priority != null) {
-                            task.setPriority(TaskPriority.valueOf(priority.toUpperCase()));
-                        }
-                        task.setUserId(resultSet.getInt("user_id"));
-                        task.setAssignedUserId(resultSet.getInt("assigned_user_id"));
-                        task.setEstimatedHours(resultSet.getInt("estimated_hours"));
-
-                        return task;
-                    }
-                    return null;
-                });
+                .query(new TaskMapper())
+                .optional()
+                .orElseThrow(TaskNotFoundExeption::new);
     }
 
     @Override
     public List<Task> getAllTasks(int projectId) {
-        return jdbcClient.sql("SELECT t.*, t.assigned_user_id, u.firstname, u.lastname, u.email " +
-                        "FROM tasks t " +
-                        "LEFT JOIN users u ON t.assigned_user_id = u.id WHERE t.project_id = ?")
+        return jdbcClient.sql("SELECT * FROM PMTool.tasks t WHERE t.project_id = ?")
                 .param(projectId)
-                .query((rs, rowNum) -> {
-                    Task task = new Task();
-                    task.setId(rs.getInt("id"));
-                    task.setProjectId(rs.getInt("project_id"));
-                    task.setSubProjectId(rs.getInt("sub_project_id"));
-                    task.setTitle(rs.getString("title"));
-                    task.setDescription(rs.getString("description"));
-                    task.setPriority(TaskPriority.valueOf(rs.getString("priority").toUpperCase()));
-                    task.setUserId(rs.getInt("user_id"));
-                    task.setAssignedUserId(rs.getInt("assigned_user_id"));
-                    task.setEstimatedHours(rs.getInt("estimated_hours"));
-
-                    TeamMemberDTO assignedUser = null;
-                    String firstName = rs.getString("firstname");
-                    String lastName = rs.getString("lastname");
-                    String email = rs.getString("email");
-                    if (firstName != null && lastName != null) {
-                        assignedUser = new TeamMemberDTO(firstName + " " + lastName, email);
-                    }
-                    task.setAssignedUser(assignedUser);
-
-                    return task;
-                })
+                .query(new TaskMapper())
                 .list();
     }
 
-    public void assignMember(int taskId, int userid){
+    public void assignMember(int taskId, int userid) {
         String sql = "UPDATE tasks SET assigned_user_id = ? WHERE id = ?";
         jdbcClient.sql(sql)
                 .param(1, userid)
@@ -164,14 +114,14 @@ public class TaskRepository implements TaskRepositoryInterface {
 
     }
 
-    public void removeAssignedUser(int taskId){
+    public void removeAssignedUser(int taskId) {
         String sql = "UPDATE tasks SET assigned_user_id = NULL WHERE id = ?";
         jdbcClient.sql(sql)
                 .param(taskId)
                 .update();
     }
 
-    public double getHoursForAllTasks(int subprojectId){
+    public double getHoursForAllTasks(int subprojectId) {
         String sql = "SELECT SUM(estimated_hours) FROM PMTool.tasks WHERE sub_project_id = ?";
         return jdbcClient.sql(sql)
                 .param(subprojectId)

@@ -1,5 +1,6 @@
 package kea.eksamen.controller;
 import kea.eksamen.service.ProjectService;
+import kea.eksamen.service.SubprojectService;
 import kea.eksamen.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,10 +21,16 @@ class ProjectControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private ProjectService projectService;
+
+    @MockBean
+    private SubprojectService subprojectService;
+
     @Test
     @DisplayName("ProjectController test: get registration form")
     void addProject_getAddProjectForm() throws Exception {
-        mockMvc.perform(get("/add"))
+        mockMvc.perform(get("/projects/add"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("project"))
                 .andExpect(view().name("project/addProject"));
