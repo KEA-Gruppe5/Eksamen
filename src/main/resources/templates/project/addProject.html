@@ -13,6 +13,7 @@
     <h1>Add New Project</h1>
 
     <form th:action="@{/projects/add}" method="post" style="max-width: 600px; margin: auto;">
+
         <div>
             <label for="title">Project Title:</label>
             <input type="text" id="title" name="title" th:value="${project.title}" required

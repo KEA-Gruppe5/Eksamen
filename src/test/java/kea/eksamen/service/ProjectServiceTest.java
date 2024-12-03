@@ -1,5 +1,6 @@
 package kea.eksamen.service;
 
+import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.model.Project;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testGetArchivedProjects() {
-        List<Project> archivedProjects = projectService.getArchivedProjects();
+        List<ProjectDTO> archivedProjects = projectService.getArchivedProjects();
         System.out.println("Archived Projects: " + archivedProjects);
     }
 }
