@@ -31,8 +31,8 @@
             <td th:text="${task.priority}"></td>
             <td th:text="${task.estimatedHours + ' hours'}"></td>
             <td>
-                <span th:if="${task.assignedUser != null}" th:text="${task.assignedUser.fullName}"></span>
-                <span th:if="${task.assignedUser == null}">Not Assigned</span>
+                <span th:if="${task.teamMemberDTO != null}" th:text="${task.teamMemberDTO.fullName}"></span>
+                <span th:if="${task.teamMemberDTO == null}">Not Assigned</span>
             </td>
             <td>
                 <a th:href="@{/project/{projectId}/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}" class="btn btn-primary btn-sm">Edit</a>

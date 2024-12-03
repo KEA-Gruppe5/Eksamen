@@ -85,8 +85,7 @@ class TaskRepositoryTest {
 
     @Test
     void getAllTasks() {
-        List<Task> tasks = taskRepository.getAllTasks(1);
-
+        List<Task> tasks = taskRepository.getAllTasks(2);
         assertFalse(tasks.isEmpty());
         Task task = tasks.get(0);
         assertEquals("Task 1 for Beta", task.getTitle());

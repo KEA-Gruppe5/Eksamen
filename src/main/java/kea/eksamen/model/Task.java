@@ -88,4 +88,17 @@ public class Task {
         this.assignedUserId = assignedUserId;
         this.estimatedHours = estimatedHours;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", projectId=" + projectId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", priority=" + priority +
+                ", assignedUserId=" + assignedUserId +
+                ", estimatedHours=" + estimatedHours +
+                '}';
+    }
 }
