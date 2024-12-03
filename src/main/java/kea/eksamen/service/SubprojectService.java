@@ -29,10 +29,6 @@ public class SubprojectService {
         projectRepository.addSubProject(parentProjectId, subProjectId);
     }
 
-    public void removeSubProject(int parentProjectId, int subProjectId) {
-        projectRepository.removeSubProject(parentProjectId, subProjectId);
-    }
-
     public List<SubprojectDTO> getSubprojectDtosById(int parentProjectId) {
         List<SubprojectDTO> subprojectDTOS = new ArrayList<>();
         for(Project subproject : projectRepository.getSubProjectsByParentId(parentProjectId)){
@@ -65,5 +61,13 @@ public class SubprojectService {
         double hoursForAllTasks = taskRepository.getHoursForAllTasks(subprojectId);
         logger.info("Total hours for all tasks for the subproject " + subprojectId + " : " + hoursForAllTasks);
         return hoursForAllTasks;
+    }
+
+    public Project addSubProject(Project subProject, int parentId) {
+        Project addedSubproject = projectRepository.addProject(subProject);
+        if (addedSubproject != null) {
+           addSubProject(parentId, addedSubproject.getId());
+        }
+        return addedSubproject;
     }
 }
