@@ -1,7 +1,7 @@
 package kea.eksamen.service;
 
 
-import kea.eksamen.dto.SubprojectDTO;
+import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.model.Project;
 import kea.eksamen.repository.ProjectRepository;
 import kea.eksamen.repository.TaskRepository;
@@ -29,16 +29,16 @@ public class SubprojectService {
         projectRepository.addSubProject(parentProjectId, subProjectId);
     }
 
-    public List<SubprojectDTO> getSubprojectDtosById(int parentProjectId) {
-        List<SubprojectDTO> subprojectDTOS = new ArrayList<>();
+    public List<ProjectDTO> getProjectDtosById(int parentProjectId) {
+        List<ProjectDTO> subprojectDTOS = new ArrayList<>();
         for(Project subproject : projectRepository.getSubProjectsByParentId(parentProjectId)){
-            subprojectDTOS.add(mapSubprojectToDto(subproject));
+            subprojectDTOS.add(mapProjectToDto(subproject));
         }
         return subprojectDTOS;
     }
 
-    public SubprojectDTO mapSubprojectToDto(Project subproject){
-        SubprojectDTO dto = new SubprojectDTO(subproject.getId(), subproject.getTitle(),
+    public ProjectDTO mapProjectToDto(Project subproject){
+        ProjectDTO dto = new ProjectDTO(subproject.getId(), subproject.getTitle(),
                 subproject.getStartDate(), subproject.getEndDate(), subproject.getDuration());
         dto.setHoursToWorkPerDay(getHoursToWorkPerDay(subproject.getId()));
         dto.setHoursForAllTasks(getHoursForAllTasks(subproject.getId()));
