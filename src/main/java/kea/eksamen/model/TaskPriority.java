@@ -13,6 +13,15 @@ public enum TaskPriority {
         this.id = id;
     }
 
+    public static TaskPriority getEnumFromId(int id){
+        for(TaskPriority taskPriority : TaskPriority.values()){
+            if(taskPriority.getId() == id){
+                return taskPriority;
+            }
+        }
+        return null;
+    }
+
     public String getDisplayName() {
         return displayName;
     }

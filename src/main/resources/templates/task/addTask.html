@@ -12,7 +12,7 @@
 <div class="container mt-5">
     <h1 class="text-center">Add Task</h1>
     <form th:object="${addNewTask}" th:action="@{/project/{projectId}/add(projectId=${projectId})}"  method="post">
-        <input type="hidden" th:value="${projectId}">
+        <input type="hidden" th:field="*{projectId}" th:value="${projectId}">
 
         <div class="row">
             <div class="col-md-6 mb-3">

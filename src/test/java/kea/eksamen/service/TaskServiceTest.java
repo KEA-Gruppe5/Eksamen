@@ -38,7 +38,7 @@ class TaskServiceTest {
         task = new Task();
         task.setId(1);
         task.setTitle("Test Task");
-        task.setUserId(1);
+        task.setAssignedUserId(1);
         task.setProjectId(1);
     }
 
@@ -48,56 +48,41 @@ class TaskServiceTest {
 
     @Test
     void addTask() {
-
-        when(taskRepository.addTask(task, task.getProjectId())).thenReturn(task);
-
-        Task result = taskService.addTask(task, task.getProjectId());
-
+        when(taskRepository.addTask(task)).thenReturn(task);
+        Task result = taskService.addTask(task);
         assertEquals(task, result);
-        verify(taskRepository, times(1)).addTask(task, task.getProjectId());
+        verify(taskRepository, times(1)).addTask(task);
     }
 
     @Test
     void getAllTasks() {
         List<Task> tasks = List.of(new Task());
-
         when(taskRepository.getAllTasks(task.getProjectId())).thenReturn(tasks);
-
         List<Task> result = taskService.getAllTasks(task.getProjectId());
-
         assertEquals(tasks, result);
         verify(taskRepository, times(1)).getAllTasks(task.getProjectId());
     }
 
     @Test
     void deleteTask() {
-
         when(taskRepository.deleteTask(task.getId())).thenReturn(true);
-
         boolean result = taskService.deleteTask(task.getId());
-
         assertTrue(result);
         verify(taskRepository, times(1)).deleteTask(task.getId());
     }
 
     @Test
     void editTask() {
-
         when(taskRepository.updateTask(task, task.getId())).thenReturn(task);
-
         Task result = taskService.editTask(task, task.getId());
-
         assertEquals(task, result);
         verify(taskRepository, times(1)).updateTask(task, task.getId());
     }
 
     @Test
     void findTaskById() {
-
         when(taskRepository.findTaskById(task.getId())).thenReturn(task);
-
         Task result = taskService.findTaskById(task.getId());
-
         assertEquals(task, result);
         verify(taskRepository, times(1)).findTaskById(task.getId());
     }
@@ -105,13 +90,13 @@ class TaskServiceTest {
     @Test
     void assignMemberToTask() {
         int userId = 1;
-        taskService.assignMemberToTask(task.getId(),userId);
-        verify(taskRepository).assignMember(task.getId(),userId);
+        taskService.assignMemberToTask(task.getId(), userId);
+        verify(taskRepository).assignMember(task.getId(), userId);
     }
 
     @Test
     void removeAssignedUser() {
-         taskService.removeAssignedUser(task.getId());
+        taskService.removeAssignedUser(task.getId());
         verify(taskRepository).removeAssignedUser(task.getId());
     }
 }

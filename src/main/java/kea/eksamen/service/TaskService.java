@@ -17,13 +17,13 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-
-    public Task addTask(Task task, int projectId){
-        taskRepository.addTask(task,projectId);
-        return task;
+    public Task addTask(Task task){
+        Task addedTask = taskRepository.addTask(task);
+        return addedTask;
     }
 
     public List<Task> getAllTasks(int projectId){
+
         return taskRepository.getAllTasks(projectId);
     }
 

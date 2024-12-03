@@ -60,7 +60,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
     @Override
     public Boolean deleteProject(int id) {
-        int rows = jdbcClient.sql("DELETE FROM PMTool.projects WHERE id = ?")
+        int rows = jdbcClient.sql("DELETE FROM PMTool.projects WHERE id = ?") //TODO: delete all subprojects when deleting parent
                 .param(id)
                 .update();
         if (rows > 0) {
@@ -135,6 +135,5 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .query(Project.class)
                 .list();
     }
-
 
 }

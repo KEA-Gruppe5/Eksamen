@@ -5,7 +5,7 @@ import kea.eksamen.model.Task;
 import java.util.List;
 
 public interface TaskRepositoryInterface {
-    Task addTask (Task task, int projectId);
+    Task addTask (Task task);
     Task updateTask(Task task, int taskId);
     boolean deleteTask(int taskId);
     Task findTaskById(int taskId);

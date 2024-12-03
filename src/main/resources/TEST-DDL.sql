@@ -15,7 +15,7 @@ CREATE TABLE projects
     start_date DATE,
     end_date   DATE,
     duration   INT,
-    archived   BOOLEAN DEFAULT FALSE
+    archived   BOOLEAN DEFAULT FALSE -- Archive flag
 );
 
 CREATE TABLE subprojects
@@ -48,18 +48,16 @@ CREATE TABLE tasks
 (
     id               INT PRIMARY KEY AUTO_INCREMENT,
     project_id       INT,
-    sub_project_id   INT,
     title            VARCHAR(255),
     description      VARCHAR(255),
-    priority         ENUM('Low', 'Medium', 'High'),
+    priority         INT,
+    assigned_user_id          INT NULL,
+    estimated_hours DOUBLE,
     archived         BOOLEAN DEFAULT FALSE,
-    user_id          INT,
-    assigned_user_id INT NULL,
-    estimated_hours INT,
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
-    FOREIGN KEY (sub_project_id) REFERENCES projects (id) ON DELETE CASCADE
+    FOREIGN KEY (assigned_user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE users_projects
 (

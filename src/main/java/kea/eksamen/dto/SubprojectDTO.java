@@ -1,6 +1,7 @@
 package kea.eksamen.dto;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class SubprojectDTO {
     private int id;

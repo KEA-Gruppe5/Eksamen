@@ -2,14 +2,13 @@ package kea.eksamen.controller;
 
 import kea.eksamen.model.Role;
 import kea.eksamen.model.Task;
+import kea.eksamen.model.TaskPriority;
 import kea.eksamen.model.User;
 import kea.eksamen.service.TaskService;
 import kea.eksamen.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -40,31 +39,20 @@ class TaskControllerTest {
     @MockBean
     private UserService userService;
 
-    private User users;
+    private User user;
     private List<User> userList;
 
     private Task task;
 
     @BeforeEach
     void setUp() {
-        task = new Task();
-        task.setId(1);
-        task.setTitle("Test Task");
-        task.setUserId(1);
-        task.setProjectId(1);
+        task = new Task(1, 1, "Test Task", "description", TaskPriority.MEDIUM, 0, 8);
         userList = new ArrayList<>();
-        users = (new User("FirstName", "LastName", "email@test", "kea123"));
-        users.setRole(Role.EMPLOYEE);
-        userList.add(users);
+        user = new User("FirstName", "LastName", "email@test", "kea123");
+        user.setRole(Role.EMPLOYEE);
+        userList.add(user);
         mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute("userId", 1);
-
-
-    }
-
-    @AfterEach
-    void tearDown() {
-
     }
 
     @Test
@@ -79,14 +67,14 @@ class TaskControllerTest {
     @Test
     void testAddTask() throws Exception {
 
-        when(taskService.addTask(any(Task.class), eq(task.getProjectId()))).thenReturn(task);
+        when(taskService.addTask(any(Task.class))).thenReturn(task);
 
         mockMvc.perform(post("/project/{projectId}/add", task.getProjectId())
                         .sessionAttr("userId", 1))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/project/" + task.getProjectId() + "/tasks"));
 
-        verify(taskService, times(1)).addTask(any(Task.class), eq(task.getProjectId()));
+        verify(taskService, times(1)).addTask(any(Task.class));
     }
 
 

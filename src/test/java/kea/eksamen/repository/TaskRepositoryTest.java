@@ -1,33 +1,18 @@
 package kea.eksamen.repository;
 
-import kea.eksamen.model.Role;
 import kea.eksamen.model.Task;
 import kea.eksamen.model.TaskPriority;
-import kea.eksamen.model.User;
-import kea.eksamen.service.TaskService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 
-import static com.mysql.cj.conf.PropertyKey.logger;
-import static java.sql.Types.NULL;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -57,10 +42,10 @@ class TaskRepositoryTest {
         task.setTitle("Test");
         task.setDescription("This is a test");
         task.setPriority(TaskPriority.HIGH);
-        task.setUserId(1);
+        task.setAssignedUserId(1);
         task.setProjectId(1);
 
-        Task addedTask = taskRepository.addTask(task, task.getProjectId());
+        Task addedTask = taskRepository.addTask(task);
         assertEquals("Test", addedTask.getTitle());
     }
 
@@ -95,7 +80,7 @@ class TaskRepositoryTest {
         assertEquals("Task 1 for Beta", task.getTitle());
         assertEquals("Task description for Alpha 1", task.getDescription());
         assertEquals(TaskPriority.HIGH, task.getPriority());
-        assertEquals(1, task.getUserId());
+        assertEquals(1, task.getAssignedUserId());
     }
 
     @Test
