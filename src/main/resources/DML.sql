@@ -25,6 +25,6 @@ VALUES (1, 1),
 
 INSERT INTO tasks (project_id, title, description, priority, assigned_user_id, estimated_hours, archived)
 VALUES
-    (2, 'Task 1 for Beta', 'Task description for Alpha 1', 'HIGH', 1, 2, false),
-    (2, 'Task 1 for Beta', 'Task description for Alpha 1', 'HIGH', 1, 124, false),
-    (2, 'Task 1 for Beta', 'Task description for Alpha 1', 'HIGH', 1, 22, false);
+    (2, 'Task 1 for Beta', 'Task description for Alpha 1', 3, 1, 2, false),
+    (2, 'Task 1 for Beta', 'Task description for Alpha 1', 3, 1, 124, false),
+    (2, 'Task 1 for Beta', 'Task description for Alpha 1', 3, 1, 22, false);
