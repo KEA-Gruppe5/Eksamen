@@ -1,6 +1,7 @@
 package kea.eksamen.controller;
 
 import jakarta.servlet.http.HttpSession;
+import kea.eksamen.dto.TaskDTO;
 import kea.eksamen.model.Task;
 import kea.eksamen.model.User;
 import kea.eksamen.service.TaskService;
@@ -46,7 +47,8 @@ public class TaskController {
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }
-        List<Task> tasks = taskService.getAllTasks(projectId);
+
+        List<TaskDTO> tasks = taskService.getTaskDtosByProjectId(projectId);
         model.addAttribute("tasks", tasks);
         model.addAttribute("projectId", projectId);
 

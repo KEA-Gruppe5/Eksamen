@@ -1,20 +1,16 @@
 package kea.eksamen.service;
 
-import kea.eksamen.controller.TaskController;
 import kea.eksamen.model.Task;
 import kea.eksamen.repository.TaskRepository;
+import kea.eksamen.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
+import org.mockito.Mock;
+
+import org.springframework.test.context.ActiveProfiles;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +22,9 @@ class TaskServiceTest {
     @Mock
     private TaskRepository taskRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     private TaskService taskService;
 
     private Task task;
@@ -33,7 +32,9 @@ class TaskServiceTest {
     @BeforeEach
     void setUp() {
         taskRepository = mock(TaskRepository.class);
-        taskService = new TaskService(taskRepository);
+        userRepository = mock(UserRepository.class);
+
+        taskService = new TaskService(taskRepository, userRepository);
 
         task = new Task();
         task.setId(1);

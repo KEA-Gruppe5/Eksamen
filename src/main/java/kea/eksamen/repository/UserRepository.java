@@ -67,7 +67,7 @@ public class UserRepository implements UserRepositoryInterface{
     }
 
     public User findUserById(int id) {
-        String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id WHERE id = ?";
+        String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id WHERE u.id = ?";
         return jdbcClient.sql(sql)
                 .param(id)
                 .query(new UserMapper())

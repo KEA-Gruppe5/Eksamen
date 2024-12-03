@@ -1,12 +1,12 @@
 package kea.eksamen.controller;
 
+import kea.eksamen.dto.TaskDTO;
 import kea.eksamen.model.Role;
 import kea.eksamen.model.Task;
 import kea.eksamen.model.TaskPriority;
 import kea.eksamen.model.User;
 import kea.eksamen.service.TaskService;
 import kea.eksamen.service.UserService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,9 @@ class TaskControllerTest {
     @MockBean
     private UserService userService;
 
+    private TaskDTO taskDTO;
     private User user;
     private List<User> userList;
-
     private Task task;
 
     @BeforeEach
@@ -53,6 +53,7 @@ class TaskControllerTest {
         userList.add(user);
         mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute("userId", 1);
+        taskDTO = new TaskDTO(1, 1, "Test Task", "description", "MEDIUM", null, 8);
     }
 
     @Test
@@ -81,12 +82,11 @@ class TaskControllerTest {
     @Test
     void viewTasks() throws Exception {
 
-        when(taskService.getAllTasks(task.getProjectId())).thenReturn(List.of(task));
-
+        when(taskService.getTaskDtosByProjectId(task.getProjectId())).thenReturn(List.of(taskDTO));
         mockMvc.perform(get("/project/{projectId}/tasks", task.getProjectId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/tasks"))
-                .andExpect(model().attribute("tasks", List.of(task)))
+                .andExpect(model().attribute("tasks", List.of(taskDTO)))
                 .andExpect(model().attribute("projectId", task.getProjectId()));
     }
 

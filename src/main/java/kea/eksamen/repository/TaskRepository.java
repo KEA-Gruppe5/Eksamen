@@ -35,7 +35,7 @@ public class TaskRepository implements TaskRepositoryInterface {
                 .param(task.getProjectId())
                 .param(task.getTitle())
                 .param(task.getDescription())
-                .param(task.getPriority().getDisplayName().toUpperCase())
+                .param(task.getPriority().getId())
                 .param(task.getEstimatedHours())
                 .update(keyHolder, "id");
 
@@ -58,7 +58,7 @@ public class TaskRepository implements TaskRepositoryInterface {
                         "WHERE id = ?")
                 .param(task.getTitle())
                 .param(task.getDescription())
-                .param(task.getPriority().getDisplayName().toUpperCase())
+                .param(task.getPriority().getId())
                 .param(task.getEstimatedHours())
                 .param(taskId)
                 .update();
@@ -126,6 +126,14 @@ public class TaskRepository implements TaskRepositoryInterface {
         return jdbcClient.sql(sql)
                 .param(subprojectId)
                 .query(Double.class).optional().orElse(0.0);
+    }
+
+    public List<Task> getAllTasksByProjectId(int projectId) {
+        String sql = "SELECT * FROM PMTool.tasks WHERE project_id = ?";
+        return jdbcClient.sql(sql)
+                .param(projectId)
+                .query(new TaskMapper())
+                .list();
     }
 
 }
