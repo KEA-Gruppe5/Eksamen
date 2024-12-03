@@ -20,9 +20,6 @@ class ProjectControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private ProjectService projectService;
-
     @Test
     @DisplayName("ProjectController test: get registration form")
     void addProject_getAddProjectForm() throws Exception {

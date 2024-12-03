@@ -121,12 +121,6 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .update();
     }
 
-    public void removeSubProject(int parentProjectId, int subProjectId) { //TODO: reuse deleteProject
-        jdbcClient.sql("DELETE FROM subprojects WHERE parent_project_id = ? AND subproject_id = ?")
-                .param(parentProjectId)
-                .param(subProjectId)
-                .update();
-    }
 
     public List<Project> getSubProjectsByParentId(int parentProjectId) {
         return jdbcClient.sql("SELECT * FROM projects p INNER JOIN subprojects s ON p.id = s.subproject_id " +
@@ -135,4 +129,12 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .query(Project.class)
                 .list();
     }
+
+    public List<Project> getAllSubProjects() {
+        return jdbcClient.sql("SELECT * FROM PMTool.projects WHERE id IN (SELECT subproject_id FROM subprojects)")
+                .query(Project.class)
+                .list();
+    }
+
+
 }

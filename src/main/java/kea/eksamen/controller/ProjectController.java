@@ -35,14 +35,25 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
+
+    //TODO maybe a better way that's more understandable idk
     @GetMapping("/projects")
     public String listProjects(Model model, @RequestParam(required = false, defaultValue = "false") boolean archived) {
-        List<Project> projects = archived ? projectService.getArchivedProjects() : projectService.getAllProjects();
-        model.addAttribute("projects", projects);
-        model.addAttribute("isArchived", archived);
-        return "project/projects"; // Reuse the same template
-    }
+        // Step 1: Get the relevant projects (archived or active)
+        List<Project> allProjects = archived ? projectService.getArchivedProjects() : projectService.getAllProjects();
 
+        // Step 2: Filter to include only parent projects (exclude subprojects)
+        List<Project> parentProjects = allProjects.stream()
+                .filter(project -> projectService.isParentProject(project.getId()))
+                .toList();
+
+        // Step 3: Add attributes to the model
+        model.addAttribute("projects", parentProjects);
+        model.addAttribute("isArchived", archived);
+
+        // Step 4: Return the view
+        return "project/projects";
+    }
 
     @PostMapping("/projects/{id}/delete")
     public String deleteProject(@PathVariable("id") int id) {
@@ -88,9 +99,10 @@ public class ProjectController {
         model.addAttribute("parentTitle", parentProject.getTitle());
         return "project/subProjects";
     }
-    @PostMapping("/projects/{parentId}/subprojects/{subProjectId}")  //TODO:possible to remove and use deleteProject
-    public String removeSubProject(@PathVariable("parentId")int parentId, @PathVariable int subProjectId) {
-        subprojectService.removeSubProject(parentId, subProjectId);
+
+    @PostMapping("/projects/{parentId}/subprojects/{subProjectId/}/remove")
+    public String removeSubProject(@PathVariable("parentId") int parentId, @PathVariable("subProjectId") int subProjectId) {
+       subprojectService.removeSubProject(parentId, subProjectId);
         return "redirect:/projects/" + parentId + "/subprojects";
     }
 
@@ -104,9 +116,7 @@ public class ProjectController {
     @PostMapping("/projects/{id}/unarchive")
     public String unarchiveProject(@PathVariable int id) {
         projectService.unarchiveProject(id);
-        return "redirect:/projects?archived=true"; // Correct redirection
+        return "redirect:/projects?archived=true";
     }
-
-
 
 }

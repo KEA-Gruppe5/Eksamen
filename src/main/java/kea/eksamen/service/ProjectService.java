@@ -52,7 +52,16 @@ public class ProjectService {
         return projectRepository.getArchivedProjects();
     }
 
+
     public double getHoursToWorkPerDay(int projectId){
         return 0.0;
     }
+
+    public boolean isParentProject(int projectId) {
+        List<Integer> subProjectIds = projectRepository.getAllSubProjects().stream()
+                .map(Project::getId)
+                .toList();
+        return !subProjectIds.contains(projectId);
+    }
+
 }
