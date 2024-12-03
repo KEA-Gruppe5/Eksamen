@@ -22,14 +22,13 @@
             <p th:text="'How much to work every day: ' + ${subProject.hoursToWorkPerDay} + ' hours'"></p>
         </div>
 
-        <form th:action="@{/projects/{parentId}/subprojects/{subProjectId}/remove(parentId=${parentId}, subProjectId=${subProject.id})}"
-              method="post"
-              style="display: inline-block;">
-            <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('Are you sure you want to delete this subproject?')">
+
+        <form th:action="@{|/projects/${parentId}/subprojects/remove${subProject.id}|}" method="post" style="display: inline-block;">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this subproject?')">
                 Delete Subproject
             </button>
         </form>
+
 
         <a th:href="@{/project/{subProjectId}/tasks(subProjectId=${subProject.id})}" class="btn btn-success">
             To task list

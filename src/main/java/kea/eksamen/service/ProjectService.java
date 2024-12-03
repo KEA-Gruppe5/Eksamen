@@ -48,9 +48,6 @@ public class ProjectService {
         projectRepository.addSubProject(parentProjectId, subProjectId);
     }
 
-    public void removeSubProject(int parentProjectId, int subProjectId) {
-        projectRepository.removeSubProject(parentProjectId, subProjectId);
-    }
 
     public List<SubprojectDTO> getSubprojectDtosById(int parentProjectId) {
         List<SubprojectDTO> subprojectDTOS = new ArrayList<>();
@@ -80,7 +77,6 @@ public class ProjectService {
     }
 
     public double getHoursToWorkPerDay(int subprojectId){
-
         int hoursForAllTasks = taskRepository.getHoursForAllTasks(subprojectId);
         logger.info("Total hours for all tasks for the project id " + subprojectId + " : " + hoursForAllTasks);
         int duration = getProjectById(subprojectId).getDuration();
@@ -91,6 +87,14 @@ public class ProjectService {
         logger.info("Hours to  work per day: " + hoursToWorkPerDay);
         return hoursToWorkPerDay;
     }
+    public boolean isParentProject(int projectId) {
+        List<Integer> subProjectIds = projectRepository.getAllSubProjects().stream()
+                .map(Project::getId)
+                .toList();
+        return !subProjectIds.contains(projectId);
+    }
+
+
 
 
 
