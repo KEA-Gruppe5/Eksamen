@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,6 +24,7 @@
                 <p th:text="'Start: ' + ${project.startDate}"></p>
                 <p th:text="'End: ' + ${project.endDate}"></p>
                 <p th:text="'Duration: ' + ${project.duration} + ' days'"></p>
+                <p th:text="'How much to work every day: ' + ${project.hoursToWorkPerDay} + ' hours'"></p>
             </div>
 
             <a th:href="@{/projects/{projectId}/team(projectId=${project.id})}" class="btn btn-primary">View project team</a>

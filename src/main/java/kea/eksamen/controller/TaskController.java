@@ -60,7 +60,8 @@ public class TaskController {
     }
 
     @GetMapping("/{projectId}/{taskId}/edit")
-    public String editTask(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId, Model model, HttpSession session){
+    public String editTask(@PathVariable("projectId") int projectId,
+                           @PathVariable("taskId") int taskId, Model model, HttpSession session){
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }
@@ -72,13 +73,15 @@ public class TaskController {
     }
 
     @PostMapping("/{projectId}/{taskId}/edit")
-    public String editTask(@PathVariable("taskId")int taskId, @PathVariable("projectId") int projectId, @ModelAttribute Task task){
+    public String editTask(@PathVariable("taskId")int taskId,
+                           @PathVariable("projectId") int projectId, @ModelAttribute Task task){
         taskService.editTask(task, taskId);
         return "redirect:/project/" + projectId +"/tasks";
     }
 
     @GetMapping("/{projectId}/{taskId}/assign")
-    public String assignMember(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId, Model model, HttpSession session){
+    public String assignMember(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
+                               Model model, HttpSession session){
 
         if (session.getAttribute("userId") == null) {
             return "unauthorized";

@@ -1,6 +1,7 @@
 package kea.eksamen.controller;
 
-import kea.eksamen.dto.SubprojectDTO;
+import jakarta.validation.Valid;
+import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.model.Project;
 import kea.eksamen.service.ProjectService;
 import kea.eksamen.service.SubprojectService;
@@ -8,7 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +34,11 @@ public class ProjectController {
         return "project/addProject";
     }
 
-    @PostMapping("/add") //TODO: change to projects/add?
-    public String addProject(@ModelAttribute Project project){
+    @PostMapping("/add")
+    public String addProject(@Valid @ModelAttribute Project project, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "project/addProject";
+        }
         projectService.addProject(project);
         return "redirect:/projects";
     }
@@ -41,13 +47,13 @@ public class ProjectController {
     @GetMapping("")
     public String listProjects(Model model, @RequestParam(required = false, defaultValue = "false") boolean archived) {
         // Get the relevant projects (archived or active)
-        List<Project> allProjects;
+        List<ProjectDTO> allProjects;
         if (archived) allProjects = projectService.getArchivedProjects();
         else allProjects = projectService.getAllProjects();
 
         // Filter to include only parent projects (exclude subprojects)
-        List<Project> parentProjects = new ArrayList<>();
-        for (Project project : allProjects) {
+        List<ProjectDTO> parentProjects = new ArrayList<>();  //TODO:move to service
+        for (ProjectDTO project : allProjects) {
             if (projectService.isParentProject(project.getId())) {
                 parentProjects.add(project);
             }
@@ -97,7 +103,7 @@ public class ProjectController {
     public String listSubProjects(@PathVariable("id")int id, Model model) {
         System.out.println("Fetching subprojects for Parent Project ID: " + id);
         Project parentProject = projectService.getProjectById(id);
-        List<SubprojectDTO> subProjects = subprojectService.getSubprojectDtosById(id);
+        List<ProjectDTO> subProjects = subprojectService.getProjectDtosById(id);
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("parentId", id);
         model.addAttribute("parentTitle", parentProject.getTitle());

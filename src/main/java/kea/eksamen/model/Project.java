@@ -2,7 +2,6 @@ package kea.eksamen.model;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-
 public class Project {
 
     private int id;
