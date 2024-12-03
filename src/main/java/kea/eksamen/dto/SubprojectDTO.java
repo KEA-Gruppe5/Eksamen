@@ -1,5 +1,5 @@
 package kea.eksamen.dto;
-import java.time.temporal.ChronoUnit;
+
 import java.time.LocalDate;
 
 public class SubprojectDTO {
@@ -8,6 +8,7 @@ public class SubprojectDTO {
     private LocalDate startDate;
     private LocalDate endDate;
     private int duration;
+    private double hoursForAllTasks;
     private double hoursToWorkPerDay;
 
     public SubprojectDTO(int id, String title, LocalDate startDate, LocalDate endDate, int duration) {
@@ -60,6 +61,14 @@ public class SubprojectDTO {
 
     public void setHoursToWorkPerDay(double hoursToWorkPerDay) {
         this.hoursToWorkPerDay = hoursToWorkPerDay;
+    }
+
+    public double getHoursForAllTasks() {
+        return hoursForAllTasks;
+    }
+
+    public void setHoursForAllTasks(double hoursForAllTasks) {
+        this.hoursForAllTasks = hoursForAllTasks;
     }
 
     public int getDuration() {

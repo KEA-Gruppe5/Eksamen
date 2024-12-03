@@ -171,11 +171,11 @@ public class TaskRepository implements TaskRepositoryInterface {
                 .update();
     }
 
-    public int getHoursForAllTasks(int subprojectId){
+    public double getHoursForAllTasks(int subprojectId){
         String sql = "SELECT SUM(estimated_hours) FROM PMTool.tasks WHERE sub_project_id = ?";
         return jdbcClient.sql(sql)
                 .param(subprojectId)
-                .query(Integer.class).optional().orElse(0);
+                .query(Double.class).optional().orElse(0.0);
     }
 
 }
