@@ -66,7 +66,7 @@ public class ProjectService {
         ProjectDTO dto = new ProjectDTO(project.getId(), project.getTitle(),
                 project.getStartDate(), project.getEndDate(), project.getDuration());
         dto.setHoursToWorkPerDay(getHoursToWorkPerDay(project.getId()));
-//        dto.setHoursForAllTasks(getHoursForAllTasks(project.getId()));
+        dto.setHoursForAllTasks(getHoursForAllTasks(project.getId()));
         return dto;
     }
 
@@ -74,6 +74,14 @@ public class ProjectService {
         double hours = 0.0;
         for(Project subproject : projectRepository.getSubProjectsByParentId(projectId)){
             hours+= subprojectService.getHoursToWorkPerDay(subproject.getId());
+        }
+        return hours;
+    }
+
+    public double getHoursForAllTasks(int projectId){
+        double hours = 0.0;
+        for(Project subproject : projectRepository.getSubProjectsByParentId(projectId)){
+            hours+= subprojectService.getHoursForAllTasks(subproject.getId());
         }
         return hours;
     }
