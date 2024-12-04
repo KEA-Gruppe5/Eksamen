@@ -12,22 +12,23 @@
 <div th:if="${session.userId != null}">
     <h1>Add New Project</h1>
 
-    <form th:action="@{/projects/add}" method="post" style="max-width: 600px; margin: auto;">
+    <form th:object="${project}" th:action="@{/projects/add}" method="post" style="max-width: 600px; margin: auto;">
 
         <div>
             <label for="title">Project Title:</label>
-            <input type="text" id="title" name="title" th:value="${project.title}" required
+            <input type="text" id="title" name="title" th:field="*{title}" required
                    placeholder="Enter project title"/>
         </div>
         <div>
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" name="startDate" th:value="${project.startDate}" required/>
+            <input type="date" id="startDate" name="dateRange.startDate" th:field="*{dateRange.startDate}" required/>
         </div>
         <div>
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" name="endDate" th:value="${project.endDate}" required/>
+            <input type="date" id="endDate" name="dateRange.endDate" th:field="*{dateRange.endDate}" required/>
         </div>
-        <!-- Duration Field Removed -->
+        <div style="color:red" th:if="${#fields.hasErrors('dateRange')}" th:errors="*{dateRange}">Invalid start date</div>
+
         <div>
             <button type="submit" class="btn btn-success">Add Project</button>
             <a th:href="@{/projects}" class="btn btn-secondary">Cancel</a>
