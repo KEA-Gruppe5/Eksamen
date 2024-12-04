@@ -12,7 +12,8 @@
 
 <div class="container mt-5" th:if="${session.userId != null}">
     <h1 class="mb-4">Add New Project</h1>
-
+    <p>Below you can add a new project where you can have sub projects under it along with tasks. </p>
+    <hr>
     <form th:action="@{/projects/add}" method="post">
         <div class="mb-3">
             <label for="title" class="form-label">Project Title:</label>

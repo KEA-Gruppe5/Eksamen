@@ -10,7 +10,8 @@
 
 <div th:if="${session.userId != null}" class="container mt-5">
     <h1 class="mb-4">Assign Member to Task</h1>
-
+    <p>Below you can assign one team member to a task, so they know what to work on. </p>
+    <hr>
     <form th:action="@{/project/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${taskId})}" method="post">
         <h5>Select a Member</h5>
         <div class="mb-3">

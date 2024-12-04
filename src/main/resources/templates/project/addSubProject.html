@@ -12,7 +12,8 @@
 
 <div class="container mt-5">
     <h1 class="mb-4">Add Subproject</h1>
-
+    <p>Below you can add a sub project. </p>
+    <hr>
     <form th:action="@{/projects/{parentId}/subprojects/add(parentId=${parentId})}" method="post">
         <div class="mb-3">
             <label for="title" class="form-label">Title:</label>

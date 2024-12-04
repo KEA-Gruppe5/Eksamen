@@ -11,6 +11,8 @@
 
 <div class="container mt-5">
     <h1 class="text-center">Add Task</h1>
+    <p>Below you can add a new task for your current subproject. </p>
+    <hr>
     <form th:object="${addNewTask}" th:action="@{/project/{projectId}/add(projectId=${projectId})}"  method="post">
         <input type="hidden" th:field="*{projectId}" th:value="${projectId}">
 
