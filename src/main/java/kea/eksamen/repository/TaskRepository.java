@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 
+import java.sql.Date;
 import java.util.List;
 
 @Repository
@@ -30,12 +31,14 @@ public class TaskRepository implements TaskRepositoryInterface {
         logger.info("adding task..");
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        int id = jdbcClient.sql("INSERT INTO PMTool.tasks (project_id, title, description, priority, estimated_hours) " +
-                        "VALUES (?, ?, ?, ?, ?)")
+        int id = jdbcClient.sql("INSERT INTO PMTool.tasks (project_id, title, description, priority, status, deadline, estimated_hours) " +
+                        "VALUES (?, ?, ?, ?, ?,?, ?)")
                 .param(task.getProjectId())
                 .param(task.getTitle())
                 .param(task.getDescription())
                 .param(task.getPriority().getId())
+                .param(task.getStatus().getId())
+                .param(task.getDeadline())
                 .param(task.getEstimatedHours())
                 .update(keyHolder, "id");
 
@@ -54,11 +57,13 @@ public class TaskRepository implements TaskRepositoryInterface {
     public Task updateTask(Task task, int taskId) {
         logger.info("Updating task with ID: " + taskId);
         int rowsAffected = jdbcClient.sql("UPDATE PMTool.tasks " +
-                        "SET title = ?, description = ?, priority = ?, estimated_hours = ? " +
+                        "SET title = ?, description = ?, priority = ?, status = ?, deadline = ?, estimated_hours = ? " +
                         "WHERE id = ?")
                 .param(task.getTitle())
                 .param(task.getDescription())
                 .param(task.getPriority().getId())
+                .param(task.getStatus().getId())
+                .param(task.getDeadline())
                 .param(task.getEstimatedHours())
                 .param(taskId)
                 .update();

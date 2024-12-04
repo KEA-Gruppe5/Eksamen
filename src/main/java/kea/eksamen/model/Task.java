@@ -1,11 +1,18 @@
 package kea.eksamen.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+
 public class Task {
     private int id;
     private int projectId;
     private String title;
     private String description;
     private TaskPriority priority;
+    private TaskStatus status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // formats deadline in thymeleaf to use correct formatting
+    private LocalDate deadline;
     private int assignedUserId;
     private double estimatedHours;
 
@@ -14,12 +21,25 @@ public class Task {
     }
 
     public Task(int id, int projectId, String title, String description,
-                TaskPriority priority, int assignedUserId, double estimatedHours) {
+                TaskPriority priority, TaskStatus status, LocalDate deadline, int assignedUserId, double estimatedHours) {
         this.id = id;
         this.projectId = projectId;
         this.title = title;
         this.description = description;
         this.priority = priority;
+        this.status = status;
+        this.deadline = deadline;
+        this.assignedUserId = assignedUserId;
+        this.estimatedHours = estimatedHours;
+    }
+
+    public Task(int projectId, String title, String description, TaskPriority priority, TaskStatus status, LocalDate deadline, int assignedUserId, int estimatedHours) {
+        this.projectId = projectId;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = status;
+        this.deadline = deadline;
         this.assignedUserId = assignedUserId;
         this.estimatedHours = estimatedHours;
     }
@@ -80,25 +100,19 @@ public class Task {
         this.estimatedHours = estimatedHours;
     }
 
-    public Task(int projectId, String title, String description, TaskPriority priority, int assignedUserId, int estimatedHours) {
-        this.projectId = projectId;
-        this.title = title;
-        this.description = description;
-        this.priority = priority;
-        this.assignedUserId = assignedUserId;
-        this.estimatedHours = estimatedHours;
+    public TaskStatus getStatus() {
+        return status;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", projectId=" + projectId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", priority=" + priority +
-                ", assignedUserId=" + assignedUserId +
-                ", estimatedHours=" + estimatedHours +
-                '}';
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public LocalDate getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
     }
 }

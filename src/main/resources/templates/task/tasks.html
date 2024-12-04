@@ -18,6 +18,8 @@
             <th>Task Name</th>
             <th>Description</th>
             <th>Priority</th>
+            <th>Status</th>
+            <th>Deadline</th>
             <th>Estimated hours for task</th>
             <th>Assigned Team Member</th>
             <th>Actions</th>
@@ -29,6 +31,8 @@
             <td th:text="${task.title}"></td>
             <td th:text="${task.description}"></td>
             <td th:text="${task.priority}"></td>
+            <td th:text="${task.status}"></td>
+            <td th:text="${task.deadline}"></td>
             <td th:text="${task.estimatedHours + ' hours'}"></td>
             <td>
                 <span th:if="${task.teamMemberDTO != null}" th:text="${task.teamMemberDTO.fullName}"></span>

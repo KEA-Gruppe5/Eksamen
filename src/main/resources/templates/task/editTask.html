@@ -35,11 +35,24 @@
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="title" class="form-label">Estimated hours for task</label>
+                <label for="estimatedHours" class="form-label">Estimated hours for task</label>
                 <input type="number" class="form-control" id="estimatedHours" th:field="*{estimatedHours}" required>
             </div>
 
-
+            <div class="col-md-6 mb-3">
+                <label for="priority" class="form-label">Status</label>
+                <select class="form-select" id="status" th:field="*{status}" required>
+                    <option value="TODO">Todo</option>
+                    <option value="IN_PROGRESS">In progress</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="CANCELED">Canceled</option>
+                    <option value="PENDING">Pending</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="deadline" class="form-label">Deadline</label>
+                <input type="date" class="form-control" id="deadline" th:field="*{deadline}" required />
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Add Task</button>
