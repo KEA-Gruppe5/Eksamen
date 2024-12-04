@@ -75,13 +75,18 @@ public class ProjectController {
 
     @GetMapping("/{id}/update")
     public String editProject(@PathVariable("id") int id, Model model) {
-        Project project = projectService.getProjectById(id);
+        ProjectDTO project = projectService.getProjectById(id);
         model.addAttribute("project", project);
         return "project/updateProject";
     }
 
     @PostMapping("/{id}/update")
-    public String updateProject(@PathVariable("id") int id, @ModelAttribute Project project) {
+    public String updateProject(@PathVariable("id") int id, @ModelAttribute("project") @Valid ProjectDTO project,
+                                BindingResult bindingResult) {
+        logger.info("Does binding result has errors? : "+bindingResult.hasErrors());
+        if(bindingResult.hasErrors()){
+            return "project/updateProject";
+        }
         projectService.updateProject(project, id);
         return "redirect:/projects";
     }
@@ -106,7 +111,7 @@ public class ProjectController {
     @GetMapping("/{id}/subprojects")
     public String listSubProjects(@PathVariable("id")int id, Model model) {
         System.out.println("Fetching subprojects for Parent Project ID: " + id);
-        Project parentProject = projectService.getProjectById(id);
+        ProjectDTO parentProject = projectService.getProjectById(id);
         List<ProjectDTO> subProjects = subprojectService.getProjectDtosById(id);
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("parentId", id);

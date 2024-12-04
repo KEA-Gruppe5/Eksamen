@@ -27,16 +27,16 @@ public class ProjectService {
         return projectRepository.addProject(mapDtoToProject(project));
     }
 
-    public Project updateProject(Project project, int id) {
-        return projectRepository.updateProject(project, id);
+    public Project updateProject(ProjectDTO project, int id) {
+        return projectRepository.updateProject(mapDtoToProject(project), id);
     }
 
     public boolean deleteProject(int id) {
         return projectRepository.deleteProject(id);
     }
 
-    public Project getProjectById(int id) {
-        return projectRepository.getProjectById(id);
+    public ProjectDTO getProjectById(int id) {
+        return mapProjectToDto(projectRepository.getProjectById(id));
     }
 
     public List<ProjectDTO> getAllProjects() {
