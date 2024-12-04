@@ -5,19 +5,18 @@ import java.time.temporal.ChronoUnit;
 public class ProjectDTO {
     private int id;
     private String title;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private DateRange dateRange;
     private int duration;
     private double hoursForAllTasks;
     private double hoursToWorkPerDay;
 
-    public ProjectDTO(int id, String title, LocalDate startDate, LocalDate endDate, int duration) {
+    public ProjectDTO(int id, String title, DateRange dateRange, int duration) {
         this.id = id;
         this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.dateRange = dateRange;
         this.duration = duration;
     }
+
     public int getId() {
         return id;
     }
@@ -34,20 +33,12 @@ public class ProjectDTO {
         this.title = title;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public DateRange getDateRange() {
+        return dateRange;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setDateRange(DateRange dateRange) {
+        this.dateRange = dateRange;
     }
 
     public void setDuration(int duration) {
@@ -71,11 +62,11 @@ public class ProjectDTO {
     }
 
     public int getDuration() {
-        if (startDate != null && endDate != null) {
-            if (startDate.isAfter(endDate)) {
+        if (dateRange.getStartDate() != null && dateRange.getEndDate() != null) {
+            if (dateRange.getStartDate().isAfter(dateRange.getEndDate())) {
                 return 0;
             }
-            return (int) ChronoUnit.DAYS.between(startDate, endDate);
+            return (int) ChronoUnit.DAYS.between(dateRange.getStartDate(), dateRange.getEndDate());
         }
         return 0;
     }

@@ -1,6 +1,7 @@
 package kea.eksamen.service;
 
 
+import kea.eksamen.dto.DateRange;
 import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.model.Project;
 import kea.eksamen.repository.ProjectRepository;
@@ -64,7 +65,7 @@ public class ProjectService {
 
     public ProjectDTO mapProjectToDto(Project project){
         ProjectDTO dto = new ProjectDTO(project.getId(), project.getTitle(),
-                project.getStartDate(), project.getEndDate(), project.getDuration());
+                new DateRange(project.getStartDate(),project.getEndDate()), project.getDuration());
         dto.setHoursToWorkPerDay(getHoursToWorkPerDay(project.getId()));
         dto.setHoursForAllTasks(getHoursForAllTasks(project.getId()));
         return dto;
