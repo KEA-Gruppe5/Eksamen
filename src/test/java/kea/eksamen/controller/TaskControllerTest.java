@@ -2,10 +2,7 @@ package kea.eksamen.controller;
 
 import kea.eksamen.dto.TaskDTO;
 import kea.eksamen.dto.TeamMemberDTO;
-import kea.eksamen.model.Role;
-import kea.eksamen.model.Task;
-import kea.eksamen.model.TaskPriority;
-import kea.eksamen.model.User;
+import kea.eksamen.model.*;
 import kea.eksamen.service.SubprojectService;
 import kea.eksamen.service.TaskService;
 import kea.eksamen.service.UserService;
@@ -19,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,14 +50,14 @@ class TaskControllerTest {
 
     @BeforeEach
     void setUp() {
-        task = new Task(1, 1, "Test Task", "description", TaskPriority.MEDIUM, 0, 8);
+        task = new Task(1, 1, "Test Task", "description", TaskPriority.MEDIUM, TaskStatus.TODO, LocalDate.now(), 0, 8);
         userList = new ArrayList<>();
         user = new User("FirstName", "LastName", "email@test", "kea123");
         user.setRole(Role.EMPLOYEE);
         userList.add(user);
         mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute("userId", 1);
-        taskDTO = new TaskDTO(1, 1, "Test Task", "description", "MEDIUM", null, 8);
+        taskDTO = new TaskDTO(1, 1, "Test Task", "description", "MEDIUM", null,LocalDate.now() ,new TeamMemberDTO("test","test"),2);
     }
 
     @Test

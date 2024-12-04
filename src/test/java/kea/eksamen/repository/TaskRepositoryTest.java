@@ -2,6 +2,7 @@ package kea.eksamen.repository;
 
 import kea.eksamen.model.Task;
 import kea.eksamen.model.TaskPriority;
+import kea.eksamen.model.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,7 @@ class TaskRepositoryTest {
         task.setTitle("Test");
         task.setDescription("This is a test");
         task.setPriority(TaskPriority.HIGH);
+        task.setStatus(TaskStatus.COMPLETED);
         task.setAssignedUserId(1);
         task.setProjectId(1);
 
@@ -56,6 +58,7 @@ class TaskRepositoryTest {
         updatedTask.setTitle("Updated Title");
         updatedTask.setDescription("Updated Description");
         updatedTask.setPriority(TaskPriority.MEDIUM);
+        updatedTask.setStatus(TaskStatus.PENDING);
 
         Task result = taskRepository.updateTask(updatedTask, 3); //using taskId 3 to not interfere with taskId 1 which are used for the other tests.
 
@@ -126,7 +129,7 @@ class TaskRepositoryTest {
 
     @Test
     void getHoursForAllTasks(){
-        double expected = 148;
+        double expected = 18;
         double actual = taskRepository.getHoursForAllTasks(2);
         assertEquals(expected, actual);
     }

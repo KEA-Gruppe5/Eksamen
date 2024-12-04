@@ -87,6 +87,8 @@ public class TaskService {
                 task.getTitle(),
                 task.getDescription(),
                 task.getPriority().getDisplayName(),
+                task.getStatus().getDisplayName(),
+                task.getDeadline(),
                 teamMemberDTO,
                 task.getEstimatedHours()
         );
