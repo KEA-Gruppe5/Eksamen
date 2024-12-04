@@ -1,60 +1,62 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Subprojects for Parent Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<div th:replace="~{fragments/appNav :: appNav}"></div>
+
 <body>
-<div th:replace="~{fragments/nav :: nav}"></div>
 
-<h1 th:text="'Subprojects for ' + ${parentTitle}"></h1>
+<div class="container mt-5">
+    <h1 class="mb-4" th:text="'Subprojects for ' + ${parentTitle}"></h1>
 
-<!-- Display message if there are no subprojects -->
-<div th:if="${#lists.isEmpty(subProjects)}">
-    <p>No subprojects are associated with this parent project.</p>
+
+    <div class="mt-4">
+        <a th:href="@{/projects/{parentId}/subprojects/add(parentId=${parentId})}" class="btn btn-success d-inline-block">Add Subproject</a>
+        <a th:href="@{/projects}" class="btn btn-secondary d-inline-block">Back to Projects</a>
+    </div>
+    <br>
+    <div th:if="${#lists.isEmpty(subProjects)}">
+        <p>No subprojects are associated with this parent project.</p>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(subProjects)}">
+        <table class="table table-bordered">
+            <thead class="table-secondary">
+            <tr>
+                <th>Title</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Duration (Days)</th>
+                <th>Total Work (Hours)</th>
+                <th>Work per Day (Hours)</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subProject : ${subProjects}">
+                <td th:text="${subProject.title}"></td>
+                <td th:text="${subProject.startDate}"></td>
+                <td th:text="${subProject.endDate}"></td>
+                <td th:text="${subProject.duration}"></td>
+                <td th:text="${subProject.hoursForAllTasks}"></td>
+                <td th:text="${subProject.hoursToWorkPerDay}"></td>
+                <td>
+                    <div class="d-inline">
+                        <form th:action="@{/projects/{parentId}/subprojects/{subProjectId}/remove(parentId=${parentId}, subProjectId=${subProject.id})}" method="post" class="d-inline-block">
+                            <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this subproject?')">Delete</button>
+                        </form>
+                        <a th:href="@{/projects/{subProjectId}/update(subProjectId=${subProject.id})}" class="btn btn-primary d-inline-block">Edit</a>
+                        <a th:href="@{/project/{subProjectId}/tasks(subProjectId=${subProject.id})}" class="btn btn-success d-inline-block">View Tasks</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<!-- List of subprojects if available -->
-<ul th:if="${!#lists.isEmpty(subProjects)}">
-    <li th:each="subProject : ${subProjects}">
-        <div>
-            <strong th:text="${subProject.title}"></strong>
-            <p th:text="'Start: ' + ${subProject.startDate}"></p>
-            <p th:text="'End: ' + ${subProject.endDate}"></p>
-            <p th:text="'Duration: ' + ${subProject.duration} + ' days'"></p>
-            <p th:text="'Total amount of work: ' + ${subProject.hoursForAllTasks} + ' hours'"></p>
-            <p th:text="'How much to work every day: ' + ${subProject.hoursToWorkPerDay} + ' hours'"></p>
-        </div>
-
-        <!-- delete-->
-        <form th:action="@{/projects/{parentId}/subprojects/{subProjectId}/remove(parentId=${parentId}, subProjectId=${subProject.id})}"
-              method="post" style="display: inline-block;">
-            <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('Are you sure you want to delete this subproject?')">
-                Delete Subproject
-            </button>
-        </form>
-
-        <!-- edit -->
-        <a th:href="@{/projects/{subProjectId}/update(subProjectId=${subProject.id})}" class="btn btn-primary">
-            Edit Subproject
-        </a>
-
-        <!-- Tasks -->
-        <a th:href="@{/project/{subProjectId}/tasks(subProjectId=${subProject.id})}" class="btn btn-success">
-            View Tasks
-        </a>
-    </li>
-</ul>
-
-
-<div style="margin-top: 20px;">
-    <a th:href="@{/projects/{parentId}/subprojects/add(parentId=${parentId})}" class="btn btn-success">
-        Add Subproject
-    </a>
-    <a th:href="@{/projects}" class="btn btn-secondary">
-        Back to Projects
-    </a>
-</div>
-
 </body>
 </html>

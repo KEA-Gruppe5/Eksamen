@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Task List</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="~{fragments/nav :: nav}"></div>
+<div th:replace="~{fragments/appNav :: appNav}"></div>
 
 <div class="container mt-5">
     <h1 class="mb-4">Tasks for Project ID: <span th:text="${projectId}"></span></h1>
     <a th:href="@{/project/{projectId}/add(projectId=${projectId})}" class="btn btn-primary btn-sm mb-3">Add new task</a>
 
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th>Task ID</th>
@@ -22,15 +21,16 @@
                 <th>Status</th>
                 <th>Deadline</th>
                 <th>Estimated Hours</th>
-                <th>Assigned Member</th>
-                <th>Actions</th>
+                <th>Assigned member</th>
+                <th>Member actions</th>
+                <th>Task actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="task : ${tasks}">
                 <td th:text="${task.id}"></td>
                 <td class="editable" th:text="${task.title}"></td>
-                <td class="editable" th:text="${task.description}" ></td>
+                <td class="editable" th:text="${task.description}"></td>
                 <td>
                     <span th:class="${'priority ' + task.priority.toLowerCase()}" th:text="${task.priority}"></span>
                 </td>
@@ -45,14 +45,16 @@
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm" role="group">
-                        <a th:href="@{/project/{projectId}/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}" class="btn btn-primary">Edit</a>
-                        <a th:href="@{/project/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${task.id})}" class="btn btn-warning">Assign</a>
-
-                        <form th:action="@{/project/{projectId}/{taskId}/removeMember(projectId=${projectId}, taskId=${task.id})}" method="post" style="display:inline;">
+                        <form th:action="@{/project/{projectId}/{taskId}/removeMember(projectId=${projectId}, taskId=${task.id})}" method="post" style="display: inline;">
                             <button type="submit" class="btn btn-danger">Remove Member</button>
                         </form>
-
-                        <form th:action="@{/project/{projectId}/{taskId}/delete(projectId=${projectId}, taskId=${task.id})}" method="post" style="display:inline;">
+                        <a th:href="@{/project/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${task.id})}" class="btn btn-warning">Assign</a>
+                    </div>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a th:href="@{/project/{projectId}/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}" class="btn btn-primary">Edit</a>
+                        <form th:action="@{/project/{projectId}/{taskId}/delete(projectId=${projectId}, taskId=${task.id})}" method="post" style="display: inline;">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </div>
@@ -64,6 +66,7 @@
 
     <a th:href="@{/projects}" class="btn btn-secondary mt-3">Back to Projects</a>
 </div>
+
 
 </body>
 </html>

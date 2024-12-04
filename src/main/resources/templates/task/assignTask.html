@@ -1,25 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Assign Team Member</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <div th:replace="~{fragments/appNav :: appNav}"></div>
 </head>
 <body>
 
-<div class="container mt-5">
-    <h1>Assign member to task</h1>
+<div th:if="${session.userId != null}" class="container mt-5">
+    <h1 class="mb-4">Assign Member to Task</h1>
+
     <form th:action="@{/project/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${taskId})}" method="post">
-        <h3>Select a member</h3>
-        <div th:each="user : ${users}">
-            <input type="radio" th:value="${user.id}" th:id="${user.id}" name="userIdToAssign"
-                   th:checked="${user.id == assignedMember}" />
-            <label th:text="${user.fullName}"></label><br />
+        <h5>Select a Member</h5>
+        <div class="mb-3">
+            <div th:each="user : ${users}">
+                <div class="form-check">
+                    <input type="radio" th:value="${user.id}" th:id="${user.id}" name="userIdToAssign"
+                           th:checked="${user.id == assignedMember}" class="form-check-input" />
+                    <label th:for="${user.id}" class="form-check-label" th:text="${user.fullName}"></label>
+                </div>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Assign</button>
     </form>
 
     <a th:href="@{/project/{projectId}/tasks(projectId=${projectId})}" class="btn btn-secondary mt-3">Back to Tasks</a>
+</div>
+
+<div th:if="${session.userId == null}">
+    <h1>You are not authenticated</h1>
 </div>
 
 </body>
