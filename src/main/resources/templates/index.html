@@ -2,24 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Project Manager Tool</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/index-styles.css">
 </head>
 <body>
-<div class="nav-item">
-    <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit()">Login for debug</button>
-</div>
 
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<div class="center-container">
+    <div id="myText">
+        <h1>Project Manager Tool</h1>
+        <p>"Efficiently manage projects, subprojects, and tasks with our intuitive PMT. Streamline your workflow with features like project creation, updates, deletions, and task management—all in one place."</p>
+    </div>
+
+    <div class="login-buttons">
+        <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit('client@example.com', 'password123')">
+            Login for Debug for Client
+        </button>
+        <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit('employee@example.com', 'password123')">
+            Login for Debug for Employee
+        </button>
+        <button type="button" class="btn btn-warning" onclick="autoFillAndSubmit('pm@example.com', 'password123')">
+            Login for Debug for PM
+        </button>
+    </div>
+</div>
 
 <form id="loginForm" action="/login" method="post" style="display: none;">
     <input type="email" id="email" name="email" />
     <input type="password" id="password" name="password" />
 </form>
+
 <script>
-    function autoFillAndSubmit() {
-        document.getElementById('email').value = 'alice.smith@example.com';
-        document.getElementById('password').value = 'password123';
+    function autoFillAndSubmit(email, password) {
+        document.getElementById('email').value = email;
+        document.getElementById('password').value = password;
         document.getElementById('loginForm').submit();
     }
 </script>
+
+<footer class="text-center mt-5">
+    <p><a href="mailto:fakeEmail@gmail.com">Contact us at fakeEmail@gmail.com</a></p>
+    <p>PMT &copy;2024</p>
+</footer>
+
 </body>
 </html>
