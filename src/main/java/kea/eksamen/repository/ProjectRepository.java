@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 @Repository
 public class ProjectRepository implements ProjectRepositoryInterface {
     private static final Logger logger = LoggerFactory.getLogger(ProjectRepository.class);
-
     private final JdbcClient jdbcClient;
 
     public ProjectRepository(JdbcClient jdbcClient) {
@@ -60,13 +59,27 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
     @Override
     public Boolean deleteProject(int id) {
-        int rows = jdbcClient.sql("DELETE FROM PMTool.projects WHERE id = ?") //TODO: delete all subprojects when deleting parent
+        //get all the subProject ids from the parent project id.
+        List<Integer> subProjectsId = jdbcClient.sql("SELECT subproject_id FROM PMTool.subprojects WHERE parent_project_id = ?")
+                .param(id) //binds Parent id to ?
+                .query(Integer.class) //maps the result (all the subProject id values) to a list of(Integers),since java cant read Database rows.
+                .list(); // execute database returns list(Integer), that's stored in the variable subProjectsId
+        for (Integer subProjects : subProjectsId) {
+            //looping and get all subprojects and delete them
+            jdbcClient.sql("DELETE FROM PMTool.projects WHERE id = ?")
+                    .param(subProjects)
+                    .update();
+            logger.info("Deleted subproject with ID: " + subProjects);
+        }
+        // delete the parent project
+        int rows = jdbcClient.sql("DELETE FROM PMTool.projects WHERE id = ?")
                 .param(id)
                 .update();
         if (rows > 0) {
-            logger.info("Successfully deleted project with ID: " + id);
+            logger.info("projects delete" + id);
             return true;
         } else {
+
             logger.warn("No project found with ID: " + id + ". Deletion failed.");
             return false;
         }
