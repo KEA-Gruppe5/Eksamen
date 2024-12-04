@@ -1,10 +1,11 @@
 package kea.eksamen.dto;
-
-import java.time.LocalDate;
+import kea.eksamen.util.EndDateAfterStartDate;
 import java.time.temporal.ChronoUnit;
+
 public class ProjectDTO {
     private int id;
     private String title;
+    @EndDateAfterStartDate
     private DateRange dateRange;
     private int duration;
     private double hoursForAllTasks;
@@ -15,6 +16,10 @@ public class ProjectDTO {
         this.title = title;
         this.dateRange = dateRange;
         this.duration = duration;
+    }
+
+    public ProjectDTO() {
+        this.dateRange = new DateRange();
     }
 
     public int getId() {

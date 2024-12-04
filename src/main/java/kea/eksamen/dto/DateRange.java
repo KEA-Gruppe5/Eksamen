@@ -11,6 +11,9 @@ public class DateRange {
         this.endDate = endDate;
     }
 
+    public DateRange() {
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -25,5 +28,13 @@ public class DateRange {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "DateRange{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
     }
 }

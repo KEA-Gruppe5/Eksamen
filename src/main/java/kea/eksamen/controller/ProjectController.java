@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,7 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
     private final SubprojectService subprojectService;
+
     private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
     public ProjectController(ProjectService projectService, SubprojectService subprojectService) {
@@ -29,13 +29,13 @@ public class ProjectController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        Project project = new Project();
-        model.addAttribute("project", project);
+        model.addAttribute("project", new ProjectDTO());
         return "project/addProject";
     }
 
     @PostMapping("/add")
-    public String addProject(@Valid @ModelAttribute Project project, BindingResult bindingResult){
+    public String addProject(@ModelAttribute("project") @Valid ProjectDTO project, BindingResult bindingResult){
+        logger.info("Does binding result has errors? : "+bindingResult.hasErrors());
         if(bindingResult.hasErrors()){
             return "project/addProject";
         }
@@ -89,12 +89,16 @@ public class ProjectController {
     @GetMapping("/{parentId}/subprojects/add")
     public String showAddSubProjectForm(@PathVariable("parentId") int parentId, Model model) {
         model.addAttribute("parentId", parentId);
-        model.addAttribute("project", new Project());
+        model.addAttribute("project", new ProjectDTO());
         return "project/addSubProject";
     }
 
     @PostMapping("/{parentId}/subprojects/add")
-    public String addSubProject(@PathVariable("parentId") int parentId, @ModelAttribute Project subProject) {
+    public String addSubProject(@PathVariable("parentId") int parentId,  @ModelAttribute("project") @Valid ProjectDTO subProject, BindingResult bindingResult) {
+        logger.info("Does binding result has errors? : "+bindingResult.hasErrors());
+        if(bindingResult.hasErrors()){
+            return "project/addSubProject";
+        }
         subprojectService.addSubProject(subProject, parentId);
         return "redirect:/projects/" + parentId + "/subprojects";
     }

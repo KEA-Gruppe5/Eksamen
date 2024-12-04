@@ -23,8 +23,8 @@ public class ProjectService {
         this.subprojectService = subprojectService;
     }
 
-    public Project addProject(Project project) {
-        return projectRepository.addProject(project);
+    public Project addProject(ProjectDTO project) {
+        return projectRepository.addProject(mapDtoToProject(project));
     }
 
     public Project updateProject(Project project, int id) {
@@ -69,6 +69,13 @@ public class ProjectService {
         dto.setHoursToWorkPerDay(getHoursToWorkPerDay(project.getId()));
         dto.setHoursForAllTasks(getHoursForAllTasks(project.getId()));
         return dto;
+    }
+
+    public Project mapDtoToProject(ProjectDTO projectDto){
+        Project project = new Project(projectDto.getTitle(),
+                projectDto.getDateRange().getStartDate(), projectDto.getDateRange().getEndDate(),
+                projectDto.getDuration());
+        return project;
     }
 
     public double getHoursToWorkPerDay(int projectId){

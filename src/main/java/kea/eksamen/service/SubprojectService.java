@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SubprojectService {
+public class SubprojectService{
 
     private static final Logger logger = LoggerFactory.getLogger(SubprojectService.class);
 
@@ -46,6 +46,13 @@ public class SubprojectService {
         return dto;
     }
 
+    public Project mapDtoToProject(ProjectDTO projectDto){
+        Project project = new Project(projectDto.getTitle(),
+                projectDto.getDateRange().getStartDate(), projectDto.getDateRange().getEndDate(),
+                projectDto.getDuration());
+        return project;
+    }
+
     public double getHoursToWorkPerDay(int subprojectId){
 
         double hoursForAllTasks = getHoursForAllTasks(subprojectId);
@@ -64,8 +71,8 @@ public class SubprojectService {
         return hoursForAllTasks;
     }
 
-    public Project addSubProject(Project subProject, int parentId) {
-        Project addedSubproject = projectRepository.addProject(subProject);
+    public Project addSubProject(ProjectDTO subProject, int parentId) {
+        Project addedSubproject = projectRepository.addProject(mapDtoToProject(subProject));
         if (addedSubproject != null) {
            addSubProject(parentId, addedSubproject.getId());
         }

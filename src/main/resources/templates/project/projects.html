@@ -16,13 +16,13 @@
     <a th:href="@{/projects(archived=${!isArchived})}" class="btn btn-secondary">
         <span th:text="${isArchived ? 'Back to Active Projects' : 'View Archived Projects'}"></span>
     </a>
-
+    <a th:href="@{/projects/add}" class="btn btn-success">Add new project</a>
     <ul>
         <li th:each="project : ${projects}">
             <div>
                 <strong th:text="${project.title}"></strong>
-                <p th:text="'Start: ' + ${project.startDate}"></p>
-                <p th:text="'End: ' + ${project.endDate}"></p>
+                <p th:text="'Start: ' + ${project.dateRange.startDate}"></p>
+                <p th:text="'End: ' + ${project.dateRange.startDate}"></p>
                 <p th:text="'Duration: ' + ${project.duration} + ' days'"></p>
                 <p th:text="'Total amount of work: ' + ${project.hoursForAllTasks} + ' hours'"></p>
                 <p th:text="'How much to work every day: ' + ${project.hoursToWorkPerDay} + ' hours'"></p>
