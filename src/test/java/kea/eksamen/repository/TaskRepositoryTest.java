@@ -104,6 +104,16 @@ class TaskRepositoryTest {
     }
 
     @Test
+    void findAssignedMember() {
+        Task task = taskRepository.findTaskById(2);
+        taskRepository.assignMember(task.getId(),2);
+        assertNotNull(task);
+
+        int foundMember = taskRepository.findAssignedMember(task.getId());
+        assertEquals(2,foundMember);
+    }
+
+    @Test
     void removeAssignedUser() {
         Task task = taskRepository.findTaskById(2);
         assertNotNull(task);
@@ -120,4 +130,6 @@ class TaskRepositoryTest {
         double actual = taskRepository.getHoursForAllTasks(2);
         assertEquals(expected, actual);
     }
+
+
 }

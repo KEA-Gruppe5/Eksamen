@@ -121,6 +121,18 @@ public class TaskRepository implements TaskRepositoryInterface {
                 .update();
     }
 
+    public int findAssignedMember(int taskId){
+        String sql = "SELECT assigned_user_id FROM tasks WHERE id = ?";
+        List<Integer> result = jdbcClient.sql(sql)
+                .param(taskId)
+                .query(Integer.class)
+                .list();
+        if (result.isEmpty() || result.get(0) == null) {
+            return 0;
+        }
+        return result.get(0);
+    }
+
     public double getHoursForAllTasks(int subprojectId) {
         String sql = "SELECT SUM(estimated_hours) FROM PMTool.tasks WHERE project_id = ?";
         return jdbcClient.sql(sql)
