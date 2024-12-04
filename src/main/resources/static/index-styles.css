@@ -1,0 +1,63 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url("https://bridge24.com/wp-content/uploads/2019/07/importance-of-project-reporting.png");
+    background-size: cover;
+    font-family: Arial, sans-serif;
+}
+
+
+.center-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#myText h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+#myText p {
+    font-size: 1.2rem;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+
+.login-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.login-buttons .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
