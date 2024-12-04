@@ -70,4 +70,8 @@ public class SubprojectService {
         }
         return addedSubproject;
     }
+
+    public int getParentId(int subProjectId){
+        return projectRepository.getParentIdBySubProjectId(subProjectId);
+    }
 }

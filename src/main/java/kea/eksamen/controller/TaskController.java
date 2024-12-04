@@ -3,9 +3,8 @@ package kea.eksamen.controller;
 import jakarta.servlet.http.HttpSession;
 import kea.eksamen.dto.TaskDTO;
 import kea.eksamen.model.Task;
-import kea.eksamen.model.User;
+import kea.eksamen.service.SubprojectService;
 import kea.eksamen.service.TaskService;
-import kea.eksamen.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +15,12 @@ import java.util.List;
 @RequestMapping("/project")
 public class TaskController {
     private final TaskService taskService;
-    private final UserService userService;
+    private final SubprojectService subprojectService;
 
 
-    public TaskController(TaskService taskService, UserService userService) {
+    public TaskController(TaskService taskService, SubprojectService subprojectService) {
         this.taskService = taskService;
-        this.userService = userService;
+        this.subprojectService = subprojectService;
     }
 
     @GetMapping("/{projectId}/add")
@@ -88,11 +87,11 @@ public class TaskController {
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }
+
         model.addAttribute("taskId", taskId);
         model.addAttribute("projectId", projectId);
-
-        List<User> users = userService.findAllUsers();
-        model.addAttribute("users", users);
+        model.addAttribute("assignedMember", taskService.getAssignedMember(taskId));
+        model.addAttribute("users", taskService.getMembersFromTeam(subprojectService.getParentId(projectId)));
 
         return "task/assignTask";
     }

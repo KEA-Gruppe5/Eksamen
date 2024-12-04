@@ -26,6 +26,7 @@ class TaskServiceTest {
     private UserRepository userRepository;
 
     private TaskService taskService;
+    private ProjectTeamService projectTeamService;
 
     private Task task;
 
@@ -33,8 +34,9 @@ class TaskServiceTest {
     void setUp() {
         taskRepository = mock(TaskRepository.class);
         userRepository = mock(UserRepository.class);
+        projectTeamService = mock(ProjectTeamService.class);
 
-        taskService = new TaskService(taskRepository, userRepository);
+        taskService = new TaskService(taskRepository, userRepository, projectTeamService);
 
         task = new Task();
         task.setId(1);
@@ -99,5 +101,15 @@ class TaskServiceTest {
     void removeAssignedUser() {
         taskService.removeAssignedUser(task.getId());
         verify(taskRepository).removeAssignedUser(task.getId());
+    }
+
+    @Test
+    void getMembersFromTeam() {
+    }
+
+    @Test
+    void getAssignedMember() {
+        taskService.getAssignedMember(task.getId());
+        verify(taskRepository).findAssignedMember(task.getId());
     }
 }

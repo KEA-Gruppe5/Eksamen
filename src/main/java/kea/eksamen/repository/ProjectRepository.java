@@ -136,4 +136,12 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .list();
     }
 
+    public int getParentIdBySubProjectId(int subProjectId) {
+        String sql = "SELECT parent_project_id FROM PMTool.subprojects WHERE subproject_id = ?";
+        List<Integer> result = jdbcClient.sql(sql)
+                .param(subProjectId)
+                .query(Integer.class)
+                .list();
+        return result.get(0);
+    }
 }

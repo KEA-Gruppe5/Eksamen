@@ -17,11 +17,13 @@ import java.util.List;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final ProjectTeamService projectTeamService;
 
 
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository, ProjectTeamService projectTeamService) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.projectTeamService = projectTeamService;
     }
 
     public Task addTask(Task task) {
@@ -46,8 +48,16 @@ public class TaskService {
         return taskRepository.findTaskById(taskId);
     }
 
+    public List<TeamMemberDTO> getMembersFromTeam(int projectId){
+        return projectTeamService.findTeamMembers(projectId);
+    }
+
     public void assignMemberToTask(int taskId, int userId) {
         taskRepository.assignMember(taskId, userId);
+    }
+
+    public int getAssignedMember(int taskId){
+        return taskRepository.findAssignedMember(taskId);
     }
 
     public void removeAssignedUser(int taskId) {

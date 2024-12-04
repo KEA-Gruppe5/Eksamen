@@ -10,9 +10,10 @@
     <h1>Assign member to task</h1>
     <form th:action="@{/project/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${taskId})}" method="post">
         <h3>Select a member</h3>
-        <div th:each="user : ${users}" th:if="${user.role != null and user.role.name() == 'EMPLOYEE'}">
-            <input type="radio" th:value="${user.id}" th:id="${user.id}" name="userIdToAssign" />
-            <label th:text="${user.firstName} + ' ' + ${user.lastName}"></label><br />
+        <div th:each="user : ${users}">
+            <input type="radio" th:value="${user.id}" th:id="${user.id}" name="userIdToAssign"
+                   th:checked="${user.id == assignedMember}" />
+            <label th:text="${user.fullName}"></label><br />
         </div>
 
         <button type="submit" class="btn btn-primary">Assign</button>
