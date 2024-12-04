@@ -105,6 +105,8 @@ class TaskServiceTest {
 
     @Test
     void getMembersFromTeam() {
+        taskService.getMembersFromTeam(task.getProjectId());
+        verify(projectTeamService).findTeamMembers(task.getProjectId());
     }
 
     @Test

@@ -1,10 +1,12 @@
 package kea.eksamen.controller;
 
 import kea.eksamen.dto.TaskDTO;
+import kea.eksamen.dto.TeamMemberDTO;
 import kea.eksamen.model.Role;
 import kea.eksamen.model.Task;
 import kea.eksamen.model.TaskPriority;
 import kea.eksamen.model.User;
+import kea.eksamen.service.SubprojectService;
 import kea.eksamen.service.TaskService;
 import kea.eksamen.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -38,6 +41,9 @@ class TaskControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private SubprojectService subprojectService;
 
     private TaskDTO taskDTO;
     private User user;
@@ -126,14 +132,19 @@ class TaskControllerTest {
 
     @Test
     void assignMember() throws Exception {
-        when(userService.findAllUsers()).thenReturn(userList);
+        List<TeamMemberDTO> members = Arrays.asList(
+                new TeamMemberDTO("member1", "Member One"),
+                new TeamMemberDTO("member2", "Member Two")
+        );
+        when(taskService.getMembersFromTeam(subprojectService.getParentId(task.getId()))).thenReturn(members);
 
         mockMvc.perform(get("/project/{projectId}/{taskId}/assign", task.getProjectId(), task.getId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/assignTask"))
                 .andExpect(model().attribute("taskId", task.getId()))
                 .andExpect(model().attribute("projectId", task.getProjectId()))
-                .andExpect(model().attribute("users", userList));
+                .andExpect(model().attribute("assignedMember", subprojectService.getParentId(task.getId())))
+                .andExpect(model().attribute("users", taskService.getMembersFromTeam(subprojectService.getParentId(task.getId()))));
     }
 
     @Test
