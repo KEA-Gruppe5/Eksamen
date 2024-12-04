@@ -1,6 +1,7 @@
 package kea.eksamen.service;
 
 
+import kea.eksamen.dto.DateRange;
 import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.model.Project;
 import kea.eksamen.repository.ProjectRepository;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SubprojectService {
+public class SubprojectService{
 
     private static final Logger logger = LoggerFactory.getLogger(SubprojectService.class);
 
@@ -25,7 +26,7 @@ public class SubprojectService {
         this.taskRepository = taskRepository;
     }
 
-    public void addSubProject(int parentProjectId, int subProjectId) {
+    public void addSubProject(int parentProjectId, int subProjectId) {//TODO:probably redundant
         projectRepository.addSubProject(parentProjectId, subProjectId);
     }
 
@@ -39,10 +40,17 @@ public class SubprojectService {
 
     public ProjectDTO mapProjectToDto(Project subproject){
         ProjectDTO dto = new ProjectDTO(subproject.getId(), subproject.getTitle(),
-                subproject.getStartDate(), subproject.getEndDate(), subproject.getDuration());
+                new DateRange(subproject.getStartDate(), subproject.getEndDate()), subproject.getDuration());
         dto.setHoursToWorkPerDay(getHoursToWorkPerDay(subproject.getId()));
         dto.setHoursForAllTasks(getHoursForAllTasks(subproject.getId()));
         return dto;
+    }
+
+    public Project mapDtoToProject(ProjectDTO projectDto){
+        Project project = new Project(projectDto.getTitle(),
+                projectDto.getDateRange().getStartDate(), projectDto.getDateRange().getEndDate(),
+                projectDto.getDuration());
+        return project;
     }
 
     public double getHoursToWorkPerDay(int subprojectId){
@@ -63,8 +71,8 @@ public class SubprojectService {
         return hoursForAllTasks;
     }
 
-    public Project addSubProject(Project subProject, int parentId) {
-        Project addedSubproject = projectRepository.addProject(subProject);
+    public Project addSubProject(ProjectDTO subProject, int parentId) {
+        Project addedSubproject = projectRepository.addProject(mapDtoToProject(subProject));
         if (addedSubproject != null) {
            addSubProject(parentId, addedSubproject.getId());
         }

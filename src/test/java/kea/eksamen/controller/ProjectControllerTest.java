@@ -1,19 +1,24 @@
 package kea.eksamen.controller;
+
+import jakarta.validation.ConstraintValidatorContext;
+import kea.eksamen.dto.DateRange;
 import kea.eksamen.service.ProjectService;
 import kea.eksamen.service.SubprojectService;
-import kea.eksamen.service.UserService;
+import kea.eksamen.util.DateRangeValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDate;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @WebMvcTest(ProjectController.class)
 @ActiveProfiles("test")
 class ProjectControllerTest {
@@ -53,4 +58,16 @@ class ProjectControllerTest {
                 .andExpect(redirectedUrl("/projects"));
     }
 
+    @Test
+    public void testDateValidation() {
+
+        DateRange dateRange = new DateRange();
+        dateRange.setStartDate(LocalDate.of(2023, 12, 1));
+        dateRange.setEndDate(LocalDate.of(2023, 12, 1));
+
+        DateRangeValidator validator = new DateRangeValidator();
+        ConstraintValidatorContext context = Mockito.mock(ConstraintValidatorContext.class);
+
+        assertFalse(validator.isValid(dateRange,context));
+    }
 }
