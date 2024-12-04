@@ -116,7 +116,6 @@ public class ProjectController {
         return "redirect:/projects/" + parentId + "/subprojects";
     }
 
-
     @PostMapping("/{id}/archive")
     public String archiveProject(@PathVariable int id) {
         projectService.archiveProject(id);

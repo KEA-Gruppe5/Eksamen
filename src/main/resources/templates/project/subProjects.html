@@ -8,10 +8,12 @@
 
 <h1 th:text="'Subprojects for ' + ${parentTitle}"></h1>
 
+<!-- Display message if there are no subprojects -->
 <div th:if="${#lists.isEmpty(subProjects)}">
     <p>No subprojects are associated with this parent project.</p>
 </div>
 
+<!-- List of subprojects if available -->
 <ul th:if="${!#lists.isEmpty(subProjects)}">
     <li th:each="subProject : ${subProjects}">
         <div>
@@ -23,24 +25,36 @@
             <p th:text="'How much to work every day: ' + ${subProject.hoursToWorkPerDay} + ' hours'"></p>
         </div>
 
-            <form th:action="@{/projects/{parentId}/subprojects/{subProjectId}/remove(parentId=${parentId}, subProjectId=${subProject.id})}"method="post" style="display: inline-block;">
-            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this subproject?')">
+        <!-- delete-->
+        <form th:action="@{/projects/{parentId}/subprojects/{subProjectId}/remove(parentId=${parentId}, subProjectId=${subProject.id})}"
+              method="post" style="display: inline-block;">
+            <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Are you sure you want to delete this subproject?')">
                 Delete Subproject
             </button>
         </form>
 
-
-        <a th:href="@{/project/{subProjectId}/tasks(subProjectId=${subProject.id})}" class="btn btn-success">
-            To task list
+        <!-- edit -->
+        <a th:href="@{/projects/{subProjectId}/update(subProjectId=${subProject.id})}" class="btn btn-primary">
+            Edit Subproject
         </a>
 
+        <!-- Tasks -->
+        <a th:href="@{/project/{subProjectId}/tasks(subProjectId=${subProject.id})}" class="btn btn-success">
+            View Tasks
+        </a>
     </li>
 </ul>
 
-<a th:href="@{/projects/{parentId}/subprojects/add(parentId=${parentId})}" class="btn btn-success">
-    Add Subproject
-</a>
 
-<a th:href="@{/projects}" class="btn btn-secondary">Back to Projects</a>
+<div style="margin-top: 20px;">
+    <a th:href="@{/projects/{parentId}/subprojects/add(parentId=${parentId})}" class="btn btn-success">
+        Add Subproject
+    </a>
+    <a th:href="@{/projects}" class="btn btn-secondary">
+        Back to Projects
+    </a>
+</div>
+
 </body>
 </html>
