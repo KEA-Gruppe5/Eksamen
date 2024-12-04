@@ -107,7 +107,7 @@ public class ProjectController {
     public String listSubProjects(@PathVariable("id")int id, Model model) {
         System.out.println("Fetching subprojects for Parent Project ID: " + id);
         Project parentProject = projectService.getProjectById(id);
-        List<ProjectDTO> subProjects = subprojectService.getProjectDtosById(id);
+        List<ProjectDTO> subProjects = subprojectService.getSubprojectsByParentId(id);
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("parentId", id);
         model.addAttribute("parentTitle", parentProject.getTitle());

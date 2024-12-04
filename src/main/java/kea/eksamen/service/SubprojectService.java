@@ -1,7 +1,6 @@
 package kea.eksamen.service;
 
 
-import kea.eksamen.dto.DateRange;
 import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.model.Project;
 import kea.eksamen.repository.ProjectRepository;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SubprojectService{
+public class SubprojectService extends AbstractProjectService{
 
     private static final Logger logger = LoggerFactory.getLogger(SubprojectService.class);
 
@@ -22,15 +21,24 @@ public class SubprojectService{
     private final TaskRepository taskRepository;
 
     public SubprojectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
+        super(projectRepository);
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
     }
 
-    public void addSubProject(int parentProjectId, int subProjectId) {//TODO:probably redundant
-        projectRepository.addSubProject(parentProjectId, subProjectId);
+    public Project addSubProject(ProjectDTO subProject, int parentId) {
+        Project addedSubproject = super.addProject(subProject);
+        if (addedSubproject != null) {
+            projectRepository.addSubProject(parentId, addedSubproject.getId());
+        }
+        return addedSubproject;
     }
 
-    public List<ProjectDTO> getProjectDtosById(int parentProjectId) {
+    public int getParentId(int subProjectId){
+        return projectRepository.getParentIdBySubProjectId(subProjectId);
+    }
+
+    public List<ProjectDTO> getSubprojectsByParentId(int parentProjectId) {
         List<ProjectDTO> subprojectDTOS = new ArrayList<>();
         for(Project subproject : projectRepository.getSubProjectsByParentId(parentProjectId)){
             subprojectDTOS.add(mapProjectToDto(subproject));
@@ -38,21 +46,7 @@ public class SubprojectService{
         return subprojectDTOS;
     }
 
-    public ProjectDTO mapProjectToDto(Project subproject){
-        ProjectDTO dto = new ProjectDTO(subproject.getId(), subproject.getTitle(),
-                new DateRange(subproject.getStartDate(), subproject.getEndDate()), subproject.getDuration());
-        dto.setHoursToWorkPerDay(getHoursToWorkPerDay(subproject.getId()));
-        dto.setHoursForAllTasks(getHoursForAllTasks(subproject.getId()));
-        return dto;
-    }
-
-    public Project mapDtoToProject(ProjectDTO projectDto){
-        Project project = new Project(projectDto.getTitle(),
-                projectDto.getDateRange().getStartDate(), projectDto.getDateRange().getEndDate(),
-                projectDto.getDuration());
-        return project;
-    }
-
+    @Override
     public double getHoursToWorkPerDay(int subprojectId){
 
         double hoursForAllTasks = getHoursForAllTasks(subprojectId);
@@ -65,21 +59,11 @@ public class SubprojectService{
         return hoursToWorkPerDay;
     }
 
+    @Override
     public double getHoursForAllTasks(int subprojectId){
         double hoursForAllTasks = taskRepository.getHoursForAllTasks(subprojectId);
         logger.info("Total hours for all tasks for the subproject " + subprojectId + " : " + hoursForAllTasks);
         return hoursForAllTasks;
     }
 
-    public Project addSubProject(ProjectDTO subProject, int parentId) {
-        Project addedSubproject = projectRepository.addProject(mapDtoToProject(subProject));
-        if (addedSubproject != null) {
-           addSubProject(parentId, addedSubproject.getId());
-        }
-        return addedSubproject;
-    }
-
-    public int getParentId(int subProjectId){
-        return projectRepository.getParentIdBySubProjectId(subProjectId);
-    }
 }
