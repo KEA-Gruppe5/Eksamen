@@ -12,20 +12,20 @@ public abstract class AbstractProjectService {
     protected AbstractProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
-    public Project getProjectById(int id) {
-        return projectRepository.getProjectById(id);
+    public ProjectDTO getProjectById(int id) {
+        return mapProjectToDto(projectRepository.getProjectById(id));
     }
 
     public Project addProject(ProjectDTO project) {
         return projectRepository.addProject(mapDtoToProject(project));
     }
 
-    public Project updateProject(Project project, int id) {
-        return projectRepository.updateProject(project, id);
+    public void updateProject(ProjectDTO project, int id) {
+        projectRepository.updateProject(mapDtoToProject(project), id);
     }
 
-    public boolean deleteProject(int id) {
-        return projectRepository.deleteProject(id);
+    public void deleteProject(int id) {
+        projectRepository.deleteProject(id);
     }
 
     public ProjectDTO mapProjectToDto(Project project){
