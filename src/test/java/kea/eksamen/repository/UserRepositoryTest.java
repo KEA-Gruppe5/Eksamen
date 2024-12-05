@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest
 @Transactional
-@ExtendWith({MockitoExtension.class})
 class UserRepositoryTest {
     private User user;
 
