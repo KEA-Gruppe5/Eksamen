@@ -2,7 +2,6 @@ package kea.eksamen.controller;
 
 import jakarta.validation.Valid;
 import kea.eksamen.dto.ProjectDTO;
-import kea.eksamen.model.Project;
 import kea.eksamen.service.ProjectService;
 import kea.eksamen.service.SubprojectService;
 import org.slf4j.Logger;
@@ -112,7 +111,7 @@ public class ProjectController {
     public String listSubProjects(@PathVariable("id")int id, Model model) {
         System.out.println("Fetching subprojects for Parent Project ID: " + id);
         ProjectDTO parentProject = projectService.getProjectById(id);
-        List<ProjectDTO> subProjects = subprojectService.getProjectDtosById(id);
+        List<ProjectDTO> subProjects = subprojectService.getSubprojectsByParentId(id);
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("parentId", id);
         model.addAttribute("parentTitle", parentProject.getTitle());
@@ -136,6 +135,5 @@ public class ProjectController {
         projectService.unarchiveProject(id);
         return "redirect:/projects?archived=true";
     }
-
 
 }
