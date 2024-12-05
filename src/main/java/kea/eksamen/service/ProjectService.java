@@ -23,7 +23,6 @@ public class ProjectService extends AbstractProjectService{
         this.subprojectService = subprojectService;
     }
 
-
     public List<ProjectDTO> getAllProjects() {
         List<ProjectDTO> projectDTOS = new ArrayList<>();
         for(Project project : projectRepository.getAllProjects()){
@@ -74,5 +73,4 @@ public class ProjectService extends AbstractProjectService{
         }
         return hours;
     }
-
 }
