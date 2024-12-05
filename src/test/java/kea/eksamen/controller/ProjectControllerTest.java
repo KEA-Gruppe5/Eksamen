@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ProjectController.class)
-@ActiveProfiles("test")
 class ProjectControllerTest {
 
     @Autowired
@@ -60,7 +59,6 @@ class ProjectControllerTest {
 
     @Test
     public void testDateValidation() {
-
         DateRange dateRange = new DateRange();
         dateRange.setStartDate(LocalDate.of(2023, 12, 1));
         dateRange.setEndDate(LocalDate.of(2023, 12, 1));
