@@ -1,0 +1,102 @@
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    table-layout: auto;
+}
+
+.custom-table th, .custom-table td {
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    min-width: 50px;
+    max-width: none;
+}
+
+.table-header {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+.custom-table td, .custom-table th {
+    border: 1px solid #dee2e6;
+}
+
+.custom-table .btn-group {
+    display: inline-block;
+}
+
+
+.custom-table .btn-group {
+    display: inline-block;
+}
+
+.custom-table .btn-group form {
+    display: inline-block;
+}
+
+.custom-table .btn-group button,
+.custom-table .btn-group a  {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.custom-table td a,
+.custom-table td button {
+    padding: 8px 12px;
+    font-size: 14px;
+}
+.custom-table td {
+    min-width: 50px;
+    max-width: none;
+}
+
+.list-group {
+    width: 100%;
+    max-width: 500px;
+    padding: 0;
+    margin-bottom: 16px;
+}
+
+.list-group-item {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.list-group-item strong {
+    font-weight: bold;
+}
+
+.list-group-item p {
+    width: 100%;
+    max-width: 500px;
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.form {
+    max-width: 500px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 5px;
+
+}
+
+.mb-3 {
+    max-width: 500px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 5px;
+}

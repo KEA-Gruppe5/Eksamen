@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Project</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/forms.css" rel="stylesheet">
+    <link href="/css/buttons.css" rel="stylesheet">
 </head>
 <body>
 
@@ -12,24 +13,27 @@
 
 <div class="container mt-5" th:if="${session.userId != null}">
     <h1 class="mb-4">Add New Project</h1>
-    <p>Below you can add a new project where you can have sub projects under it along with tasks. </p>
-    <hr>
+    <p>Below you can add a new project where you can have subprojects under it along with tasks.</p>
+    <hr class="divider">
     <form th:object="${project}" th:action="@{/projects/add}" method="post">
-        <div class="mb-3">
+        <div class="form-group">
             <label for="title" class="form-label">Project Title:</label>
-            <input type="text" id="title" name="title" th:field="*{title}"  required class="form-control" placeholder="Enter project title"/>
+            <input type="text" id="title" name="title" th:field="*{title}" required class="form-control" placeholder="Enter project title"/>
         </div>
 
-        <div class="mb-3">
+        <div class="form-group">
             <label for="startDate" class="form-label">Start Date:</label>
             <input type="date" id="startDate" name="dateRange.startDate" th:field="*{dateRange.startDate}" required class="form-control"/>
         </div>
 
-        <div class="mb-3">
+        <div class="form-group">
             <label for="endDate" class="form-label">End Date:</label>
-            <input type="date" id="endDate" name="dateRange.endDate" th:field="*{dateRange.endDate}"  required class="form-control"/>
+            <input type="date" id="endDate" name="dateRange.endDate" th:field="*{dateRange.endDate}" required class="form-control"/>
         </div>
-        <div style="color:red" th:if="${#fields.hasErrors('dateRange')}" th:errors="*{dateRange}">Invalid start date</div>
+
+        <div th:if="${#fields.hasErrors('dateRange')}" class="form-error">
+            Invalid start date
+        </div>
 
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-success">Add Project</button>
