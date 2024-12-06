@@ -37,6 +37,16 @@ CREATE TABLE users
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
 
+CREATE TABLE priorities (
+                            id INT AUTO_INCREMENT PRIMARY KEY,
+                            priority VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE statuses (
+                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          status VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE tasks
 (
     id               INT PRIMARY KEY AUTO_INCREMENT,
@@ -49,8 +59,10 @@ CREATE TABLE tasks
     assigned_user_id INT NULL,
     estimated_hours DOUBLE,
     archived         BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (assigned_user_id) REFERENCES users (id) ON DELETE CASCADE,
-    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
+    FOREIGN KEY (priority) REFERENCES priorities (id) ON DELETE SET NULL,
+    FOREIGN KEY (status) REFERENCES statuses (id) ON DELETE SET NULL,
+    FOREIGN KEY (assigned_user_id) REFERENCES users (id) ON DELETE SET NULL
 );
 
 
