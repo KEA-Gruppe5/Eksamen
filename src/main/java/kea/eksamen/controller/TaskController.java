@@ -1,6 +1,7 @@
 package kea.eksamen.controller;
 
 import jakarta.servlet.http.HttpSession;
+import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.dto.TaskDTO;
 import kea.eksamen.model.Task;
 import kea.eksamen.service.SubprojectService;
@@ -46,10 +47,11 @@ public class TaskController {
         if (session.getAttribute("userId") == null) {
             return "unauthorized";
         }
-
+        ProjectDTO subProjectTitle = subprojectService.getProjectById(projectId);
         List<TaskDTO> tasks = taskService.getTaskDtosByProjectId(projectId);
         model.addAttribute("tasks", tasks);
         model.addAttribute("projectId", projectId);
+        model.addAttribute("projectTitle",subProjectTitle.getTitle());
 
         return "task/tasks";
     }

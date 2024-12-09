@@ -10,10 +10,10 @@
 <div th:replace="~{fragments/appNav :: appNav}"></div>
 
 <div class="container mt-5">
-    <h1 class="mb-4">Tasks for Project ID: <span th:text="${projectId}"></span></h1>
+    <h1 class="mb-4">Tasks for <span th:text="${projectTitle}"></span></h1>
     <p>Below you can add a new task. It will automatically be assigned to the subproject.</p>
     <hr class="divider">
-    <a th:href="@{/project/{projectId}/add(projectId=${projectId})}" class="btn btn-primary"><i class="bi bi-plus-circle-fill"></i> Add New Task</a>
+    <a th:href="@{/project/{projectId}/add(projectId=${projectId})}" class="btn btn-primary"> Add New Task</a>
 
     <div th:if="${#lists.isEmpty(tasks)}">
         <p>No tasks are associated with this project.</p>
@@ -54,7 +54,7 @@
                 </td>
                 <td>
                     <div class="btn-group">
-                        <form th:action="@{/project/{projectId}/{taskId}/removeMember(projectId=${projectId}, taskId=${task.id})}" method="post">
+                        <form th:if="${task.teamMemberDTO != null}" th:action="@{/project/{projectId}/{taskId}/removeMember(projectId=${projectId}, taskId=${task.id})}" method="post">
                             <button type="submit" class="btn btn-danger btn-sm">Remove Member</button>
                         </form>
                         <a th:href="@{/project/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${task.id})}" class="btn btn-warning btn-sm">Assign</a>

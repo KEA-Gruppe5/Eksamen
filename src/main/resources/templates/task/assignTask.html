@@ -26,9 +26,8 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Assign</button>
+        <a th:href="@{/project/{projectId}/tasks(projectId=${projectId})}" class="btn btn-secondary">Cancel</a>
     </form>
-
-    <a th:href="@{/project/{projectId}/tasks(projectId=${projectId})}" class="btn btn-secondary mt-3">Back to Tasks</a>
 </div>
 
 <div th:if="${session.userId == null}">
