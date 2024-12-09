@@ -51,4 +51,4 @@ jobs:
           app-name: 'PMTool'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F7FC0FD86C414F45B2B49142AFC9D09D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D368F77B796E41A490C66055C1AD8AE4 }}
