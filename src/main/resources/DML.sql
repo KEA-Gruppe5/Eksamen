@@ -3,6 +3,12 @@ VALUES ('PM'),
        ('Employee'),
        ('Client');
 
+INSERT INTO statuses (status)
+VALUES ('Todo'), ('In Progress'), ('Completed'), ('Canceled'), ('Pending');
+
+INSERT INTO priorities (priority)
+VALUES ('Low'), ('Medium'), ('High');
+
 INSERT INTO users (firstname, lastname, email, password, role_id)
 VALUES ('Alice', 'Smith', 'alice.smith@example.com', 'password123', 1),
        ('Bob', 'Johnson', 'bob.johnson@example.com', 'password123', 2),
