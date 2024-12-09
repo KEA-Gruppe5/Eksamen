@@ -21,6 +21,7 @@
 .btn-secondary {
     background-color: #6c757d;
     color: white;
+    margin-top: 5px;
 }
 
 .btn-warning {

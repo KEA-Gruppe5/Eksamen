@@ -26,6 +26,12 @@
     width: 100%;
 }
 
+
+.userInfo{
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+
 .menu-item {
     margin-bottom: 8px;
     width: 100%;

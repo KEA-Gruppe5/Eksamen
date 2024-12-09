@@ -60,8 +60,7 @@ form {
 }
 
 .form-check-input {
-    margin-right: 10px;
-    cursor: pointer;
+    width: 50px;
 }
 
 .form-check-label {

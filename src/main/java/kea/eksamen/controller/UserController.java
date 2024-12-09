@@ -60,6 +60,7 @@ public class UserController {
             if (authenticatedUser != null) {
                 int userId = authenticatedUser.getId();
                 httpSession.setAttribute("userId", userId);
+                httpSession.setAttribute("userFirstName", authenticatedUser.getFirstName());
                 if(authenticatedUser.getRole()!=null)httpSession.setAttribute("role", authenticatedUser.getRole().getDisplayName());
                 model.addAttribute("userId", userId);
                 return "redirect:/projects";

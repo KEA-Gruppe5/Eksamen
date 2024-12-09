@@ -12,7 +12,17 @@
     <div class="brand-logo">
         <img src="https://media.alpha-solutions.com/us/-/media/alphawebsite2019/ogimages/alpha-solutions---ogimage.ashx" alt="Alpha Solutions Logo">
     </div>
+
     <ul class="menu-list">
+        <li class="userInfo" th:if="${session.userId != null}">
+            <span class="user-name" th:text="'Hello, ' + ${session.userFirstName}"></span>
+            <br>
+            <span class="user-role" th:text="' Your role is: ' + ${session.role}"></span>
+        </li>
+        <li th:if="${session.userId == null}">
+            <p></p>
+        </li>
+
         <li class="menu-item">
             <a class="menu-link" href="/projects">
                 <i class="bi bi-clipboard-check-fill"></i> All projects
@@ -23,12 +33,32 @@
                 <i class="bi bi-archive-fill"></i> See archived projects
             </a>
         </li>
+        <li class="menu-item" th:if="${session.role != 'PM'}">
+            <p></p>
+        </li>
+        <li class="menu-item" th:if="${session.role == 'PM'}">
+            <a class="menu-link" href="/projects?archived=true">
+                <i class="bi bi-people-fill"></i> Manage users
+            </a>
+        </li>
+        </li>
+
         <div class="footer-section">
-            <li class="menu-item">
-                <a class="menu-link" href="/logout">
-                    <i class="bi bi-person-fill"></i> Logout
-                </a>
-            </li>
+            <div th:if="${session.userId != null}">
+                <li class="menu-item">
+                    <a class="menu-link" href="/logout">
+                        <i class="bi bi-person-fill"></i> Logout
+                    </a>
+                </li>
+            </div>
+            <div th:if="${session.userId == null}">
+                <li class="menu-item">
+                    <a class="menu-link" href="/login">
+                        <i class="bi bi-person-fill"></i> Login
+                    </a>
+                </li>
+            </div>
+
         </div>
     </ul>
 </div>
