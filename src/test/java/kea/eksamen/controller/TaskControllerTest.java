@@ -1,5 +1,7 @@
 package kea.eksamen.controller;
 
+import kea.eksamen.dto.DateRange;
+import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.dto.TaskDTO;
 import kea.eksamen.dto.TeamMemberDTO;
 import kea.eksamen.model.*;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -84,13 +87,18 @@ class TaskControllerTest {
 
     @Test
     void viewTasks() throws Exception {
-
         when(taskService.getTaskDtosByProjectId(task.getProjectId())).thenReturn(List.of(taskDTO));
+
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setTitle("Test Project Title");
+        when(subprojectService.getProjectById(task.getProjectId())).thenReturn(projectDTO);
+
         mockMvc.perform(get("/project/{projectId}/tasks", task.getProjectId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task/tasks"))
                 .andExpect(model().attribute("tasks", List.of(taskDTO)))
-                .andExpect(model().attribute("projectId", task.getProjectId()));
+                .andExpect(model().attribute("projectId", task.getProjectId()))
+                .andExpect(model().attribute("projectTitle", "Test Project Title"));
     }
 
     @Test
