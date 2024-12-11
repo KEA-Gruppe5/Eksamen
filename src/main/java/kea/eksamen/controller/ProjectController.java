@@ -1,5 +1,6 @@
 package kea.eksamen.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.service.ProjectService;
@@ -27,7 +28,10 @@ public class ProjectController {
     }
 
     @GetMapping("/add")
-    public String add(Model model) {
+    public String add(Model model, HttpSession session) {
+        if (session.getAttribute("userId") == null) {
+            return "unauthorized";
+        }
         model.addAttribute("project", new ProjectDTO());
         return "project/addProject";
     }
@@ -44,12 +48,14 @@ public class ProjectController {
 
 
     @GetMapping("")
-    public String listProjects(Model model, @RequestParam(required = false, defaultValue = "false") boolean archived) {
+    public String listProjects(Model model, @RequestParam(required = false, defaultValue = "false") boolean archived, HttpSession session) {
+        if (session.getAttribute("userId") == null) {
+            return "unauthorized";
+        }
         // Get the relevant projects (archived or active)
         List<ProjectDTO> allProjects;
         if (archived) allProjects = projectService.getArchivedProjects();
         else allProjects = projectService.getAllProjects();
-
         // Filter to include only parent projects (exclude subprojects)
         List<ProjectDTO> parentProjects = new ArrayList<>();  //TODO:move to service
         for (ProjectDTO project : allProjects) {
@@ -57,11 +63,9 @@ public class ProjectController {
                 parentProjects.add(project);
             }
         }
-
         // Add attributes to the model
         model.addAttribute("projects", parentProjects);
         model.addAttribute("isArchived", archived);
-
         // Return the view
         return "project/projects";
     }
@@ -73,7 +77,10 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/update")
-    public String editProject(@PathVariable("id") int id, Model model) {
+    public String editProject(@PathVariable("id") int id, Model model,HttpSession session) {
+        if (session.getAttribute("userId") == null) {
+            return "unauthorized";
+        }
         ProjectDTO project = projectService.getProjectById(id);
         model.addAttribute("project", project);
         return "project/updateProject";
@@ -91,7 +98,10 @@ public class ProjectController {
     }
 
     @GetMapping("/{parentId}/subprojects/add")
-    public String showAddSubProjectForm(@PathVariable("parentId") int parentId, Model model) {
+    public String showAddSubProjectForm(@PathVariable("parentId") int parentId, Model model, HttpSession session) {
+        if (session.getAttribute("userId") == null) {
+            return "unauthorized";
+        }
         model.addAttribute("parentId", parentId);
         model.addAttribute("project", new ProjectDTO());
         return "project/addSubProject";
@@ -108,7 +118,10 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}/subprojects")
-    public String listSubProjects(@PathVariable("id")int id, Model model) {
+    public String listSubProjects(@PathVariable("id")int id, Model model,HttpSession session) {
+        if (session.getAttribute("userId") == null) {
+            return "unauthorized";
+        }
         System.out.println("Fetching subprojects for Parent Project ID: " + id);
         ProjectDTO parentProject = projectService.getProjectById(id);
         List<ProjectDTO> subProjects = subprojectService.getSubprojectsByParentId(id);
