@@ -15,7 +15,9 @@ hr {
     margin: 16px 0;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
     width: 100%;
     padding: 8px;
     border: 1px solid #ced4da;
@@ -23,30 +25,22 @@ input, select, textarea {
     box-sizing: border-box;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
     outline: none;
     border-color: #80bdff;
     box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
 }
 
-.main-content {
+.main-content,
+.container {
     margin-left: 250px;
     padding: 70px;
     box-sizing: border-box;
 }
 
-h1.heading {
-    font-size: 32px;
-    margin-bottom: 16px;
-}
-
-hr.divider .divider {
-    border: 1px solid #ddd;
-    margin: 16px 0;
-}
-
 .container {
     padding-right: 70px;
     padding-left: 70px;
-    margin-left: 250px;
 }

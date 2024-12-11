@@ -26,8 +26,7 @@
     width: 100%;
 }
 
-
-.userInfo{
+.user-info {
     padding-left: 20px;
     padding-bottom: 10px;
 }
@@ -69,16 +68,13 @@
     z-index: -1;
 }
 
-.menu-link:hover::before {
-    opacity: 1;
-}
-
+.menu-link:hover,
 .menu-link:hover i {
     color: white;
 }
 
-.menu-link:hover {
-    color: white;
+.menu-link:hover::before {
+    opacity: 1;
 }
 
 .footer-section {
