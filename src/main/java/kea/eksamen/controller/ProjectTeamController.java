@@ -1,5 +1,6 @@
 package kea.eksamen.controller;
 
+import jakarta.servlet.http.HttpSession;
 import kea.eksamen.service.ProjectTeamService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,10 @@ public class ProjectTeamController {
     }
 
     @GetMapping("/projects/{projectId}/team")
-    public String getTeamMembers(@PathVariable int projectId, Model model){
+    public String getTeamMembers(@PathVariable int projectId, Model model, HttpSession session){
+        if (session.getAttribute("userId") == null) {
+            return "unauthorized";
+        }
         model.addAttribute("projectId", projectId);
         model.addAttribute("newTeamMembers", new ArrayList<>());
         model.addAttribute("team", projectTeamService.findTeamMembers(projectId));

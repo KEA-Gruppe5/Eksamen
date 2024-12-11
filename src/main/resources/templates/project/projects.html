@@ -12,7 +12,7 @@
     <h1 class="heading" th:text="${isArchived ? 'Archived Projects' : 'Active Projects'}"></h1>
     <p>Below you can see a list of all projects.</p>
     <hr class="divider">
-    <a th:href="@{/projects/add}" class="btn primary">
+    <a th:if="${session.role == 'PM'}"th:href="@{/projects/add}" class="btn primary">
         <i class="icon icon-plus"></i>Add new project
     </a>
     <div >
@@ -46,10 +46,11 @@
                     </div>
                 </td>
                 <td>
-                    <div class="btn-group">
+                    <div th:if="${session.role != 'Client'}" class="btn-group">
                         <div th:if="!${isArchived}">
                             <a th:href="@{/projects/{id}/update(id=${project.id})}" class="btn primary">Update</a>
-                            <form th:action="@{/projects/{id}/archive(id=${project.id})}" method="post">
+
+                            <form th:if="${session.role == 'PM'}" th:action="@{/projects/{id}/archive(id=${project.id})}" method="post">
                                 <button type="submit" class="btn secondary" onclick="return confirm('Are you sure you want to archive this project?')">Archive</button>
                             </form>
                         </div>

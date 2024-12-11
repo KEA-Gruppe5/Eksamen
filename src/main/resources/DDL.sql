@@ -8,7 +8,7 @@ CREATE TABLE projects
     start_date DATE,
     end_date   DATE,
     duration   INT,
-    archived   BOOLEAN DEFAULT FALSE -- Archive flag
+    archived   BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE subprojects
