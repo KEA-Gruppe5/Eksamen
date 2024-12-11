@@ -31,9 +31,9 @@
                 <th>Title</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Duration (Days)</th>
-                <th>Total Work (Hours)</th>
-                <th>Work per Day (Hours)</th>
+                <th>Duration</th>
+                <th>Total Work</th>
+                <th>Work per Day</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -42,9 +42,9 @@
                 <td th:text="${subProject.title}"></td>
                 <td th:text="${subProject.dateRange.startDate}"></td>
                 <td th:text="${subProject.dateRange.endDate}"></td>
-                <td th:text="${subProject.duration}"></td>
-                <td th:text="${subProject.hoursForAllTasks}"></td>
-                <td th:text="${subProject.hoursToWorkPerDay}"></td>
+                <td th:text="${subProject.duration} + ' days'"></td>
+                <td th:text="${subProject.hoursForAllTasks} + ' hours'"></td>
+                <td th:text="${subProject.hoursToWorkPerDay} + ' hours'"></td>
                 <td>
                     <div class="btn-group">
                         <a th:href="@{/project/{subProjectId}/tasks(subProjectId=${subProject.id})}" class="btn success">View Tasks</a>

@@ -22,11 +22,11 @@
                 <th>Project Title</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Duration (Days)</th>
-                <th>Total Work (Hours)</th>
-                <th>Work per Day (Hours)</th>
+                <th>Duration</th>
+                <th>Total Work</th>
+                <th>Work per Day</th>
                 <th>View more</th>
-                <th>Actions</th>
+                <th th:if="${session.role == 'PM'}">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -34,9 +34,9 @@
                 <td th:text="${project.title}"></td>
                 <td th:text="${project.dateRange.startDate}"></td>
                 <td th:text="${project.dateRange.endDate}"></td>
-                <td th:text="${project.duration}"></td>
-                <td th:text="${project.hoursForAllTasks}"></td>
-                <td th:text="${project.hoursToWorkPerDay}"></td>
+                <td th:text="${project.duration} + ' days'"></td>
+                <td th:text="${project.hoursForAllTasks} + ' hours'"></td>
+                <td th:text="${project.hoursToWorkPerDay} + ' hours'"></td>
                 <td>
                     <div class="btn-group">
                         <div th:if="!${isArchived}">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </td>
-                <td>
+                <td th:if="${session.role == 'PM'}">
                     <div th:if="${session.role != 'Client'}" class="btn-group">
                         <div th:if="!${isArchived}">
                             <a th:href="@{/projects/{id}/update(id=${project.id})}" class="btn primary">Update</a>
