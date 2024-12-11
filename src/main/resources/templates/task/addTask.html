@@ -10,25 +10,24 @@
 <body>
 <div th:replace="~{fragments/appNav :: appNav}"></div>
 
-<div class="container mt-5">
+<div class="container">
     <h1 class="text-center">Add Task</h1>
     <p>Below you can add a new task for your current subproject. </p>
-    <hr>
+    <hr class="divider">
     <form th:object="${addNewTask}" th:action="@{/project/{projectId}/add(projectId=${projectId})}"  method="post">
         <input type="hidden" th:field="*{projectId}" th:value="${projectId}">
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="form-group">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" th:field="*{title}" required>
             </div>
 
-            <div class="col-md-6 mb-3">
+        <div class="form-group">
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" id="description" th:field="*{description}" rows="3" required></textarea>
             </div>
 
-            <div class="col-md-6 mb-3">
+        <div class="form-group">
                 <label for="priority" class="form-label">Priority</label>
                 <select class="form-select" id="priority" th:field="*{priority}" required>
                     <option value="HIGH">High</option>
@@ -37,12 +36,12 @@
                 </select>
             </div>
 
-            <div class="col-md-6 mb-3">
+        <div class="form-group">
                 <label for="estimatedHours" class="form-label">Estimated hours for task</label>
                 <input type="number" class="form-control" id="estimatedHours" th:field="*{estimatedHours}" required>
             </div>
 
-            <div class="col-md-6 mb-3">
+        <div class="form-group">
                 <label for="status" class="form-label">Status</label>
                 <select class="form-select" id="status" th:field="*{status}" required>
                     <option value="TODO">Todo</option>
@@ -52,15 +51,13 @@
                     <option value="PENDING">Pending</option>
                 </select>
             </div>
-            <div class="col-md-6 mb-3">
+        <div class="form-group">
                 <label for="deadline" class="form-label">Deadline</label>
                 <input type="date" class="form-control" id="deadline" th:field="*{deadline}" required />
             </div>
 
-        </div>
-
-        <button type="submit" class="btn btn-primary">Add Task</button>
-        <a th:href="@{/project/{projectId}/tasks(projectId=${projectId})}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn primary">Add Task</button>
+        <a th:href="@{/project/{projectId}/tasks(projectId=${projectId})}" class="btn secondary">Cancel</a>
     </form>
 </div>
 

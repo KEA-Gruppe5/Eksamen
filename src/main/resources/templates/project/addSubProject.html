@@ -37,8 +37,8 @@
                 <p th:errors="*{dateRange}">Invalid start date</p>
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Subproject</button>
-            <a th:href="@{/projects/{parentId}/subprojects(parentId=${parentId})}" class="btn btn-secondary">Back to Subprojects</a>
+            <button type="submit" class="btn primary">Add Subproject</button>
+            <a th:href="@{/projects/{parentId}/subprojects(parentId=${parentId})}" class="btn secondary">Back to Subprojects</a>
         </form>
 
         <div th:if="${session.userId == null}">

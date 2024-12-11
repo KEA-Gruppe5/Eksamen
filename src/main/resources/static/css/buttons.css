@@ -13,25 +13,29 @@
     text-decoration: none;
 }
 
-.btn-primary, .btn-success {
+.primary,
+.success,
+.secondary,
+.warning,
+.danger {
+    color: white;
+}
+
+.primary,
+.success {
     background-color: #007bff;
-    color: white;
 }
 
-.btn-secondary {
+.secondary {
     background-color: #6c757d;
-    color: white;
-    margin-top: 5px;
 }
 
-.btn-warning {
+.warning {
     background-color: #ffc107;
-    color: white;
 }
 
-.btn-danger {
+.danger {
     background-color: #dc3545;
-    color: white;
 }
 
 .btn:hover {

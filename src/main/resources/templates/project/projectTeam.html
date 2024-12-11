@@ -10,21 +10,21 @@
 <body>
 
 <div th:if="${session.userId != null}" class="container">
-    <h1 class="mb-4">Project Team</h1>
+    <h1>Project Team</h1>
     <p>Below you can see the project team, for the current project, you can edit and delete members. </p>
     <hr>
 
-    <ul class="list-group mb-4">
-        <li th:each="teamMember : ${team}" class="list-group-item d-flex justify-content-between align-items-center">
+    <ul class="list-group">
+        <li th:each="teamMember : ${team}" class="list-group-item flex">
             <div>
                 <strong th:text="${teamMember.fullName}"></strong>
-                <p th:text="'Email: ' + ${teamMember.email}" class="mb-0"></p>
+                <p th:text="'Email: ' + ${teamMember.email}" ></p>
             </div>
 
             <div th:if="${session.role eq 'PM'}">
                 <form th:action="@{/projects/{projectId}/team/{userId}(projectId=${projectId}, userId=${teamMember.id})}" method="post" style="display: inline-block;">
                     <input type="hidden" name="_method" value="delete" />
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this user from the project?')">Remove</button>
+                    <button type="submit" class="btn danger" onclick="return confirm('Are you sure you want to remove this user from the project?')">Remove</button>
                 </form>
             </div>
         </li>
@@ -33,17 +33,17 @@
     <div th:if="${session.role eq 'PM'}">
         <div th:if="${!allUsers.isEmpty()}">
             <form th:action="@{/projects/{projectId}/team(projectId=${projectId})}" method="post">
-                <div class="mb-3">
+                <div >
                     <label for="newTeamMembers" class="form-label">Add New Users to Project</label>
                     <select name="newTeamMembers" id="newTeamMembers" class="form-select" multiple>
                         <option th:each="user : ${allUsers}" th:value="${user.id}" th:text="${user.firstName + ' ' + user.lastName}"></option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Add Users</button>
+                <button type="submit" class="btn primary">Add Users</button>
             </form>
         </div>
     </div>
-    <a th:href="@{/projects}" class="btn btn-secondary mt-3">Back to Projects</a>
+    <a th:href="@{/projects}" class="btn secondary">Back to Projects</a>
 </div>
 
 <div th:if="${session.userId == null}">

@@ -43,7 +43,7 @@ body {
     margin-top: 20px;
 }
 
-.btn-warning {
+.warning {
     background-color: #f39c12; /* Button background color */
     border: none;
     padding: 10px 20px;
@@ -51,7 +51,7 @@ body {
     border-radius: 5px;
 }
 
-.btn-warning:hover {
+.warning:hover {
     background-color: #e67e22; /* Button hover effect */
 }
 

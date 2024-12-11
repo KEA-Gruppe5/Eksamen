@@ -14,7 +14,7 @@
     </div>
 
     <ul class="menu-list">
-        <li class="userInfo" th:if="${session.userId != null}">
+        <li class="user-info" th:if="${session.userId != null}">
             <span class="user-name" th:text="'Hello, ' + ${session.userFirstName}"></span>
             <br>
             <span class="user-role" th:text="' Your role is: ' + ${session.role}"></span>

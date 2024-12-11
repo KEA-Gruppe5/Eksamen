@@ -12,7 +12,7 @@
 <div th:replace="~{fragments/appNav :: appNav}"></div>
 
 <div class="container">
-    <h1 class="mb-4">Edit Project</h1>
+    <h1>Edit Project</h1>
     <p>Below you can edit a project.</p>
     <hr class="divider">
 
@@ -33,12 +33,12 @@
             <input type="date" id="endDate" name="dateRange.endDate" th:field="*{dateRange.endDate}" class="form-control" required/>
         </div>
 
-        <div th:if="${#fields.hasErrors('dateRange')}" class="text-danger mb-3">
+        <div th:if="${#fields.hasErrors('dateRange')}" class="text-danger">
             <p th:errors="*{dateRange}">Invalid start date</p>
         </div>
 
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <a th:href="@{/projects}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn primary">Save Changes</button>
+            <a th:href="@{/projects}" class="btn secondary">Cancel</a>
     </form>
 </div>
 

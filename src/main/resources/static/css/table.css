@@ -1,17 +1,20 @@
-.custom-table {
-    width: 100%;
+.view-table {
+    width: 700px;
     border-collapse: collapse;
     margin-top: 16px;
-    table-layout: auto;
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
-.custom-table th, .custom-table td {
+.view-table th,
+.view-table td {
     padding: 8px 12px;
     text-align: left;
     vertical-align: middle;
     white-space: nowrap;
     min-width: 50px;
     max-width: none;
+    border: 1px solid #dee2e6;
 }
 
 .table-header {
@@ -19,38 +22,18 @@
     font-weight: bold;
 }
 
-.custom-table td, .custom-table th {
-    border: 1px solid #dee2e6;
-}
-
-.custom-table .btn-group {
+.view-table .btn-group form,
+.view-table .btn-group button,
+.view-table .btn-group a {
     display: inline-block;
 }
 
-
-.custom-table .btn-group {
-    display: inline-block;
-}
-
-.custom-table .btn-group form {
-    display: inline-block;
-}
-
-.custom-table .btn-group button,
-.custom-table .btn-group a  {
-    display: inline-block;
+.view-table .btn-group button,
+.view-table .btn-group a,
+.view-table td button,
+.view-table td a {
     padding: 5px 10px;
     font-size: 14px;
-}
-
-.custom-table td a,
-.custom-table td button {
-    padding: 8px 12px;
-    font-size: 14px;
-}
-.custom-table td {
-    min-width: 50px;
-    max-width: none;
 }
 
 .list-group {
@@ -87,14 +70,6 @@
 }
 
 .form {
-    max-width: 500px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-bottom: 5px;
-
-}
-
-.mb-3 {
     max-width: 500px;
     padding-left: 0;
     padding-right: 0;

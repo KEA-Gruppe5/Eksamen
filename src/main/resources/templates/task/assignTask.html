@@ -10,12 +10,11 @@
 <div th:replace="~{fragments/appNav :: appNav}"></div>
 
 <div th:if="${session.userId != null}" class="container mt-5">
-    <h1 class="mb-4">Assign Member to Task</h1>
+    <h1>Assign Member to Task</h1>
     <p>Below you can assign one team member to a task, so they know what to work on.</p>
     <hr class="divider">
     <form th:action="@{/project/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${taskId})}" method="post">
         <h5>Select a Member</h5>
-        <div class="mb-3">
             <div th:each="user : ${users}">
                 <div class="form-check">
                     <input type="radio" th:value="${user.id}" th:id="${user.id}" name="userIdToAssign"
@@ -23,10 +22,8 @@
                     <label th:for="${user.id}" class="form-check-label" th:text="${user.fullName}"></label>
                 </div>
             </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Assign</button>
-        <a th:href="@{/project/{projectId}/tasks(projectId=${projectId})}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn primary">Assign</button>
+        <a th:href="@{/project/{projectId}/tasks(projectId=${projectId})}" class="btn secondary">Cancel</a>
     </form>
 </div>
 
