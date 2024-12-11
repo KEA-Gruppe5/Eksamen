@@ -23,23 +23,21 @@
         <table class="view-table">
             <thead class="table-header">
             <tr>
-                <th>Task ID</th>
-                <th>Task Name</th>
+                <th>Name</th>
                 <th>Description</th>
                 <th>Priority</th>
                 <th>Status</th>
                 <th>Deadline</th>
                 <th>Estimated Hours</th>
                 <th>Assigned Member</th>
-                <th>Member Actions</th>
-                <th>Task Actions</th>
+                <th th:if="${session.role == 'PM'}">Member Actions</th>
+                <th th:if="${session.role == 'PM' || session.role == 'Employee'}">Task Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="task : ${tasks}">
-                <td th:text="${task.id}"></td>
                 <td th:text="${task.title}"></td>
-                <td th:text="${task.description}"></td>
+                <td style="white-space: normal; word-wrap: break-word;" th:text="${task.description}"></td>
                 <td>
                     <span th:class="${task.priority.toLowerCase()}" th:text="${task.priority}"></span>
                 </td>
@@ -52,20 +50,20 @@
                     <span th:if="${task.teamMemberDTO != null}" th:text="${task.teamMemberDTO.fullName}"></span>
                     <span th:if="${task.teamMemberDTO == null}">Not Assigned</span>
                 </td>
-                <td>
-                    <div th:if="${session.role =='PM'}" class="btn-group">
+                <td th:if="${session.role == 'PM'}">
+                    <div class="btn-group">
                         <form th:if="${task.teamMemberDTO != null}" th:action="@{/project/{projectId}/{taskId}/removeMember(projectId=${projectId}, taskId=${task.id})}" method="post">
-                            <button type="submit" class="btn danger">Remove Member</button>
+                            <button type="submit" class="btn danger">Unassign</button>
                         </form>
                         <a th:href="@{/project/{projectId}/{taskId}/assign(projectId=${projectId}, taskId=${task.id})}" class="btn warning">Assign</a>
                     </div>
                 </td>
-                <td>
-                    <div th:if="${session.role != 'Client'}" class="btn-group">
+                <td th:if="${session.role != 'Client'}">
+                    <div  class="btn-group">
                         <a th:href="@{/project/{projectId}/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}" class="btn primary">Edit</a>
 
                         <form th:if="${session.role == 'PM'}" th:action="@{/project/{projectId}/{taskId}/delete(projectId=${projectId}, taskId=${task.id})}" method="post">
-                            <button type="submit" class="btn danger" onclick="return confirm('Are you sure you want to delete this task?')">Delete task</button>
+                            <button type="submit" class="btn danger" onclick="return confirm('Are you sure you want to delete this task?')">Delete</button>
                         </form>
                     </div>
                 </td>
