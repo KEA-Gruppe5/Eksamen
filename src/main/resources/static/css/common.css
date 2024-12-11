@@ -36,7 +36,7 @@ textarea:focus {
 .main-content,
 .container {
     margin-left: 250px;
-    padding: 70px;
+    padding-top: 20px;
     box-sizing: border-box;
 }
 
