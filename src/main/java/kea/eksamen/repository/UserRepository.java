@@ -42,16 +42,6 @@ public class UserRepository implements UserRepositoryInterface{
     }
 
     @Override
-    public User updateUser(User user, int id) {
-        return null;
-    }
-
-    @Override
-    public boolean deleteUser(int id) {
-        return false;
-    }
-
-    @Override
     public User findUserByEmail(String email) {
         String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id WHERE email = ?";
         return jdbcClient.sql(sql)
