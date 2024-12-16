@@ -10,6 +10,5 @@ public interface UserRepositoryInterface {
     User updateUser(User user, int id);
     boolean deleteUser(int id) throws SQLException;
     User findUserByEmail (String email) throws SQLException;
-    public List<User> findAllUsers();
-
+    List<User> findAllUsers();
 }

@@ -1,17 +1,12 @@
 package kea.eksamen.exceptions;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
@@ -48,8 +43,8 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
-    @ExceptionHandler(TaskNotFoundExeption.class)
-    public String handleTaskNotFoundExeption(TaskNotFoundExeption e, Model model) {
+    @ExceptionHandler(TaskNotFoundException.class)
+    public String handleTaskNotFoundException(TaskNotFoundException e, Model model) {
         logger.error("Database Error: " + e.getMessage(), e);
         model.addAttribute("errorMessage", e.getMessage());
         model.addAttribute("timestamp", LocalDateTime.now());
@@ -57,7 +52,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public String handleAllExeptions(Exception e, Model model) {
+    public String handleAllExceptions(Exception e, Model model) {
         logger.error("Error: " + e.getMessage(), e);
 
         // Handle 404 error
@@ -72,7 +67,7 @@ public class GlobalExceptionHandler {
             return "505";
         }
 
-        //Handle all other exceptions
+        //Handle all others exceptions
         model.addAttribute("errorMessage", e.getMessage());
         model.addAttribute("timestamp", LocalDateTime.now());
         return "error";

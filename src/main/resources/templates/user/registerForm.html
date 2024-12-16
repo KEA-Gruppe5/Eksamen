@@ -16,7 +16,7 @@
 <div th:if="${session.userId == null}">
 <div class="form-container">
     <h1>Register New User</h1>
-    <div th:if="${success}" class="success">
+    <div th:if="${success}" >
         <p th:text="${success}"></p>
         <br>
         <a th:href="@{/login}">Login</a>

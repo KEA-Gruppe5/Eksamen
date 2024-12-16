@@ -62,7 +62,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
         //get all the subProject ids from the parent project id.
         List<Integer> subProjectsId = jdbcClient.sql("SELECT subproject_id FROM PMTool.subprojects WHERE parent_project_id = ?")
                 .param(id) //binds Parent id to ?
-                .query(Integer.class) //maps the result (all the subProject id values) to a list of(Integers),since java cant read Database rows.
+                .query(Integer.class) //maps the result (all the subProject id values) to a list of(Integers), since java can't read Database rows.
                 .list(); // execute database returns list(Integer), that's stored in the variable subProjectsId
         for (Integer subProjects : subProjectsId) {
             //looping and get all subprojects and delete them
@@ -98,28 +98,24 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .list();
     }
 
-    public boolean archiveProject(int id) {
+    public void archiveProject(int id) {
         int rows = jdbcClient.sql("UPDATE PMTool.projects SET archived = true WHERE id = ?")
                 .param(id)
                 .update();
         if (rows > 0) {
             logger.info("Archived project with ID: " + id);
-            return true;
         }
         logger.warn("Archiving project failed for ID: " + id);
-        return false;
     }
 
-    public boolean unarchiveProject(int id) {
+    public void unarchiveProject(int id) {
         int rows = jdbcClient.sql("UPDATE PMTool.projects SET archived = false WHERE id = ?")
                 .param(id)
                 .update();
         if (rows > 0) {
             logger.info("Unarchived project with ID: " + id);
-            return true;
         }
         logger.warn("Unarchiving project failed for ID: " + id);
-        return false;
     }
 
     public Project getProjectById(int id) {

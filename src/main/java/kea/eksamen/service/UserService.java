@@ -9,8 +9,6 @@ import kea.eksamen.util.PasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -26,7 +24,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User saveUser(User user) throws SQLException {
+    public User saveUser(User user) {
         logger.info("saveUser is called.");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         checkIfUserAlreadyExists(user.getEmail());
@@ -35,7 +33,7 @@ public class UserService {
         return savedUser;
     }
 
-    public void checkIfUserAlreadyExists(String email) throws SQLException {
+    public void checkIfUserAlreadyExists(String email) {
         logger.info("checkIfUserAlreadyExists is called.");
         User foundByEmailUser = userRepository.findUserByEmail(email);
         if(foundByEmailUser != null){
@@ -43,7 +41,7 @@ public class UserService {
         }
     }
 
-    public User authenticate(UserDTO userDTO) throws SQLException {
+    public User authenticate(UserDTO userDTO) {
         User user = userRepository.findUserByEmail(userDTO.getEmail());
         if(user != null){
                 boolean isPasswordCorrect = passwordEncoder.matches(userDTO.getPassword(),

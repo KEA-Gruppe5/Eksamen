@@ -37,10 +37,9 @@ public abstract class AbstractProjectService {
     }
 
     public Project mapDtoToProject(ProjectDTO projectDto){
-        Project project = new Project(projectDto.getTitle(),
+        return new Project(projectDto.getTitle(),
                 projectDto.getDateRange().getStartDate(), projectDto.getDateRange().getEndDate(),
                 projectDto.getDuration());
-        return project;
     }
 
     public abstract double getHoursToWorkPerDay(int projectId);

@@ -1,6 +1,5 @@
 package kea.eksamen.controller;
 
-import kea.eksamen.dto.DateRange;
 import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.dto.TaskDTO;
 import kea.eksamen.dto.TeamMemberDTO;
@@ -14,19 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TaskController.class)
@@ -46,17 +43,12 @@ class TaskControllerTest {
     private SubprojectService subprojectService;
 
     private TaskDTO taskDTO;
-    private User user;
-    private List<User> userList;
     private Task task;
 
     @BeforeEach
     void setUp() {
+        assertNotNull(userService);
         task = new Task(1, 1, "Test Task", "description", TaskPriority.MEDIUM, TaskStatus.TODO, LocalDate.now(), 0, 8);
-        userList = new ArrayList<>();
-        user = new User("FirstName", "LastName", "email@test", "kea123");
-        user.setRole(Role.EMPLOYEE);
-        userList.add(user);
         mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute("userId", 1);
         taskDTO = new TaskDTO(1, 1, "Test Task", "description", "MEDIUM", null,LocalDate.now() ,new TeamMemberDTO("test","test"),2);
@@ -164,7 +156,6 @@ class TaskControllerTest {
 
     @Test
     void removeAssignedUser_postRemoveMember() throws Exception {
-        int userIdToAssign = 1;
         doNothing().when(taskService).removeAssignedUser(task.getId());
         mockMvc.perform(post("/project/{projectId}/{taskId}/removeMember", task.getProjectId(), task.getId()))
                 .andExpect(status().is3xxRedirection())

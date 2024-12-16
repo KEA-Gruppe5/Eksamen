@@ -100,7 +100,7 @@ class ProjectRepositoryTest {
     void addSubProject_addSubProjectToParent() {
         // Arrange
         int parentProjectId = 1; // Ensure this exists in the projects table
-        int subProjectId = 3;   // Ensure this exists in the projects table but is not already a subproject of parentProjectId
+        int subProjectId = 3;   // Ensure this exists in the project's table but is not already a subproject of parentProjectId
         assertEquals(1, projectRepository.addSubProject(parentProjectId, subProjectId));
     }
 

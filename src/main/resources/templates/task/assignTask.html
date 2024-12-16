@@ -17,9 +17,9 @@
         <h5>Select a Member</h5>
             <div th:each="user : ${users}">
                 <div class="form-check">
-                    <input type="radio" th:value="${user.id}" th:id="${user.id}" name="userIdToAssign"
-                           th:checked="${user.id == assignedMember}" class="form-check-input" />
                     <label th:for="${user.id}" class="form-check-label" th:text="${user.fullName}"></label>
+                    <input type="radio" th:value="${user.id}" id="${user.id}" name="userIdToAssign"
+                           th:checked="${user.id == assignedMember}" class="form-check-input" />
                 </div>
             </div>
         <button type="submit" class="btn primary">Assign</button>

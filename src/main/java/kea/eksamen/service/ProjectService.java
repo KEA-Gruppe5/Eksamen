@@ -4,8 +4,6 @@ package kea.eksamen.service;
 import kea.eksamen.dto.ProjectDTO;
 import kea.eksamen.model.Project;
 import kea.eksamen.repository.ProjectRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ public class ProjectService extends AbstractProjectService{
     private final ProjectRepository projectRepository;
     private final SubprojectService subprojectService;
 
-    private static final Logger logger = LoggerFactory.getLogger(ProjectService.class);
     public ProjectService(ProjectRepository projectRepository, SubprojectService subprojectService) {
         super(projectRepository);
         this.projectRepository = projectRepository;
@@ -31,12 +28,12 @@ public class ProjectService extends AbstractProjectService{
         return projectDTOS;
     }
 
-    public boolean archiveProject(int id) {
-        return projectRepository.archiveProject(id);
+    public void archiveProject(int id) {
+        projectRepository.archiveProject(id);
     }
 
-    public boolean unarchiveProject(int id) {
-        return projectRepository.unarchiveProject(id);
+    public void unarchiveProject(int id) {
+        projectRepository.unarchiveProject(id);
     }
 
     public List<ProjectDTO> getArchivedProjects() {

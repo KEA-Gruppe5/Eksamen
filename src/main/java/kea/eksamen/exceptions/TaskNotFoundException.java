@@ -1,10 +1,10 @@
 package kea.eksamen.exceptions;
 
-public class TaskNotFoundExeption extends RuntimeException {
+public class TaskNotFoundException extends RuntimeException {
     /**
      * Class created by: Kristoffer
      */
-    public TaskNotFoundExeption() {
+    public TaskNotFoundException() {
         super("Task not found");
     }
 }

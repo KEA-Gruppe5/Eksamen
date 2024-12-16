@@ -3,7 +3,6 @@ package kea.eksamen.service;
 
 import kea.eksamen.dto.TaskDTO;
 import kea.eksamen.dto.TeamMemberDTO;
-import kea.eksamen.model.Project;
 import kea.eksamen.model.Task;
 import kea.eksamen.model.User;
 import kea.eksamen.repository.TaskRepository;
@@ -30,8 +29,7 @@ public class TaskService {
     }
 
     public Task addTask(Task task) {
-        Task addedTask = taskRepository.addTask(task);
-        return addedTask;
+        return taskRepository.addTask(task);
     }
 
     public List<Task> getAllTasks(int projectId) {

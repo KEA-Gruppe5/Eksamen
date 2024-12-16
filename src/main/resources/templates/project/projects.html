@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <title th:text="${isArchived ? 'Archived Projects' : 'Active Projects'}"></title>
     <link href="/css/table.css" rel="stylesheet">
@@ -12,7 +12,7 @@
     <h1 class="heading" th:text="${isArchived ? 'Archived Projects' : 'Active Projects'}"></h1>
     <p>Below you can see a list of all projects.</p>
     <hr class="divider">
-    <a th:if="${session.role == 'PM'}"th:href="@{/projects/add}" class="btn primary">
+    <a th:if="${session.role == 'PM'}"  th:href="@{/projects/add}" class="btn primary">
         <i class="icon icon-plus"></i>Add new project
     </a>
     <div >

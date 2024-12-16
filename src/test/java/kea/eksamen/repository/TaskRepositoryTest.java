@@ -27,15 +27,11 @@ class TaskRepositoryTest {
     @Autowired
     private JdbcClient jdbcClient;
 
-
     @BeforeEach
     void setUp() {
         taskRepository = new TaskRepository(jdbcClient);
     }
 
-
-    @AfterEach
-    void tearDown() {}
 
     @Test
     void addTask_createNewTask() {
