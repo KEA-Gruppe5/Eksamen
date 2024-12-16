@@ -43,7 +43,7 @@ public class ProjectServiceTest {
 
 
     @Test
-    public void testGetHoursToWorkPerDay() {
+    public void getHoursToWorkPerDay_calculateTotalDailyHours() {
         int projectId = 1;
 
         List<Project> subprojects = Arrays.asList(subproject1, subproject2);
@@ -58,7 +58,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void testGetHoursForAllTasks() {
+    public void getHoursForAllTasks_calculateTotalTaskHours() {
         List<Project> subprojects = Arrays.asList(subproject1, subproject2);
         when(projectRepository.getSubProjectsByParentId(parentProject.getId())).thenReturn(subprojects);
 
