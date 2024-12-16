@@ -95,11 +95,14 @@ public class TaskRepository implements TaskRepositoryInterface {
     @Override
     public Task findTaskById(int taskId) {
         String sql = "SELECT * FROM PMTool.tasks WHERE id = ?";
-        return jdbcClient.sql(sql)
-                .param(taskId)
-                .query(new TaskMapper())
-                .optional()
-                .orElseThrow(TaskNotFoundExeption::new);
+        try {
+            return jdbcClient.sql(sql)
+                    .param(taskId)
+                    .query(new TaskMapper())
+                    .single();
+        } catch (Exception e) {
+            throw new TaskNotFoundExeption();
+        }
     }
 
     @Override
