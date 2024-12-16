@@ -1,6 +1,9 @@
 package kea.eksamen.model;
 
 public enum TaskStatus {
+    /**
+     * Class created by: Kristoffer
+     */
     TODO("Todo",1),
     IN_PROGRESS("In Progress",2),
     COMPLETED("Completed",3),

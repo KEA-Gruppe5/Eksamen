@@ -2,6 +2,9 @@ package kea.eksamen.dto;
 import java.time.LocalDate;
 
 public class TaskDTO {
+    /**
+     * Class created by: Kristoffer
+     */
     private int id;
     private int projectId;
     private String title;

@@ -16,6 +16,10 @@ import java.util.List;
 
 @Repository
 public class TaskRepository implements TaskRepositoryInterface {
+    /**
+     * Class & methods created by: Kristoffer
+     * Contributions from Viktoria
+     */
 
     private static final Logger logger = LoggerFactory.getLogger(TaskRepository.class);
 
