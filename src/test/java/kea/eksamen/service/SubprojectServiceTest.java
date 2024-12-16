@@ -44,7 +44,7 @@ class SubprojectServiceTest {
 
 
     @Test
-    public void testGetHoursForAllTasks() {
+    public void getHoursForAllTasks_calculateTotalTaskHours() {
         int subprojectId = subproject.getId();
         double expectedHoursForAllTasks = 50.0;
 
@@ -55,7 +55,7 @@ class SubprojectServiceTest {
     }
 
     @Test
-    public void testGetHoursToWorkPerDay() {
+    public void getHoursToWorkPerDay_calculateDailyWorkHours() {
         int subprojectId = subproject.getId();
         double hoursForAllTasks = 1000.0;
         int duration = subproject.getDuration();

@@ -4,7 +4,6 @@ import kea.eksamen.model.Task;
 import kea.eksamen.model.TaskPriority;
 import kea.eksamen.model.TaskStatus;
 import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
