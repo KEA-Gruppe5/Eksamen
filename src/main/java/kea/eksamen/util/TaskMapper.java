@@ -16,7 +16,7 @@ public class TaskMapper implements RowMapper<Task> {
     @Override
     public Task mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 
-        Task task = new Task(
+        return new Task(
                 resultSet.getInt("id"),
                 resultSet.getInt("project_id"),
                 resultSet.getString("title"),
@@ -26,8 +26,6 @@ public class TaskMapper implements RowMapper<Task> {
                 resultSet.getDate("deadline").toLocalDate(),
                 resultSet.getInt("assigned_user_id"),
                 resultSet.getDouble("estimated_hours"));
-
-        return task;
     }
 }
 

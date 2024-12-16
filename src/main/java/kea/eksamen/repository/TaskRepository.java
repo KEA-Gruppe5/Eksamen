@@ -1,6 +1,6 @@
 package kea.eksamen.repository;
 
-import kea.eksamen.exceptions.TaskNotFoundExeption;
+import kea.eksamen.exceptions.TaskNotFoundException;
 import kea.eksamen.model.Task;
 import kea.eksamen.util.TaskMapper;
 import org.slf4j.Logger;
@@ -11,7 +11,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 
-import java.sql.Date;
 import java.util.List;
 
 @Repository
@@ -105,7 +104,7 @@ public class TaskRepository implements TaskRepositoryInterface {
                     .query(new TaskMapper())
                     .single();
         } catch (Exception e) {
-            throw new TaskNotFoundExeption();
+            throw new TaskNotFoundException();
         }
     }
 

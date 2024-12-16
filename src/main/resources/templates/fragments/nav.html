@@ -1,14 +1,16 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="nav" xmlns="http://www.w3.org/1999/html">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="/css/indexNav.css">
-    </head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="nav" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Management Tool</title>
+    <link rel="stylesheet" href="/css/indexNav.css">
+</head>
+<body>
+
     <header class="navbar-header">
-        <img src="/proj.png" height="25" width="25">
+        <img alt="Favicon" height="25" width="25" src="/favicon.ico">
         <h1 class="navbar-header-icon">Project Management Tool</h1>
         <ul class="nav">
-            <li class="nav-item"><a href="/" class="nav-link" aria-current="home">Home</a></li>
+            <li class="nav-item"><a href="/" class="nav-link" aria-current="page">Home</a></li>
 
             <li th:if="${session.userId != null}" class="nav-item">
                 <a href="/logout" class="nav-link">Logout</a>
@@ -22,5 +24,5 @@
             </li>
         </ul>
     </header>
-</div>
+</body>
 </html>

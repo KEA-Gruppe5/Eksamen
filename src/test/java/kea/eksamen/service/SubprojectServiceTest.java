@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
@@ -38,6 +38,7 @@ class SubprojectServiceTest {
 
     @BeforeEach
     public void setUp() {
+        assertNotNull(logger);
         subproject = new Project(1, "Parent Project", LocalDate.of(2023, 1, 1), LocalDate.of(2023, 12, 31), 200, false);
     }
 

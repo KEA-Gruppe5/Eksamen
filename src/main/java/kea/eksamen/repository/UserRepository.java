@@ -1,18 +1,13 @@
 package kea.eksamen.repository;
 
-import kea.eksamen.model.Role;
 import kea.eksamen.model.User;
 import kea.eksamen.util.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -52,7 +47,7 @@ public class UserRepository implements UserRepositoryInterface{
     }
 
     @Override
-    public boolean deleteUser(int id) throws SQLException {
+    public boolean deleteUser(int id) {
         return false;
     }
 
@@ -85,10 +80,9 @@ public class UserRepository implements UserRepositoryInterface{
 
     public List<User> findAllUsers() {
         String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id";
-        List<User> users = jdbcClient.sql(sql)
+        return jdbcClient.sql(sql)
                 .query(new UserMapper())
                 .list();
-        return users;
     }
 
     public void assignUserToProject(int userId, int projectId) {

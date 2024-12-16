@@ -14,8 +14,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+
 import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,6 +38,8 @@ class ProjectControllerTest {
 
     @BeforeEach
     void setUp() {
+        assertNotNull(projectService);
+        assertNotNull(subprojectService);
         mockHttpSession = new MockHttpSession();
         mockHttpSession.setAttribute("userId", 1);
     }
