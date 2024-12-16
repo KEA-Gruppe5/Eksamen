@@ -84,7 +84,7 @@ public class TaskRepository implements TaskRepositoryInterface {
 
     @Override
     public boolean deleteTask(int taskId) {
-        int deleteTask = jdbcClient.sql("DELETE FROM tasks WHERE id = ?")
+        int deleteTask = jdbcClient.sql("DELETE FROM PMTool.tasks WHERE id = ?")
                 .param(taskId)
                 .update();
         if (deleteTask > 0) {
@@ -111,14 +111,14 @@ public class TaskRepository implements TaskRepositoryInterface {
 
     @Override
     public List<Task> getAllTasks(int projectId) {
-        return jdbcClient.sql("SELECT * FROM PMTool.tasks t WHERE t.project_id = ?")
+        return jdbcClient.sql("SELECT * FROM PMTool.tasks WHERE project_id = ?")
                 .param(projectId)
                 .query(new TaskMapper())
                 .list();
     }
 
     public void assignMember(int taskId, int userid) {
-        String sql = "UPDATE tasks SET assigned_user_id = ? WHERE id = ?";
+        String sql = "UPDATE PMTool.tasks SET assigned_user_id = ? WHERE id = ?";
         jdbcClient.sql(sql)
                 .param(1, userid)
                 .param(2, taskId)
@@ -127,14 +127,14 @@ public class TaskRepository implements TaskRepositoryInterface {
     }
 
     public void removeAssignedUser(int taskId) {
-        String sql = "UPDATE tasks SET assigned_user_id = NULL WHERE id = ?";
+        String sql = "UPDATE PMTool.tasks SET assigned_user_id = NULL WHERE id = ?";
         jdbcClient.sql(sql)
                 .param(taskId)
                 .update();
     }
 
     public int findAssignedMember(int taskId){
-        String sql = "SELECT assigned_user_id FROM tasks WHERE id = ?";
+        String sql = "SELECT assigned_user_id FROM PMTool.tasks WHERE id = ?";
         List<Integer> result = jdbcClient.sql(sql)
                 .param(taskId)
                 .query(Integer.class)
@@ -149,7 +149,9 @@ public class TaskRepository implements TaskRepositoryInterface {
         String sql = "SELECT SUM(estimated_hours) FROM PMTool.tasks WHERE project_id = ?";
         return jdbcClient.sql(sql)
                 .param(subprojectId)
-                .query(Double.class).optional().orElse(0.0);
+                .query(Double.class)
+                .optional()
+                .orElse(0.0);
     }
 
     public List<Task> getAllTasksByProjectId(int projectId) {
