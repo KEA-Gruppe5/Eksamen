@@ -30,8 +30,7 @@ public class TaskService {
     }
 
     public Task addTask(Task task) {
-        Task addedTask = taskRepository.addTask(task);
-        return addedTask;
+        return taskRepository.addTask(task);
     }
 
     public List<Task> getAllTasks(int projectId) {
