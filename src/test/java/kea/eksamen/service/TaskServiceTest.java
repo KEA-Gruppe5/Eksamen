@@ -50,7 +50,7 @@ class TaskServiceTest {
     }
 
     @Test
-    void addTask() {
+    void addTask_createNewTask() {
         when(taskRepository.addTask(task)).thenReturn(task);
         Task result = taskService.addTask(task);
         assertEquals(task, result);
@@ -58,7 +58,7 @@ class TaskServiceTest {
     }
 
     @Test
-    void getAllTasks() {
+    void getAllTasks_retrieveTasksForProject() {
         List<Task> tasks = List.of(new Task());
         when(taskRepository.getAllTasks(task.getProjectId())).thenReturn(tasks);
         List<Task> result = taskService.getAllTasks(task.getProjectId());
@@ -67,7 +67,7 @@ class TaskServiceTest {
     }
 
     @Test
-    void deleteTask() {
+    void deleteTask_removeTaskById() {
         when(taskRepository.deleteTask(task.getId())).thenReturn(true);
         boolean result = taskService.deleteTask(task.getId());
         assertTrue(result);
@@ -75,7 +75,7 @@ class TaskServiceTest {
     }
 
     @Test
-    void editTask() {
+    void editTask_updateTaskDetails() {
         when(taskRepository.updateTask(task, task.getId())).thenReturn(task);
         Task result = taskService.editTask(task, task.getId());
         assertEquals(task, result);
@@ -83,7 +83,7 @@ class TaskServiceTest {
     }
 
     @Test
-    void findTaskById() {
+    void findTaskById_retrieveTaskById() {
         when(taskRepository.findTaskById(task.getId())).thenReturn(task);
         Task result = taskService.findTaskById(task.getId());
         assertEquals(task, result);
@@ -91,26 +91,26 @@ class TaskServiceTest {
     }
 
     @Test
-    void assignMemberToTask() {
+    void assignMemberToTask_assignUserToTask() {
         int userId = 1;
         taskService.assignMemberToTask(task.getId(), userId);
         verify(taskRepository).assignMember(task.getId(), userId);
     }
 
     @Test
-    void removeAssignedUser() {
+    void removeAssignedUser_clearAssignedUserFromTask() {
         taskService.removeAssignedUser(task.getId());
         verify(taskRepository).removeAssignedUser(task.getId());
     }
 
     @Test
-    void getMembersFromTeam() {
+    void getMembersFromTeam_retrieveTeamMembersForProject() {
         taskService.getMembersFromTeam(task.getProjectId());
         verify(projectTeamService).findTeamMembers(task.getProjectId());
     }
 
     @Test
-    void getAssignedMember() {
+    void getAssignedMember_retrieveAssignedUserFromTask() {
         taskService.getAssignedMember(task.getId());
         verify(taskRepository).findAssignedMember(task.getId());
     }

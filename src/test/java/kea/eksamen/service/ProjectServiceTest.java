@@ -17,7 +17,7 @@ public class ProjectServiceTest {
     private ProjectService projectService;
 
     @Test
-    public void testGetArchivedProjects() {
+    public void getArchivedProjects_retrieveArchivedProjects() {
         List<ProjectDTO> archivedProjects = projectService.getArchivedProjects();
         System.out.println("Archived Projects: " + archivedProjects);
     }

@@ -34,7 +34,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("UserRepository Integration test: adding new user in repository")
-    void addUser()  {
+    void addUser_createNewUser()  {
         User savedUser = userRepository.addUser(user);
         assertNotNull(savedUser);
         assertEquals("first name", savedUser.getFirstName());
@@ -45,7 +45,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("UserRepository Integration test: finding user by email in repository")
-    void findUserByEmail() {
+    void findUserByEmail_retrieveUserByEmail() {
         User user =  new User("first name", "last name", "some email", "password");
         user.setRole(Role.EMPLOYEE);
         userRepository.addUser(user);
@@ -56,7 +56,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("Integration test finding users assigned to a project")
-    void testFindTeamMembersByProjectId() {
+    void findTeamMembersByProjectId_getAssignedUsers() {
         List<User> team = userRepository.findTeamMembers(1);
         assertEquals(2, team.size());
         for(User user : team){
@@ -66,7 +66,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("Integration test finding users NOT assigned to the project")
-    void testFindUnassignedUsersByProjectId() {
+    void findUnassignedUsersByProjectId_getUnassignedUsers() {
         List<User> unassignedUsers = userRepository.findUnassignedUsers(2);
         assertEquals(3, unassignedUsers.size());
         for(User user : unassignedUsers){
@@ -76,7 +76,7 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("Integration test finding all users")
-    void testFindAllUsers() {
+    void findAllUsers_retrieveAllUsers() {
         List<User> users = userRepository.findAllUsers();
         assertEquals(4, users.size());
         for(User user : users){
