@@ -26,12 +26,11 @@ public class SubprojectService extends AbstractProjectService{
         this.taskRepository = taskRepository;
     }
 
-    public Project addSubProject(ProjectDTO subProject, int parentId) {
+    public void addSubProject(ProjectDTO subProject, int parentId) {
         Project addedSubproject = super.addProject(subProject);
         if (addedSubproject != null) {
             projectRepository.addSubProject(parentId, addedSubproject.getId());
         }
-        return addedSubproject;
     }
 
     public int getParentId(int subProjectId){
@@ -55,14 +54,14 @@ public class SubprojectService extends AbstractProjectService{
             throw new IllegalArgumentException("Duration cannot be zero.");
         }
         double hoursToWorkPerDay = Math.round(hoursForAllTasks / (double) duration * 10.0) / 10.0;
-        logger.info("Hours to  work per day: " + hoursToWorkPerDay);
+        logger.info("Hours to  work per day: {}", hoursToWorkPerDay);
         return hoursToWorkPerDay;
     }
 
     @Override
     public double getHoursForAllTasks(int subprojectId){
         double hoursForAllTasks = taskRepository.getHoursForAllTasks(subprojectId);
-        logger.info("Total hours for all tasks for the subproject " + subprojectId + " : " + hoursForAllTasks);
+        logger.info("Total hours for all tasks for the subproject {} : {}", subprojectId, hoursForAllTasks);
         return hoursForAllTasks;
     }
 

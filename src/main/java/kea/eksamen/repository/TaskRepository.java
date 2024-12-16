@@ -47,10 +47,10 @@ public class TaskRepository implements TaskRepositoryInterface {
 
         if (id != 0 && keyHolder.getKey() != null) {
             task.setId(keyHolder.getKey().intValue());
-            logger.info("Successfully added new task: " + task);
+            logger.info("Successfully added new task: {}", task);
             return task;
         } else {
-            logger.error("Failed to add task: " + task);
+            logger.error("Failed to add task: {}", task);
 
         }
         return task;
@@ -58,7 +58,7 @@ public class TaskRepository implements TaskRepositoryInterface {
 
     @Override
     public Task updateTask(Task task, int taskId) {
-        logger.info("Updating task with ID: " + taskId);
+        logger.info("Updating task with ID: {}", taskId);
         int rowsAffected = jdbcClient.sql("UPDATE PMTool.tasks " +
                         "SET title = ?, description = ?, priority = ?, status = ?, deadline = ?, estimated_hours = ? " +
                         "WHERE id = ?")
@@ -72,10 +72,10 @@ public class TaskRepository implements TaskRepositoryInterface {
                 .update();
 
         if (rowsAffected > 0) {
-            logger.info("Successfully updated task with ID: " + taskId);
+            logger.info("Successfully updated task with ID: {}", taskId);
             return task;
         } else {
-            logger.warn("No task found with ID: " + taskId);
+            logger.warn("No task found with ID: {}", taskId);
             throw new IllegalStateException("Failed to update task. Task ID might not exist: " + taskId);
         }
     }
@@ -87,10 +87,10 @@ public class TaskRepository implements TaskRepositoryInterface {
                 .param(taskId)
                 .update();
         if (deleteTask > 0) {
-            logger.info("Successfully deleted task with ID: " + deleteTask);
+            logger.info("Successfully deleted task with ID: {}", deleteTask);
             return true;
         }
-        logger.warn("No task found with ID: " + taskId + ". Deletion failed.");
+        logger.warn("No task found with ID: {}. Deletion failed.", + taskId);
         return false;
     }
 
