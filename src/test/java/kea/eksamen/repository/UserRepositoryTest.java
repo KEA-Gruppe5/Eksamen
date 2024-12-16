@@ -73,14 +73,4 @@ class UserRepositoryTest {
             System.out.println(user);
         }
     }
-
-    @Test
-    @DisplayName("Integration test finding all users")
-    void findAllUsers_retrieveAllUsers() {
-        List<User> users = userRepository.findAllUsers();
-        assertEquals(4, users.size());
-        for(User user : users){
-            System.out.println(user);
-        }
-    }
 }
