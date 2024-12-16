@@ -38,7 +38,7 @@ public class ProjectController {
 
     @PostMapping("/add")
     public String addProject(@ModelAttribute("project") @Valid ProjectDTO project, BindingResult bindingResult){
-        logger.info("Does binding result has errors? : {}", bindingResult.hasErrors());
+        logger.info("Add project : Does binding result has errors? : {}", bindingResult.hasErrors());
         if(bindingResult.hasErrors()){
             return "project/addProject";
         }
@@ -89,7 +89,7 @@ public class ProjectController {
     @PostMapping("/{id}/update")
     public String updateProject(@PathVariable("id") int id, @ModelAttribute("project") @Valid ProjectDTO project,
                                 BindingResult bindingResult) {
-        logger.info("Does binding result has errors? : {}", bindingResult.hasErrors());
+        logger.info("Update project : Does binding result has errors? : {}", bindingResult.hasErrors());
         if(bindingResult.hasErrors()){
             return "project/updateProject";
         }
@@ -109,7 +109,7 @@ public class ProjectController {
 
     @PostMapping("/{parentId}/subprojects/add")
     public String addSubProject(@PathVariable("parentId") int parentId,  @ModelAttribute("project") @Valid ProjectDTO subProject, BindingResult bindingResult) {
-        logger.info("Does binding result has errors? : {}", bindingResult.hasErrors());
+        logger.info("Add subproject: Does binding result has errors? : {}", bindingResult.hasErrors());
         if(bindingResult.hasErrors()){
             return "project/addSubProject";
         }
