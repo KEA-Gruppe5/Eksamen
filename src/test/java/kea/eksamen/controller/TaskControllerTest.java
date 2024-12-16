@@ -63,7 +63,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void addTask() throws Exception {
+    void addTask_getAddTaskForm() throws Exception {
         mockMvc.perform(get("/project/{projectId}/add", task.getProjectId()).session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("addNewTask"))
@@ -72,7 +72,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void testAddTask() throws Exception {
+    void addTask_postAddTask() throws Exception {
 
         when(taskService.addTask(any(Task.class))).thenReturn(task);
 
@@ -86,7 +86,7 @@ class TaskControllerTest {
 
 
     @Test
-    void viewTasks() throws Exception {
+    void viewTasks_getTasksByProjectId() throws Exception {
         when(taskService.getTaskDtosByProjectId(task.getProjectId())).thenReturn(List.of(taskDTO));
 
         ProjectDTO projectDTO = new ProjectDTO();
@@ -102,9 +102,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void deleteTask() throws Exception {
-
-
+    void deleteTask_postDeleteTask() throws Exception {
         mockMvc.perform(post("/project/{projectId}/{taskId}/delete", task.getProjectId(), task.getId()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/project/" + task.getProjectId() + "/tasks"));
@@ -113,7 +111,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void editTask() throws Exception {
+    void editTask_getEditTaskForm() throws Exception {
 
         when(taskService.findTaskById(task.getId())).thenReturn(task);
 
@@ -124,7 +122,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void testEditTask() throws Exception {
+    void editTask_postEditTask() throws Exception {
         when(taskService.editTask(any(Task.class), eq(task.getId()))).thenReturn(task);
 
         mockMvc.perform(post("/project/{projectId}/{taskId}/edit", task.getProjectId(), task.getId())
@@ -136,7 +134,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void assignMember() throws Exception {
+    void assignMember_getAssignTaskForm() throws Exception {
         List<TeamMemberDTO> members = Arrays.asList(
                 new TeamMemberDTO("member1", "Member One"),
                 new TeamMemberDTO("member2", "Member Two")
@@ -153,7 +151,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void assignTeamMemberToTask() throws Exception {
+    void assignTeamMemberToTask_postAssignMember() throws Exception {
         int userIdToAssign = 1;
         doNothing().when(taskService).assignMemberToTask(task.getId(), userIdToAssign);
         mockMvc.perform(post("/project/{projectId}/{taskId}/assign", task.getProjectId(), task.getId())
@@ -165,7 +163,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void removeAssignedUser() throws Exception {
+    void removeAssignedUser_postRemoveMember() throws Exception {
         int userIdToAssign = 1;
         doNothing().when(taskService).removeAssignedUser(task.getId());
         mockMvc.perform(post("/project/{projectId}/{taskId}/removeMember", task.getProjectId(), task.getId()))

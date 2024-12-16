@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Class & methods created by: Kristoffer
+ *
+ */
+
 @Controller
 @RequestMapping("/project")
 public class TaskController {
@@ -30,7 +35,7 @@ public class TaskController {
             return "unauthorized";
         }
         Task task = new Task();
-        task.setProjectId(projectId); // Pre-set the projectId
+        task.setProjectId(projectId);
         model.addAttribute("addNewTask", task);
         model.addAttribute("projectId", projectId);
         return "task/addTask";

@@ -41,7 +41,7 @@ class ProjectControllerTest {
 
     @Test
     @DisplayName("ProjectController test: get registration form")
-    void addProject_getAddProjectForm() throws Exception {
+    void addProject_getRegistrationForm() throws Exception {
         mockMvc.perform(get("/projects/add").session(mockHttpSession))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("project"))
@@ -65,7 +65,8 @@ class ProjectControllerTest {
     }
 
     @Test
-    public void testDateValidation() {
+    @DisplayName("DateRangeValidator test: invalid date range")
+    public void isValid_invalidDateRange() {
         DateRange dateRange = new DateRange();
         dateRange.setStartDate(LocalDate.of(2023, 12, 1));
         dateRange.setEndDate(LocalDate.of(2023, 12, 1));

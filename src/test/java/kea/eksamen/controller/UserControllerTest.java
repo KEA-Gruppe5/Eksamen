@@ -32,7 +32,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("UserController test: get registration form")
-    void testGettingRegistrationForm() throws Exception {
+    void getRegistrationForm_displayRegisterForm() throws Exception {
         mockMvc.perform(get("/register"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("user"))
@@ -41,7 +41,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("UserController test: registration successful")
-    void testUserRegistration_showSuccess() throws Exception {
+    void saveUser_validRegistration() throws Exception {
         // Arrange
         User user = new User("FirstName", "LastName", "email@test", "kea123");
         user.setRole(Role.EMPLOYEE);
@@ -62,7 +62,7 @@ class UserControllerTest {
     }
     @Test
     @DisplayName("UserController test: get login form")
-    void testGettingLoginPage() throws Exception {
+    void loginPage_displayLoginPage() throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("user"))
@@ -70,7 +70,7 @@ class UserControllerTest {
     }
     @Test
     @DisplayName("UserController test: login successful")
-    void testAuthenticationSuccessful_setUserIdInSession() throws Exception {
+    void Authentication_successfulLogin() throws Exception {
         UserDTO userDTO = new UserDTO("email@test", "kea123");
         User user = new User("FirstName", "LastName", "email@test", "kea123");
         user.setId(1);
@@ -89,7 +89,7 @@ class UserControllerTest {
     }
     @Test
     @DisplayName("UserController test: logout successful")
-    void logout() throws Exception {
+    void logout_clearSession() throws Exception {
         mockMvc.perform(get("/logout"))
                 .andExpect(request().sessionAttributeDoesNotExist("userId"))
                 .andExpect(status().is3xxRedirection());

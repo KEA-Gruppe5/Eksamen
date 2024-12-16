@@ -38,7 +38,7 @@ class TaskRepositoryTest {
     void tearDown() {}
 
     @Test
-    void addTask() {
+    void addTask_createNewTask() {
         Task task = new Task();
         task.setTitle("Test");
         task.setDescription("This is a test");
@@ -53,7 +53,7 @@ class TaskRepositoryTest {
 
 
     @Test
-    void updateTask() {
+    void updateTask_modifyExistingTask() {
         Task updatedTask = new Task();
         updatedTask.setTitle("Updated Title");
         updatedTask.setDescription("Updated Description");
@@ -68,7 +68,7 @@ class TaskRepositoryTest {
     }
 
     @Test
-    void deleteTask() {
+    void deleteTask_removeTaskById() {
         boolean deleted = taskRepository.deleteTask(1);
 
         assertTrue(deleted);
@@ -76,7 +76,7 @@ class TaskRepositoryTest {
     }
 
     @Test
-    void findTaskById() {
+    void findTaskById_retrieveTaskDetails() {
         Task task = taskRepository.findTaskById(1);
 
         assertNotNull(task);
@@ -87,7 +87,7 @@ class TaskRepositoryTest {
     }
 
     @Test
-    void getAllTasks() {
+    void getAllTasks_retrieveTasksForProject() {
         List<Task> tasks = taskRepository.getAllTasks(2);
         assertFalse(tasks.isEmpty());
         Task task = tasks.get(0);
@@ -97,7 +97,7 @@ class TaskRepositoryTest {
     }
 
     @Test
-    void assignMember() {
+    void assignMember_assignUserToTask() {
         Task task = taskRepository.findTaskById(2);
         assertNotNull(task);
         taskRepository.assignMember(2, 2);
@@ -107,7 +107,7 @@ class TaskRepositoryTest {
     }
 
     @Test
-    void findAssignedMember() {
+    void findAssignedMember_retrieveAssignedUser() {
         Task task = taskRepository.findTaskById(2);
         taskRepository.assignMember(task.getId(),2);
         assertNotNull(task);
@@ -117,7 +117,7 @@ class TaskRepositoryTest {
     }
 
     @Test
-    void removeAssignedUser() {
+    void removeAssignedUser_clearAssignedUser() {
         Task task = taskRepository.findTaskById(2);
         assertNotNull(task);
         taskRepository.removeAssignedUser(2);
@@ -128,7 +128,7 @@ class TaskRepositoryTest {
 
 
     @Test
-    void getHoursForAllTasks(){
+    void getHoursForAllTasks_calculateTotalHours(){
         double expected = 18;
         double actual = taskRepository.getHoursForAllTasks(2);
         assertEquals(expected, actual);

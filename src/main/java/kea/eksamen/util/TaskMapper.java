@@ -14,6 +14,9 @@ import java.time.LocalDate;
 
 
 public class TaskMapper implements RowMapper<Task> {
+    /**
+     * Class created by: Kristoffer
+     */
 
     @Override
     public Task mapRow(ResultSet resultSet, int rowNum) throws SQLException {

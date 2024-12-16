@@ -1,6 +1,9 @@
 package kea.eksamen.model;
 
 public enum TaskPriority {
+    /**
+     * Class & methods created by: Kristoffer
+     */
     LOW("Low",1),
     MEDIUM("Medium",2),
     HIGH("High",3);
