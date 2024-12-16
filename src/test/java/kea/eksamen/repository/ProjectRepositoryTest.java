@@ -97,7 +97,7 @@ class ProjectRepositoryTest {
 
     @Test
     @DisplayName("integration Test: adding a new subproject")
-    void addSubProject() {
+    void addSubProject_addSubProjectToParent() {
         // Arrange
         int parentProjectId = 1; // Ensure this exists in the projects table
         int subProjectId = 3;   // Ensure this exists in the projects table but is not already a subproject of parentProjectId
@@ -105,7 +105,7 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    void getSubProjectsByParentId(){
+    void getSubProjectsByParentId_retrieveSubProjects(){
         List<Project> subprojects = projectRepository.getSubProjectsByParentId(1);
         for(Project project: subprojects){
             System.out.println(project);
