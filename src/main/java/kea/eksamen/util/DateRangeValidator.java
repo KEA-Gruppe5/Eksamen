@@ -17,7 +17,7 @@ public class DateRangeValidator implements ConstraintValidator<EndDateAfterStart
 
     @Override
     public boolean isValid(DateRange dateRange, ConstraintValidatorContext constraintValidatorContext) {
-        logger.info("Validating date range: " + dateRange);
+        logger.info("Validating date range: {}", dateRange);
         return dateRange.getEndDate().isAfter(dateRange.getStartDate());
     }
 }
