@@ -7,9 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 
@@ -53,10 +56,23 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
-
     @ExceptionHandler(Exception.class)
     public String handleAllExeptions(Exception e, Model model) {
-        logger.error("Database Error: " + e.getMessage(), e);
+        logger.error("Error: " + e.getMessage(), e);
+
+        // Handle 404 error
+        if (e instanceof NoResourceFoundException) {
+            model.addAttribute("errorMessage", "The page you are looking for cannot be found.");
+            return "404";
+        }
+
+        // Handle 505 error
+        if (e instanceof HttpRequestMethodNotSupportedException) {
+            model.addAttribute("errorMessage", "The HTTP version used in the request is not supported.");
+            return "505";
+        }
+
+        //Handle all other exceptions
         model.addAttribute("errorMessage", e.getMessage());
         model.addAttribute("timestamp", LocalDateTime.now());
         return "error";

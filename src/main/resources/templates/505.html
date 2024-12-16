@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>505</title>
+</head>
+<body>
+<div th:replace="~{fragments/appNav :: appNav}"></div>
+
+<div class="container">
+    <title>505 - Internal Server Error</title>
+    <h1>Something went wrong! (505)</h1>
+    <p>An internal server error occurred. Please try again later.</p>
+    <a th:href="@{/static}" class="btn primary">Return to Home</a>
+</div>
+</body>
+</html>
+
