@@ -5,6 +5,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 public class Task {
+    /**
+     * Class & methods created by: Kristoffer
+     */
     private int id;
     private int projectId;
     private String title;

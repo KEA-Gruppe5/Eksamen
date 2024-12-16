@@ -15,6 +15,9 @@ import java.util.List;
 
 @Service
 public class TaskService {
+    /**
+     * Class & methods created by: Kristoffer
+     */
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final ProjectTeamService projectTeamService;
