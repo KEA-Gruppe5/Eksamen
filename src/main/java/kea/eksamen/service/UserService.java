@@ -16,7 +16,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -29,7 +28,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         checkIfUserAlreadyExists(user.getEmail());
         User savedUser = userRepository.addUser(user);
-        logger.info("Password:" + savedUser.getPassword());
+        logger.info("Password: {}", savedUser.getPassword());
         return savedUser;
     }
 
@@ -47,21 +46,17 @@ public class UserService {
                 boolean isPasswordCorrect = passwordEncoder.matches(userDTO.getPassword(),
                         user.getPassword());
                 if(isPasswordCorrect){  //in case password is encrypted
-                    logger.info("User authenticated: " + user);
+                    logger.info("User authenticated: {}", user);
                     return user;
                 }
                 if(user.getPassword().equals(userDTO.getPassword())){ //if it is not encrypted
-                    logger.info("User authenticated: " + user);
+                    logger.info("User authenticated: {}", user);
                     return user;
                 }
-                logger.info("User is not authenticated.\nPassword:"
-                        + userDTO.getPassword()+"\nPassword in db: " + user.getPassword());
+                logger.info("User is not authenticated.\nPassword: {}\nPassword in db: {}",
+                        userDTO.getPassword(),user.getPassword());
 
         }
         throw new BadCredentialsException();
-    }
-
-    public List<User> findAllUsers() {
-        return userRepository.findAllUsers();
     }
 }

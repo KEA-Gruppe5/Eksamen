@@ -30,7 +30,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .update(keyHolder, "id");
         if (affectedRows != 0 && keyHolder.getKey() != null) {
             project.setId(keyHolder.getKey().intValue());
-            logger.info("Added new project: " + project);
+            logger.info("Added new project: {}", project);
             return project;
         }
         logger.warn("Adding new project failed");
@@ -50,10 +50,10 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .param(id)
                 .update();
         if (rows > 0) {
-            logger.info("Updated project with ID: " + id + " - " + project);
+            logger.info("Updated project with ID: {} - {}", id, project);
             return project;
         }
-        logger.warn("No project found with ID: " + id + ". Update failed.");
+        logger.warn("No project found with ID: {}. Update failed.", id);
         return null;
     }
 
@@ -69,18 +69,18 @@ public class ProjectRepository implements ProjectRepositoryInterface {
             jdbcClient.sql("DELETE FROM PMTool.projects WHERE id = ?")
                     .param(subProjects)
                     .update();
-            logger.info("Deleted subproject with ID: " + subProjects);
+            logger.info("Deleted subproject with ID: {}", subProjects);
         }
         // delete the parent project
         int rows = jdbcClient.sql("DELETE FROM PMTool.projects WHERE id = ?")
                 .param(id)
                 .update();
         if (rows > 0) {
-            logger.info("projects delete" + id);
+            logger.info("projects delete {}", id);
             return true;
         } else {
 
-            logger.warn("No project found with ID: " + id + ". Deletion failed.");
+            logger.warn("No project found with ID: {}. Deletion failed.", id);
             return false;
         }
     }
@@ -103,9 +103,9 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .param(id)
                 .update();
         if (rows > 0) {
-            logger.info("Archived project with ID: " + id);
+            logger.info("Archived project with ID: {}", id);
         }
-        logger.warn("Archiving project failed for ID: " + id);
+        logger.warn("Archiving project failed for ID: {}", id);
     }
 
     public void unarchiveProject(int id) {
@@ -113,9 +113,9 @@ public class ProjectRepository implements ProjectRepositoryInterface {
                 .param(id)
                 .update();
         if (rows > 0) {
-            logger.info("Unarchived project with ID: " + id);
+            logger.info("Unarchived project with ID: {}", id);
         }
-        logger.warn("Unarchiving project failed for ID: " + id);
+        logger.warn("Unarchiving project failed for ID: {}", id);
     }
 
     public Project getProjectById(int id) {

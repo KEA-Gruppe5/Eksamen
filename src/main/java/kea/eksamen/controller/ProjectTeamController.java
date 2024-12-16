@@ -34,7 +34,7 @@ public class ProjectTeamController {
 
     @PostMapping("/projects/{projectId}/team")
     public String assignUserToProject(@PathVariable int projectId, @RequestParam("newTeamMembers") ArrayList<Integer> newTeamMembersIds){
-        logger.info("newTeamMembersIds size is " + newTeamMembersIds.size());
+        logger.info("newTeamMembersIds size is {}", newTeamMembersIds.size());
         projectTeamService.assignUserToProject(projectId, newTeamMembersIds);
         return "redirect:/projects/" + projectId + "/team";
     }

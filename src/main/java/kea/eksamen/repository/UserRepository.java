@@ -34,7 +34,7 @@ public class UserRepository implements UserRepositoryInterface{
 
         if(affectedRows!=0 && keyHolder.getKey()!=null){
             user.setId(keyHolder.getKey().intValue());
-            logger.info("add new user: " + user);
+            logger.info("add new user: {}", user);
             return user;
         }
         logger.warn("adding new user failed");
@@ -78,12 +78,6 @@ public class UserRepository implements UserRepositoryInterface{
                 .list();
     }
 
-    public List<User> findAllUsers() {
-        String sql = "SELECT * FROM PMTool.users u LEFT JOIN PMTool.roles r on u.role_id = r.id";
-        return jdbcClient.sql(sql)
-                .query(new UserMapper())
-                .list();
-    }
 
     public void assignUserToProject(int userId, int projectId) {
         String sql = "INSERT INTO PMTool.users_projects(user_id, project_id) VALUES (?, ?)";
@@ -92,7 +86,7 @@ public class UserRepository implements UserRepositoryInterface{
                 .param(projectId)
                 .update();
         if(affectedRows>0){
-            logger.info("adding user with id " + userId + " to the project with id " + projectId);
+            logger.info("adding user with id {}  to the project with id {}", userId, projectId);
         }
     }
 
@@ -103,7 +97,7 @@ public class UserRepository implements UserRepositoryInterface{
                 .param(projectId)
                 .update();
         if(affectedRows>0){
-            logger.info("delete user with id " + userId + " from the project with id " + projectId);
+            logger.info("delete user with id {} from the project with id {}", userId, projectId);
         }
     }
 
