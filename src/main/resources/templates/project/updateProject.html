@@ -25,12 +25,12 @@
 
         <div class="form-group">
             <label for="startDate" class="form-label">Start Date:</label>
-            <input type="date" id="startDate" name="dateRange.startDate" th:field="*{dateRange.startDate}" class="form-control" required/>
+            <input type="date" id="startDate" name="dateRange.startDate" th:value="*{dateRange.startDate}" class="form-control" required/>
         </div>
 
         <div class="form-group">
             <label for="endDate" class="form-label">End Date:</label>
-            <input type="date" id="endDate" name="dateRange.endDate" th:field="*{dateRange.endDate}" class="form-control" required/>
+            <input type="date" id="endDate" name="dateRange.endDate" th:value="*{dateRange.endDate}" class="form-control" required/>
         </div>
 
         <div th:if="${#fields.hasErrors('dateRange')}" class="text-danger">
