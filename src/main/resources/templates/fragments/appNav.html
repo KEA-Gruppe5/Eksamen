@@ -10,7 +10,7 @@
 <body>
 <div class="navigation-panel">
     <div class="brand-logo">
-        <img src="https://media.alpha-solutions.com/us/-/media/alphawebsite2019/ogimages/alpha-solutions---ogimage.ashx" alt="Alpha Solutions Logo">
+        <img src="/images/img.png" alt="Alpha Solutions Logo">
     </div>
 
     <ul class="menu-list">
@@ -32,15 +32,6 @@
             <a class="menu-link" href="/projects?archived=true">
                 <i class="bi bi-archive-fill"></i> See archived projects
             </a>
-        </li>
-        <li class="menu-item" th:if="${session.role != 'PM'}">
-            <p></p>
-        </li>
-        <li class="menu-item" th:if="${session.role == 'PM'}">
-            <a class="menu-link" href="/projects?archived=true">
-                <i class="bi bi-people-fill"></i> Manage users
-            </a>
-        </li>
         </li>
 
         <div class="footer-section">
