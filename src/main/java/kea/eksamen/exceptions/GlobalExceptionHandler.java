@@ -45,5 +45,23 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
+    @ExceptionHandler(TaskNotFoundExeption.class)
+    public String handleTaskNotFoundExeption(TaskNotFoundExeption e, Model model) {
+        logger.error("Database Error: " + e.getMessage(), e);
+        model.addAttribute("errorMessage", e.getMessage());
+        model.addAttribute("timestamp", LocalDateTime.now());
+        return "error";
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public String handleAllExeptions(Exception e, Model model) {
+        logger.error("Database Error: " + e.getMessage(), e);
+        model.addAttribute("errorMessage", e.getMessage());
+        model.addAttribute("timestamp", LocalDateTime.now());
+        return "error";
+    }
+
+
 
 }
