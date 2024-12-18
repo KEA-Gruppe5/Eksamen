@@ -49,7 +49,7 @@ public class TaskService {
         return taskRepository.findTaskById(taskId);
     }
 
-    public List<TeamMemberDTO> getMembersFromTeam(int projectId){
+    public List<TeamMemberDTO> getMembersFromTeam(int projectId){   //move to teamservice
         return projectTeamService.findTeamMembers(projectId);
     }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Project Management Tool</title>
-    <link rel="icon" type="image/png" href="/proj.png">
+    <link rel="icon" type="image/png" href="/favicon.ico">
     <link rel="stylesheet" href="/css/index-styles.css">
 </head>
 <body>
@@ -15,18 +15,6 @@
         <h1>Project Management Tool</h1>
         <p>"Efficiently manage projects, subprojects, and tasks with our intuitive PMT. Streamline your workflow with features like project creation, updates, deletions, and task management—all in one place."</p>
     </div>
-
-    <div class="login-buttons">
-        <button type="button" class="btn warning" onclick="autoFillAndSubmit('charlie.brown@example.com', 'password123')">
-            Debug Login for Client
-        </button>
-        <button type="button" class="btn warning" onclick="autoFillAndSubmit('bob.johnson@example.com', 'password123')">
-            Debug Login for Employee
-        </button>
-        <button type="button" class="btn warning" onclick="autoFillAndSubmit('alice.smith@example.com', 'password123')">
-            Debug Login for PM
-        </button>
-    </div>
 </div>
 
 <form id="loginForm" action="/login" method="post" style="display: none;">
@@ -34,13 +22,6 @@
     <label for="password"><input type="password" id="password" name="password" /></label>
 </form>
 
-<script>
-    function autoFillAndSubmit(email, password) {
-        document.getElementById('email').value = email;
-        document.getElementById('password').value = password;
-        document.getElementById('loginForm').submit();
-    }
-</script>
 
 <footer class="text-center mt-5">
     <p><a href="mailto:fakeEmail@gmail.com">Contact us at FakeEmail@gmail.com</a></p>
