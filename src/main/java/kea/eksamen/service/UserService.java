@@ -49,7 +49,6 @@ public class UserService {
                     return user;
                 }
                 if(user.getPassword().equals(userDTO.getPassword())){ //if it is not encrypted
-                    logger.info("User authenticated: {}", user);
                     return user;
                 }
                 logger.info("User is not authenticated.\nPassword: {}\nPassword in db: {}",
