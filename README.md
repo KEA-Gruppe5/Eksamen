@@ -1,5 +1,7 @@
 # Project Management Tool
 
+Link to deployed application: https://pmtool-fvesfthrbud6gqec.norwayeast-01.azurewebsites.net/
+
 A web app designed for assistance in project management. 
 Supported features:
 
@@ -28,3 +30,21 @@ Used Technologies:
 
 - Maven
 
+**To Run the application**
+
+ 1. Clone the repository by running git clone https://github.com/KEA-GruppeJVK/Eksamen.git
+ 2. Open the application in your desired IDE
+ 3. Setup a database environment (we used MySQL), and execute the script in
+    `/resources/DDL.sql` and `/resources/DML.sql` to add test data
+ 4. Add envirmoent variables - if you use Intellij go to Run
+    Configurations and add the folliwing under enviroment variables:
+    
+    `DEV_URL - Database URL`
+    
+    `DEV_USER - Database Username`
+    
+    `DEV_PASSWORD - Database Password`
+    
+    `PROFILE - add "test" to use h2 ddl or "dev" to use your own database` 
+
+ 6. Run your application from the IDE Navigate to http://localhost:8080 inside your browser.
